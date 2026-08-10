@@ -115,18 +115,17 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
         <a class="soc" href="#" aria-label="Instagram">◎</a>
         <a class="soc" href="#" aria-label="LinkedIn">in</a>
       </div>
-
-      <?php if (count($slides) > 1): ?>
-      <button type="button" class="hero-arrow hero-arrow-prev" data-hero-prev aria-label="Previous slide">‹</button>
-      <button type="button" class="hero-arrow hero-arrow-next" data-hero-next aria-label="Next slide">›</button>
-      <?php endif; ?>
     </div>
 
     <?php if (count($slides) > 1): ?>
-    <div class="hero-dots">
-      <?php foreach ($slides as $i => $sl): ?>
-        <button type="button" class="hero-dot<?= $i === 0 ? ' active' : '' ?>" data-hero-dot="<?= $i ?>" aria-label="Show slide <?= $i + 1 ?>"></button>
-      <?php endforeach; ?>
+    <div class="hero-nav">
+      <button type="button" class="hero-arrow" data-hero-prev aria-label="Previous slide">‹</button>
+      <div class="hero-dots">
+        <?php foreach ($slides as $i => $sl): ?>
+          <button type="button" class="hero-dot<?= $i === 0 ? ' active' : '' ?>" data-hero-dot="<?= $i ?>" aria-label="Show slide <?= $i + 1 ?>"></button>
+        <?php endforeach; ?>
+      </div>
+      <button type="button" class="hero-arrow" data-hero-next aria-label="Next slide">›</button>
     </div>
     <?php endif; ?>
   </div>
