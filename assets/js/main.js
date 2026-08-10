@@ -91,7 +91,7 @@
       });
     }
 
-    /* ---- Contact form submit (AJAX to contact.php) ---- */
+    /* ---- Contact form submit (AJAX to send-message.php) ---- */
     if (form) {
       form.addEventListener('submit', function (e) {
         e.preventDefault();
@@ -99,7 +99,7 @@
         var btn = form.querySelector('button[type="submit"]');
         var data = new FormData(form);
         btn.disabled = true; msg.textContent = 'Sending…'; msg.className = 'form-msg';
-        fetch('contact.php', { method: 'POST', body: data })
+        fetch('send-message.php', { method: 'POST', body: data })
           .then(function (r) { return r.json(); })
           .then(function (res) {
             if (res.ok) {

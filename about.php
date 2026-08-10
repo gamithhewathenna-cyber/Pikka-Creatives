@@ -54,6 +54,7 @@ $team = [
     <nav class="nav-links">
       <a href="index.php">Home</a>
       <a href="about.php">About</a>
+      <a href="contact.php">Contact</a>
     </nav>
     <a href="#" class="nav-cta" data-open-form>Start a project</a>
     <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -212,7 +213,7 @@ $team = [
       <nav class="foot-nav">
         <a href="index.php">Home</a>
         <a href="about.php">About</a>
-        <a href="#" data-open-form>Contact</a>
+        <a href="contact.php">Contact</a>
       </nav>
     </div>
     <div class="foot-bottom">

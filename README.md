@@ -10,25 +10,25 @@ for managing all content. Built to deploy directly to cPanel hosting.
 ```
 pikka/
 ├── index.php              ← the home page (front end)
-├── contact.php            ← handles contact-form submissions
+├── about.php               ← the About Us page
+├── contact.php             ← the Contact Us page
+├── send-message.php        ← handles contact-form submissions (AJAX, JSON)
 ├── .htaccess              ← caching + directory protection
 ├── includes/
 │   ├── config.php         ← EDIT THIS with your database details
 │   └── functions.php      ← content helpers (do not edit)
 ├── assets/
 │   ├── css/style.css      ← all front-end styles
-│   ├── js/main.js         ← animations, accordion, form
+│   ├── js/main.js         ← header/nav, accordion, pop-up form
 │   └── images/            ← (place static images here if needed)
 ├── uploads/               ← uploaded images land here (needs write permission)
 ├── admin/                 ← the admin panel (login required)
 │   ├── login.php
-│   ├── index.php          (dashboard)
-│   ├── sections.php       (all section text)
-│   ├── services.php / why.php / process.php / stats.php
-│   ├── images.php         (upload hero / section images)
-│   ├── settings.php       (logo, accent colour, marquee, contacts)
-│   ├── messages.php       (contact-form inbox)
-│   └── account.php        (change password)
+│   ├── index.php           (dashboard)
+│   ├── home-content.php    (Home page text, services, why us, process, stats, images — tabbed)
+│   ├── settings.php        (logo, accent colour, marquee, contacts, maintenance mode)
+│   ├── messages.php        (contact-form inbox)
+│   └── account.php         (change password)
 └── sql/
     └── pikka_db.sql       ← import this into your database
 ```
@@ -120,4 +120,4 @@ Changes appear on the live site immediately after saving.
 
 ---
 
-*Phase 1 delivery — Home Page with backend. Inner pages to follow once approved.*
+*Home, About and Contact pages delivered, all backed by the admin panel and shared design system.*
