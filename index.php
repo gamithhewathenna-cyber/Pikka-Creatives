@@ -63,6 +63,12 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <!-- ===== Section 1: Hero (slider) ===== -->
 <section class="hero">
   <div class="hero-grid-bg"></div>
+
+  <?php if (count($slides) > 1): ?>
+  <button type="button" class="hero-arrow hero-arrow-prev" data-hero-prev aria-label="Previous slide">‹</button>
+  <button type="button" class="hero-arrow hero-arrow-next" data-hero-next aria-label="Next slide">›</button>
+  <?php endif; ?>
+
   <div class="container">
     <div class="hero-text-slider">
       <?php foreach ($slides as $i => $sl): ?>
@@ -118,14 +124,10 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
     </div>
 
     <?php if (count($slides) > 1): ?>
-    <div class="hero-nav">
-      <button type="button" class="hero-arrow" data-hero-prev aria-label="Previous slide">‹</button>
-      <div class="hero-dots">
-        <?php foreach ($slides as $i => $sl): ?>
-          <button type="button" class="hero-dot<?= $i === 0 ? ' active' : '' ?>" data-hero-dot="<?= $i ?>" aria-label="Show slide <?= $i + 1 ?>"></button>
-        <?php endforeach; ?>
-      </div>
-      <button type="button" class="hero-arrow" data-hero-next aria-label="Next slide">›</button>
+    <div class="hero-dots">
+      <?php foreach ($slides as $i => $sl): ?>
+        <button type="button" class="hero-dot<?= $i === 0 ? ' active' : '' ?>" data-hero-dot="<?= $i ?>" aria-label="Show slide <?= $i + 1 ?>"></button>
+      <?php endforeach; ?>
     </div>
     <?php endif; ?>
   </div>

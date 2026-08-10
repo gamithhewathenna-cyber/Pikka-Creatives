@@ -133,18 +133,23 @@ img{max-width:100%;display:block}
 .hero-photo-slide{opacity:0;transition:opacity .7s ease;z-index:1}
 .hero-photo-slide.active{opacity:1;z-index:2}
 
-.hero-nav{display:flex;align-items:center;justify-content:center;gap:20px;margin-top:36px;position:relative;z-index:5}
-.hero-dots{display:flex;justify-content:center;gap:10px}
+.hero-dots{display:flex;justify-content:center;gap:10px;margin-top:36px;position:relative;z-index:5}
 .hero-dot{width:9px;height:9px;padding:0;border-radius:100px;background:var(--line);border:0;cursor:pointer;transition:.3s ease}
 .hero-dot:hover{background:var(--ink-2)}
 .hero-dot.active{width:26px;background:var(--accent)}
 
+/* Prev/next arrows sit at the outer corners of the whole hero section,
+   vertically centered on it — deliberately outside .container so they
+   never collide with the floating quote/tag cards. */
 .hero-arrow{
-  width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid var(--line);flex-shrink:0;
+  position:absolute;top:50%;transform:translateY(-50%);z-index:20;
+  width:50px;height:50px;border-radius:50%;background:#fff;border:1px solid var(--line);
   display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow-sm);
-  color:var(--ink);font-size:20px;line-height:1;padding:0;transition:.25s ease;
+  color:var(--ink);font-size:22px;line-height:1;padding:0;transition:.25s ease;
 }
-.hero-arrow:hover{background:var(--ink);color:#fff;border-color:var(--ink);transform:scale(1.08)}
+.hero-arrow:hover{background:var(--ink);color:#fff;border-color:var(--ink);transform:translateY(-50%) scale(1.08)}
+.hero-arrow-prev{left:20px}
+.hero-arrow-next{right:20px}
 
 /* floating chips around hero */
 .float-card{position:absolute;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-sm);padding:16px 18px;text-align:left;max-width:230px;animation:floaty 5s ease-in-out infinite}
@@ -444,6 +449,9 @@ body.modal-open{overflow:hidden}
   .float-card{display:none}
   .fc-tags{display:none}
   .hero-stage{margin-top:24px}
+  .hero-arrow{width:38px;height:38px;font-size:18px}
+  .hero-arrow-prev{left:6px}
+  .hero-arrow-next{right:6px}
   .proc-grid,.stats-grid{grid-template-columns:1fr}
   .benefit-grid,.team-grid,.img-duo{grid-template-columns:1fr}
   .contact-form .row,.contact-card .row{grid-template-columns:1fr}
