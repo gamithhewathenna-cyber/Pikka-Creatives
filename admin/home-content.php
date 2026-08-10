@@ -32,6 +32,10 @@ $image_keys = [
     'industries_image' => 'Industries section image (optional)',
 ];
 
+// The hero_slides table is only on sites that have run the latest sql/pikka_db.sql.
+// Guard against it so a missing table shows a clear message instead of a fatal error.
+$sliderTableReady = (bool) mysqli_query(db(), "SELECT 1 FROM hero_slides LIMIT 1");
+
 /* ---------------- POST handling ---------------- */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
@@ -45,6 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_stmt_execute($stmt);
         }
         flash('Section text updated successfully.');
+    }
+    elseif ($tab === 'slider' && !$sliderTableReady) {
+        flash('The Hero Slider needs a one-time database update before it can be used — see the note on this page for the SQL to run.');
     }
     elseif ($tab === 'slider') {
         $action = $_POST['action'] ?? '';
@@ -261,7 +268,28 @@ require __DIR__ . '/header.php';
   <?php endforeach; ?>
 </div>
 
-<?php if ($tab === 'slider'): ?>
+<?php if ($tab === 'slider' && !$sliderTableReady): ?>
+  <div class="card">
+    <h2>One-time setup needed</h2>
+    <p class="sub">The Hero Slider stores its slides in a database table that doesn't exist on this site yet. Open <strong>phpMyAdmin</strong> (in cPanel), select your database, go to the <strong>SQL</strong> tab, paste the code below, and click Go. This only needs to be done once — nothing else on the site is affected.</p>
+    <textarea readonly rows="14" style="font-family:monospace;font-size:12.5px;white-space:pre" onclick="this.select()">CREATE TABLE IF NOT EXISTS `hero_slides` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `eyebrow` VARCHAR(160) DEFAULT NULL,
+  `headline` VARCHAR(255) DEFAULT NULL,
+  `subheadline` TEXT DEFAULT NULL,
+  `btn_primary_text` VARCHAR(80) DEFAULT NULL,
+  `btn_primary_link` VARCHAR(255) DEFAULT NULL,
+  `btn_secondary_text` VARCHAR(80) DEFAULT NULL,
+  `image` VARCHAR(255) DEFAULT NULL,
+  `sort_order` INT(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `hero_slides` (`eyebrow`, `headline`, `subheadline`, `btn_primary_text`, `btn_primary_link`, `btn_secondary_text`, `image`, `sort_order`) VALUES
+('Creative and Digital Solutions · New Zealand', 'Your vision, brought to life.', 'Pikka Creatives helps businesses from Kaitaia to Bluff grow through smart design, high-performing websites and digital marketing, backed by local support.', 'See our work', '#services', 'Start a project', '', 1);</textarea>
+    <p class="muted" style="margin-top:10px">Once that's run, refresh this page and the slider editor will appear here.</p>
+  </div>
+<?php elseif ($tab === 'slider'): ?>
   <div class="card">
     <h2>Hero Slider</h2>
     <p class="sub">The rotating banner at the top of the home page. Each slide has its own headline, sub-headline, buttons and image, and the slider crossfades between them automatically. With only one slide, it's shown as a static hero (no rotation).</p>
