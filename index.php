@@ -1,4 +1,45 @@
 <?php require_once __DIR__ . '/includes/functions.php';
+if (session_status() === PHP_SESSION_NONE) session_start();
+$is_admin = !empty($_SESSION['admin_id']);
+
+if (s('maintenance_mode') === '1' && !$is_admin) {
+    http_response_code(503);
+    header('Retry-After: 3600');
+    $accent = s('accent_color', '#F1592A');
+    $logo   = s('logo_text', 'Pikka');
+    $msg    = s('maintenance_message', "We're currently making some improvements. Please check back soon.");
+    ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><?= e(s('site_name', 'Pikka Creatives')) ?> — Under Maintenance</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--accent:<?= e($accent) ?>}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0d0d0f;color:#f5f5f5;font-family:Inter,sans-serif;padding:24px;text-align:center}
+  .mark{font-family:Sora,sans-serif;font-size:2rem;font-weight:700;margin-bottom:1.2rem}
+  .mark span{color:var(--accent)}
+  .card{max-width:480px}
+  h1{font-family:Sora,sans-serif;font-size:1.6rem;margin:0 0 .8rem}
+  p{color:#b8b8bd;line-height:1.6;margin:0;white-space:pre-line}
+  .dot{color:var(--accent);margin-right:.4rem}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="mark"><span class="dot">✳</span><?= e($logo) ?><span>.</span></div>
+    <h1>We'll be right back</h1>
+    <p><?= e($msg) ?></p>
+  </div>
+</body>
+</html>
+<?php
+    exit;
+}
+
 $accent = s('accent_color', '#F1592A');
 $logo   = s('logo_text', 'Pikka');
 $hero_img = c('hero_image');           // stored path if uploaded
@@ -21,6 +62,12 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <style>:root{--accent:<?= e($accent) ?>}</style>
 </head>
 <body>
+
+<?php if ($is_admin && s('maintenance_mode') === '1'): ?>
+<div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#111;color:#fff;text-align:center;font:600 13px/1 Inter,sans-serif;padding:10px">
+  Maintenance mode is ON — visitors see the "under maintenance" page, only logged-in admins see this site. Turn it off in <a href="admin/settings.php" style="color:<?= e($accent) ?>">Settings</a> when you're ready to go live.
+</div>
+<?php endif; ?>
 
 <!-- Preloader -->
 <div id="preloader">
