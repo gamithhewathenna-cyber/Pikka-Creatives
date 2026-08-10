@@ -99,7 +99,7 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
       </div>
       <!-- photo ring, one per slide, crossfading -->
       <?php foreach ($slides as $i => $sl): ?>
-        <div class="hero-photo-ring hero-photo-slide<?= $i === 0 ? ' active' : '' ?>" data-hero-photo="<?= $i ?>">
+        <div class="hero-photo-ring hero-photo-slide<?= $i === 0 ? ' active' : '' ?><?= empty($sl['image']) ? ' no-image' : '' ?>" data-hero-photo="<?= $i ?>">
           <?php if (!empty($sl['image'])): ?>
             <img src="<?= e($sl['image']) ?>" alt="Pikka Creatives">
           <?php else: ?>
