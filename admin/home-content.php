@@ -4,6 +4,7 @@ require_once __DIR__ . '/auth.php';
 require_login();
 
 $tabs = [
+    'slider'   => ['label' => 'Hero Slider'],
     'sections' => ['label' => 'Text & Sections'],
     'services' => ['label' => 'Services'],
     'why'      => ['label' => 'Why Choose Us'],
@@ -44,6 +45,83 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_stmt_execute($stmt);
         }
         flash('Section text updated successfully.');
+    }
+    elseif ($tab === 'slider') {
+        $action = $_POST['action'] ?? '';
+
+        if ($action === 'add' || $action === 'edit') {
+            $eyebrow    = trim($_POST['eyebrow'] ?? '');
+            $headline   = trim($_POST['headline'] ?? '');
+            $subhead    = trim($_POST['subheadline'] ?? '');
+            $btnPText   = trim($_POST['btn_primary_text'] ?? '');
+            $btnPLink   = trim($_POST['btn_primary_link'] ?? '') ?: '#services';
+            $btnSText   = trim($_POST['btn_secondary_text'] ?? '');
+
+            $imagePath = null; // null = leave existing image untouched (edit only)
+            if (!empty($_FILES['image']['name'])) {
+                $uploadDir = __DIR__ . '/../uploads/';
+                if (!is_dir($uploadDir)) @mkdir($uploadDir, 0755, true);
+                $f = $_FILES['image'];
+                $allowed = ['jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'webp' => 'image/webp', 'gif' => 'image/gif'];
+                $ext = strtolower(pathinfo($f['name'], PATHINFO_EXTENSION));
+                $finfo = @getimagesize($f['tmp_name']);
+                if ($f['error'] !== 0) { flash('Upload error.'); }
+                elseif (!isset($allowed[$ext]) || !$finfo) { flash('Please upload a JPG, PNG, WEBP or GIF image.'); }
+                elseif ($f['size'] > 5 * 1024 * 1024) { flash('Image must be under 5 MB.'); }
+                else {
+                    $name = 'hero_slide_' . time() . '_' . mt_rand(1000, 9999) . '.' . $ext;
+                    if (move_uploaded_file($f['tmp_name'], $uploadDir . $name)) {
+                        $imagePath = 'uploads/' . $name;
+                    } else { flash('Could not save the uploaded image. Check the uploads/ folder permissions (755).'); }
+                }
+            }
+
+            if ($action === 'add') {
+                $ord = mysqli_fetch_assoc(mysqli_query(db(), "SELECT COALESCE(MAX(sort_order),0)+1 n FROM hero_slides"))['n'];
+                $img = $imagePath ?? '';
+                $stmt = mysqli_prepare(db(), "INSERT INTO hero_slides (eyebrow, headline, subheadline, btn_primary_text, btn_primary_link, btn_secondary_text, image, sort_order) VALUES (?,?,?,?,?,?,?,?)");
+                mysqli_stmt_bind_param($stmt, 'sssssssi', $eyebrow, $headline, $subhead, $btnPText, $btnPLink, $btnSText, $img, $ord);
+                mysqli_stmt_execute($stmt);
+                flash('Slide added.');
+            } else {
+                $id = (int)($_POST['id'] ?? 0);
+                if ($imagePath !== null) {
+                    $stmt = mysqli_prepare(db(), "UPDATE hero_slides SET eyebrow=?, headline=?, subheadline=?, btn_primary_text=?, btn_primary_link=?, btn_secondary_text=?, image=? WHERE id=?");
+                    mysqli_stmt_bind_param($stmt, 'sssssssi', $eyebrow, $headline, $subhead, $btnPText, $btnPLink, $btnSText, $imagePath, $id);
+                } else {
+                    $stmt = mysqli_prepare(db(), "UPDATE hero_slides SET eyebrow=?, headline=?, subheadline=?, btn_primary_text=?, btn_primary_link=?, btn_secondary_text=? WHERE id=?");
+                    mysqli_stmt_bind_param($stmt, 'ssssssi', $eyebrow, $headline, $subhead, $btnPText, $btnPLink, $btnSText, $id);
+                }
+                mysqli_stmt_execute($stmt);
+                flash('Slide updated.');
+            }
+        }
+        elseif ($action === 'delete') {
+            $id = (int)($_POST['id'] ?? 0);
+            $stmt = mysqli_prepare(db(), "DELETE FROM hero_slides WHERE id=?");
+            mysqli_stmt_bind_param($stmt, 'i', $id);
+            mysqli_stmt_execute($stmt);
+            flash('Slide deleted.');
+        }
+        elseif ($action === 'move') {
+            $id = (int)($_POST['id'] ?? 0);
+            $dir = $_POST['dir'] === 'up' ? 'up' : 'down';
+            $rows = [];
+            $r = mysqli_query(db(), "SELECT id, sort_order FROM hero_slides ORDER BY sort_order ASC, id ASC");
+            while ($x = mysqli_fetch_assoc($r)) $rows[] = $x;
+            for ($i = 0; $i < count($rows); $i++) {
+                if ((int)$rows[$i]['id'] === $id) {
+                    $j = $dir === 'up' ? $i - 1 : $i + 1;
+                    if ($j >= 0 && $j < count($rows)) {
+                        $a = $rows[$i]['id']; $b = $rows[$j]['id'];
+                        $oa = $rows[$i]['sort_order']; $ob = $rows[$j]['sort_order'];
+                        mysqli_query(db(), "UPDATE hero_slides SET sort_order=$ob WHERE id=$a");
+                        mysqli_query(db(), "UPDATE hero_slides SET sort_order=$oa WHERE id=$b");
+                    }
+                    break;
+                }
+            }
+        }
     }
     elseif (isset($crud[$tab])) {
         $table   = $crud[$tab]['table'];
@@ -139,7 +217,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 /* ---------------- Data for the active tab ---------------- */
-if ($tab === 'sections') {
+if ($tab === 'slider') {
+    $rows = get_rows('hero_slides');
+}
+elseif ($tab === 'sections') {
     $res = mysqli_query(db(), "SELECT * FROM page_content WHERE content_key NOT LIKE '%_image' ORDER BY id ASC");
     $groups = [];
     while ($row = mysqli_fetch_assoc($res)) $groups[$row['section']][] = $row;
@@ -180,7 +261,72 @@ require __DIR__ . '/header.php';
   <?php endforeach; ?>
 </div>
 
-<?php if ($tab === 'sections'): ?>
+<?php if ($tab === 'slider'): ?>
+  <div class="card">
+    <h2>Hero Slider</h2>
+    <p class="sub">The rotating banner at the top of the home page. Each slide has its own headline, sub-headline, buttons and image, and the slider crossfades between them automatically. With only one slide, it's shown as a static hero (no rotation).</p>
+  </div>
+  <?php foreach ($rows as $idx => $row): ?>
+  <div class="card">
+    <div class="rh" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <span class="pill">Slide <?= $idx + 1 ?></span>
+      <div style="display:flex;gap:6px">
+        <form method="post" action="?tab=slider" style="display:inline"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="action" value="move"><input type="hidden" name="id" value="<?= $row['id'] ?>"><input type="hidden" name="dir" value="up"><button class="btn btn-ghost btn-sm" <?= $idx === 0 ? 'disabled' : '' ?>>↑</button></form>
+        <form method="post" action="?tab=slider" style="display:inline"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="action" value="move"><input type="hidden" name="id" value="<?= $row['id'] ?>"><input type="hidden" name="dir" value="down"><button class="btn btn-ghost btn-sm" <?= $idx === count($rows) - 1 ? 'disabled' : '' ?>>↓</button></form>
+        <form method="post" action="?tab=slider" style="display:inline" onsubmit="return confirm('Delete this slide?')"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?= $row['id'] ?>"><button class="btn btn-danger btn-sm">Delete</button></form>
+      </div>
+    </div>
+    <form method="post" action="?tab=slider" enctype="multipart/form-data">
+      <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+      <input type="hidden" name="action" value="edit">
+      <input type="hidden" name="id" value="<?= $row['id'] ?>">
+      <div class="img-field" style="margin-bottom:18px">
+        <?php if ($row['image']): ?>
+          <img class="thumb" src="../<?= e($row['image']) ?>" alt="">
+        <?php else: ?>
+          <div class="thumb" style="display:grid;place-items:center;color:#aaa;font-size:11px">none</div>
+        <?php endif; ?>
+        <div style="flex:1">
+          <label>Slide image</label>
+          <input type="file" name="image" accept="image/*">
+          <div class="muted" style="margin-top:6px">Leave empty to keep the current image.</div>
+        </div>
+      </div>
+      <div class="two">
+        <div class="field"><label>Eyebrow</label><input type="text" name="eyebrow" value="<?= e($row['eyebrow']) ?>"></div>
+        <div class="field"><label>Headline</label><input type="text" name="headline" value="<?= e($row['headline']) ?>"></div>
+      </div>
+      <div class="field"><label>Sub-headline</label><textarea name="subheadline" rows="2"><?= e($row['subheadline']) ?></textarea></div>
+      <div class="two">
+        <div class="field"><label>Primary button text</label><input type="text" name="btn_primary_text" value="<?= e($row['btn_primary_text']) ?>"></div>
+        <div class="field"><label>Primary button link</label><input type="text" name="btn_primary_link" value="<?= e($row['btn_primary_link']) ?>" placeholder="#services"></div>
+      </div>
+      <div class="field"><label>Secondary button text (always opens the "Start a project" pop-up)</label><input type="text" name="btn_secondary_text" value="<?= e($row['btn_secondary_text']) ?>"></div>
+      <button class="btn btn-sm" type="submit">Save changes</button>
+    </form>
+  </div>
+  <?php endforeach; ?>
+  <div class="card" style="border-style:dashed">
+    <h2>Add new slide</h2>
+    <form method="post" action="?tab=slider" enctype="multipart/form-data">
+      <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+      <input type="hidden" name="action" value="add">
+      <div class="field"><label>Slide image</label><input type="file" name="image" accept="image/*"></div>
+      <div class="two">
+        <div class="field"><label>Eyebrow</label><input type="text" name="eyebrow" placeholder="Creative and Digital Solutions · New Zealand"></div>
+        <div class="field"><label>Headline</label><input type="text" name="headline" placeholder="Your vision, brought to life."></div>
+      </div>
+      <div class="field"><label>Sub-headline</label><textarea name="subheadline" rows="2"></textarea></div>
+      <div class="two">
+        <div class="field"><label>Primary button text</label><input type="text" name="btn_primary_text" placeholder="See our work"></div>
+        <div class="field"><label>Primary button link</label><input type="text" name="btn_primary_link" placeholder="#services"></div>
+      </div>
+      <div class="field"><label>Secondary button text</label><input type="text" name="btn_secondary_text" placeholder="Start a project"></div>
+      <button class="btn" type="submit">+ Add slide</button>
+    </form>
+  </div>
+
+<?php elseif ($tab === 'sections'): ?>
   <form method="post" action="?tab=sections">
     <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
     <?php foreach ($groups as $section => $srows): ?>

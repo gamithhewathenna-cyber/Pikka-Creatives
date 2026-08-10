@@ -4,6 +4,20 @@ $is_admin = maintenance_gate();
 $accent = s('accent_color', '#F1592A');
 $logo   = s('logo_text', 'Pikka');
 $hero_img = c('hero_image');           // stored path if uploaded
+$slides = get_rows('hero_slides');
+if (!$slides) {
+    // Fallback to the legacy single-hero content if no slides exist yet
+    // (e.g. the hero_slides table hasn't been migrated in on this site yet).
+    $slides = [[
+        'eyebrow'            => c('hero_eyebrow'),
+        'headline'           => c('hero_headline'),
+        'subheadline'        => c('hero_subheadline'),
+        'btn_primary_text'   => c('hero_btn_primary'),
+        'btn_primary_link'   => '#services',
+        'btn_secondary_text' => c('hero_btn_secondary'),
+        'image'              => $hero_img,
+    ]];
+}
 $intro_img = c('intro_image');
 $ind_img  = c('industries_image');
 $marquee  = array_filter(array_map('trim', explode('|', s('marquee_items', ''))));
@@ -46,20 +60,26 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 
 <span id="top"></span>
 
-<!-- ===== Section 1: Hero ===== -->
+<!-- ===== Section 1: Hero (slider) ===== -->
 <section class="hero">
   <div class="hero-grid-bg"></div>
   <div class="container">
-    <span class="eyebrow center"><?= e(c('hero_eyebrow')) ?></span>
-    <h1><?= nl2br(e(c('hero_headline'))) ?></h1>
-    <p class="hero-sub"><?= e(c('hero_subheadline')) ?></p>
-    <div class="hero-actions">
-      <a href="#services" class="btn btn-primary"><?= e(c('hero_btn_primary')) ?> <span class="ico">↗</span></a>
-      <a href="#contact" class="btn btn-outline" data-open-form><?= e(c('hero_btn_secondary')) ?> <span class="ico">→</span></a>
+    <div class="hero-text-slider">
+      <?php foreach ($slides as $i => $sl): ?>
+        <div class="hero-text-slide<?= $i === 0 ? ' active' : '' ?>" data-hero-text="<?= $i ?>">
+          <span class="eyebrow center"><?= e($sl['eyebrow']) ?></span>
+          <h1><?= nl2br(e($sl['headline'])) ?></h1>
+          <p class="hero-sub"><?= e($sl['subheadline']) ?></p>
+          <div class="hero-actions">
+            <a href="<?= e($sl['btn_primary_link'] ?: '#services') ?>" class="btn btn-primary"><?= e($sl['btn_primary_text']) ?> <span class="ico">↗</span></a>
+            <a href="#" class="btn btn-outline" data-open-form><?= e($sl['btn_secondary_text']) ?> <span class="ico">→</span></a>
+          </div>
+        </div>
+      <?php endforeach; ?>
     </div>
 
     <div class="hero-stage">
-      <!-- floating quote -->
+      <!-- floating quote (static, same across all slides) -->
       <div class="float-card fc-quote">
         <span class="qmark">“</span>
         <p class="q"><?= e(c('hero_quote')) ?></p>
@@ -71,14 +91,16 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
         <span class="tag-pill">SEO & Marketing</span>
         <span class="tag-pill on">Social & Content</span>
       </div>
-      <!-- photo ring -->
-      <div class="hero-photo-ring">
-        <?php if ($hero_img): ?>
-          <img src="<?= e($hero_img) ?>" alt="Pikka Creatives">
-        <?php else: ?>
-          <span class="ph">Add hero image<br>in admin</span>
-        <?php endif; ?>
-      </div>
+      <!-- photo ring, one per slide, crossfading -->
+      <?php foreach ($slides as $i => $sl): ?>
+        <div class="hero-photo-ring hero-photo-slide<?= $i === 0 ? ' active' : '' ?>" data-hero-photo="<?= $i ?>">
+          <?php if (!empty($sl['image'])): ?>
+            <img src="<?= e($sl['image']) ?>" alt="Pikka Creatives">
+          <?php else: ?>
+            <span class="ph">Add slide image<br>in admin</span>
+          <?php endif; ?>
+        </div>
+      <?php endforeach; ?>
       <!-- reviews -->
       <div class="float-card fc-reviews">
         <div>
@@ -94,6 +116,14 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
         <a class="soc" href="#" aria-label="LinkedIn">in</a>
       </div>
     </div>
+
+    <?php if (count($slides) > 1): ?>
+    <div class="hero-dots">
+      <?php foreach ($slides as $i => $sl): ?>
+        <button type="button" class="hero-dot<?= $i === 0 ? ' active' : '' ?>" data-hero-dot="<?= $i ?>" aria-label="Show slide <?= $i + 1 ?>"></button>
+      <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
   </div>
 </section>
 

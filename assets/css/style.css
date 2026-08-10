@@ -112,6 +112,15 @@ img{max-width:100%;display:block}
 .hero-sub{max-width:620px;margin:0 auto 34px;color:var(--ink-2);font-size:clamp(1rem,2vw,1.15rem)}
 .hero-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:5}
 
+/* Hero text slider — all slides share one grid cell so the wrapper's height
+   always matches the tallest slide, with no layout jump on swap. */
+.hero-text-slider{display:grid}
+.hero-text-slide{
+  grid-column:1;grid-row:1;opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .7s ease;
+}
+.hero-text-slide.active{opacity:1;visibility:visible;pointer-events:auto}
+
 .hero-stage{position:relative;margin-top:38px;height:clamp(320px,44vw,470px)}
 .hero-photo-ring{
   position:absolute;left:50%;bottom:0;transform:translateX(-50%);
@@ -121,6 +130,13 @@ img{max-width:100%;display:block}
 }
 .hero-photo-ring img{width:112%;height:112%;object-fit:cover;object-position:top center;filter:saturate(1.02)}
 .hero-photo-ring .ph{color:#fff;font-family:'Sora';font-weight:700;font-size:20px;opacity:.8;padding-bottom:40px}
+.hero-photo-slide{opacity:0;transition:opacity .7s ease;z-index:1}
+.hero-photo-slide.active{opacity:1;z-index:2}
+
+.hero-dots{display:flex;justify-content:center;gap:10px;margin-top:36px;position:relative;z-index:5}
+.hero-dot{width:9px;height:9px;padding:0;border-radius:100px;background:var(--line);border:0;cursor:pointer;transition:.3s ease}
+.hero-dot:hover{background:var(--ink-2)}
+.hero-dot.active{width:26px;background:var(--accent)}
 
 /* floating chips around hero */
 .float-card{position:absolute;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-sm);padding:16px 18px;text-align:left;max-width:230px;animation:floaty 5s ease-in-out infinite}

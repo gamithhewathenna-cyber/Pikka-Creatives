@@ -68,7 +68,7 @@ function paragraphs($text) {
 
 /* Fetch rows from a list table ordered by sort_order */
 function get_rows($table) {
-    $allowed = ['services', 'why_reasons', 'process_steps', 'stats'];
+    $allowed = ['services', 'why_reasons', 'process_steps', 'stats', 'hero_slides'];
     if (!in_array($table, $allowed, true)) return [];
     $extra = ($table === 'services') ? ' WHERE is_active = 1' : '';
     $res = mysqli_query(db(), "SELECT * FROM `$table`$extra ORDER BY sort_order ASC, id ASC");

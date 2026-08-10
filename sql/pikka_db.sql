@@ -106,6 +106,25 @@ INSERT INTO `page_content` (`content_key`, `content_value`, `section`, `label`, 
 ('cta_btn_secondary', 'View our portfolio', 'CTA', 'Secondary button', 'text');
 
 -- ---------------------------------------------------------------------
+-- Table: hero_slides  (rotating hero banner — text + button + image per slide)
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `hero_slides` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `eyebrow` VARCHAR(160) DEFAULT NULL,
+  `headline` VARCHAR(255) DEFAULT NULL,
+  `subheadline` TEXT DEFAULT NULL,
+  `btn_primary_text` VARCHAR(80) DEFAULT NULL,
+  `btn_primary_link` VARCHAR(255) DEFAULT NULL,
+  `btn_secondary_text` VARCHAR(80) DEFAULT NULL,
+  `image` VARCHAR(255) DEFAULT NULL,
+  `sort_order` INT(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `hero_slides` (`eyebrow`, `headline`, `subheadline`, `btn_primary_text`, `btn_primary_link`, `btn_secondary_text`, `image`, `sort_order`) VALUES
+('Creative and Digital Solutions · New Zealand', 'Your vision, brought to life.', 'Pikka Creatives helps businesses from Kaitaia to Bluff grow through smart design, high-performing websites and digital marketing, backed by local support.', 'See our work', '#services', 'Start a project', '', 1);
+
+-- ---------------------------------------------------------------------
 -- Table: services  (Section 3 cards / accordion)
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `services` (
