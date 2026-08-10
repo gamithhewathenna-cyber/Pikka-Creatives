@@ -263,7 +263,7 @@ section{position:relative}
 }
 .modal-overlay.open{opacity:1;visibility:visible}
 .modal-box{
-  position:relative;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;
+  position:relative;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;
   background:#fff;border-radius:28px;padding:clamp(32px,5vw,50px);
   box-shadow:0 30px 80px -20px rgba(0,0,0,.45);
   transform:translateY(20px) scale(.97);transition:transform .35s cubic-bezier(.2,.7,.2,1),opacity .3s ease;

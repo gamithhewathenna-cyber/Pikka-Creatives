@@ -256,19 +256,21 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
         <div><label>Name</label><input type="text" name="name" placeholder="Your name" required></div>
         <div><label>Email</label><input type="email" name="email" placeholder="Email address" required></div>
       </div>
-      <div class="field"><label>Business name</label><input type="text" name="business" placeholder="Your business (optional)"></div>
-      <div class="field">
-        <label>What do you need?</label>
-        <select name="need">
-          <option value="">Select one</option>
-          <option>Branding</option>
-          <option>Web</option>
-          <option>Social & Content</option>
-          <option>Packaging & Print</option>
-          <option>Not sure yet</option>
-        </select>
+      <div class="field row">
+        <div><label>Business name</label><input type="text" name="business" placeholder="Your business (optional)"></div>
+        <div>
+          <label>What do you need?</label>
+          <select name="need">
+            <option value="">Select one</option>
+            <option>Branding</option>
+            <option>Web</option>
+            <option>Social & Content</option>
+            <option>Packaging & Print</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
       </div>
-      <div class="field"><label>Tell us about your project</label><textarea name="message" rows="4" placeholder="Share a few details…" required></textarea></div>
+      <div class="field"><label>Tell us about your project</label><textarea name="message" rows="3" placeholder="Share a few details…" required></textarea></div>
       <button type="submit" class="btn btn-primary">Send message <span class="ico">→</span></button>
       <div class="form-msg" role="status"></div>
     </form>
