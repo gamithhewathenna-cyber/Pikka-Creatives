@@ -63,11 +63,6 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 </head>
 <body>
 
-<?php if ($is_admin && s('maintenance_mode') === '1'): ?>
-<div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#111;color:#fff;text-align:center;font:600 13px/1 Inter,sans-serif;padding:10px">
-  Maintenance mode is ON — visitors see the "under maintenance" page, only logged-in admins see this site. Turn it off in <a href="admin/settings.php" style="color:<?= e($accent) ?>">Settings</a> when you're ready to go live.
-</div>
-<?php endif; ?>
 
 <!-- Preloader -->
 <div id="preloader">
