@@ -29,19 +29,6 @@
       });
     }
 
-    /* ---- Scroll reveal ---- */
-    var reveals = document.querySelectorAll('.reveal');
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
-        });
-      }, { threshold: 0.14 });
-      reveals.forEach(function (el) { io.observe(el); });
-    } else {
-      reveals.forEach(function (el) { el.classList.add('in'); });
-    }
-
     /* ---- Services accordion ---- */
     var items = document.querySelectorAll('.svc-item');
     items.forEach(function (item) {
@@ -66,20 +53,43 @@
       b0.style.maxHeight = b0.scrollHeight + 'px';
     }
 
-    /* ---- Contact form toggle ---- */
-    var openBtns = document.querySelectorAll('[data-open-form]');
+    /* ---- Contact form pop-up ---- */
+    var modal = document.getElementById('contactModal');
     var form = document.getElementById('contactForm');
-    openBtns.forEach(function (btn) {
-      btn.addEventListener('click', function (e) {
-        e.preventDefault();
-        if (form) {
-          form.classList.add('show');
-          form.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          var nm = form.querySelector('input[name="name"]');
-          if (nm) setTimeout(function () { nm.focus(); }, 400);
-        }
-      });
+    var lastFocused = null;
+
+    var openModal = function (e) {
+      if (e) e.preventDefault();
+      if (!modal) return;
+      lastFocused = document.activeElement;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+      var nm = form && form.querySelector('input[name="name"]');
+      if (nm) setTimeout(function () { nm.focus(); }, 300);
+    };
+    var closeModal = function () {
+      if (!modal) return;
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+      if (lastFocused) lastFocused.focus();
+    };
+
+    document.querySelectorAll('[data-open-form]').forEach(function (btn) {
+      btn.addEventListener('click', openModal);
     });
+    if (modal) {
+      modal.querySelectorAll('[data-close-form]').forEach(function (btn) {
+        btn.addEventListener('click', closeModal);
+      });
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+      });
+    }
 
     /* ---- Contact form submit (AJAX to contact.php) ---- */
     if (form) {

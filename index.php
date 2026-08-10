@@ -80,13 +80,9 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
   <div class="container nav">
     <a href="#top" class="brand"><span class="dot">✳</span><?= e($logo) ?><span class="accent">.</span></a>
     <nav class="nav-links">
-      <a href="#top">Home</a>
-      <a href="#services">Services</a>
-      <a href="#why">Why Us</a>
-      <a href="#process">Process</a>
-      <a href="#industries">Industries</a>
+      <a href="index.php">Home</a>
     </nav>
-    <a href="#contact" class="nav-cta" data-open-form>Start a project</a>
+    <a href="#" class="nav-cta" data-open-form>Start a project</a>
     <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -97,15 +93,15 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <section class="hero">
   <div class="hero-grid-bg"></div>
   <div class="container">
-    <span class="eyebrow center reveal"><?= e(c('hero_eyebrow')) ?></span>
-    <h1 class="reveal d1"><?= nl2br(e(c('hero_headline'))) ?></h1>
-    <p class="hero-sub reveal d2"><?= e(c('hero_subheadline')) ?></p>
-    <div class="hero-actions reveal d3">
+    <span class="eyebrow center"><?= e(c('hero_eyebrow')) ?></span>
+    <h1><?= nl2br(e(c('hero_headline'))) ?></h1>
+    <p class="hero-sub"><?= e(c('hero_subheadline')) ?></p>
+    <div class="hero-actions">
       <a href="#services" class="btn btn-primary"><?= e(c('hero_btn_primary')) ?> <span class="ico">↗</span></a>
       <a href="#contact" class="btn btn-outline" data-open-form><?= e(c('hero_btn_secondary')) ?> <span class="ico">→</span></a>
     </div>
 
-    <div class="hero-stage reveal d2">
+    <div class="hero-stage">
       <!-- floating quote -->
       <div class="float-card fc-quote">
         <span class="qmark">“</span>
@@ -155,11 +151,11 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <!-- ===== Section 2: Intro ===== -->
 <section class="intro pad" id="intro">
   <div class="container intro-wrap">
-    <div class="reveal">
+    <div>
       <span class="eyebrow"><?= e(c('intro_eyebrow')) ?></span>
       <h2 style="margin-top:16px"><?= e(c('intro_heading')) ?></h2>
     </div>
-    <div class="intro-body reveal d1">
+    <div class="intro-body">
       <?php foreach (preg_split('/\n{2,}|(?<=\.)\s{2,}/', c('intro_body')) as $para):
         $para = trim($para); if ($para === '') continue; ?>
         <p><?= e($para) ?></p>
@@ -172,15 +168,15 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <section class="pad" id="services">
   <div class="container">
     <div class="svc-top">
-      <div class="sec-head reveal">
+      <div class="sec-head">
         <span class="eyebrow"><?= e(c('services_eyebrow')) ?></span>
         <h2><?= e(c('services_heading')) ?></h2>
       </div>
-      <p class="reveal d1" style="max-width:340px;color:var(--ink-2)"><?= e(c('services_intro')) ?></p>
+      <p style="max-width:340px;color:var(--ink-2)"><?= e(c('services_intro')) ?></p>
     </div>
     <div class="svc-list">
       <?php $i = 0; foreach (get_rows('services') as $svc): $i++; ?>
-        <div class="svc-item reveal">
+        <div class="svc-item">
           <div class="svc-head">
             <span class="svc-num"><?= sprintf('%02d', $i) ?></span>
             <span class="svc-title"><?= e($svc['title']) ?></span>
@@ -190,7 +186,7 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
         </div>
       <?php endforeach; ?>
     </div>
-    <div class="svc-cta reveal">
+    <div class="svc-cta">
       <a href="#contact" class="btn btn-dark" data-open-form>Start your project <span class="ico">→</span></a>
     </div>
   </div>
@@ -199,12 +195,12 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <!-- ===== Section 4: Why Choose Us ===== -->
 <section class="why pad" id="why">
   <div class="container why-wrap">
-    <div class="why-intro reveal">
+    <div class="why-intro">
       <span class="eyebrow"><?= e(c('why_eyebrow')) ?></span>
       <h2 style="margin-top:16px"><?= e(c('why_heading')) ?></h2>
       <p><?= e(c('why_body')) ?></p>
     </div>
-    <div class="why-grid reveal d1">
+    <div class="why-grid">
       <?php $n = 0; foreach (get_rows('why_reasons') as $r): $n++; ?>
         <div class="why-cell">
           <span class="n"><?= sprintf('0%d', $n) ?></span>
@@ -219,14 +215,14 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <!-- ===== Section 5: Process ===== -->
 <section class="pad" id="process">
   <div class="container">
-    <div class="sec-head center reveal">
+    <div class="sec-head center">
       <span class="eyebrow center"><?= e(c('process_eyebrow')) ?></span>
       <h2><?= e(c('process_heading')) ?></h2>
       <p><?= e(c('process_intro')) ?></p>
     </div>
     <div class="proc-grid">
       <?php foreach (get_rows('process_steps') as $st): ?>
-        <div class="proc-card reveal">
+        <div class="proc-card">
           <div class="line"></div>
           <div class="num"><?= e($st['step_number']) ?></div>
           <h4><?= e($st['title']) ?></h4>
@@ -240,12 +236,12 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <!-- ===== Section 6: Industries ===== -->
 <section class="ind pad" id="industries">
   <div class="container ind-wrap">
-    <div class="ind-body reveal">
+    <div class="ind-body">
       <span class="eyebrow"><?= e(c('industries_eyebrow')) ?></span>
       <h2 style="margin:16px 0 16px"><?= e(c('industries_heading')) ?></h2>
       <p><?= e(c('industries_body')) ?></p>
     </div>
-    <div class="reveal d1">
+    <div>
       <div class="ind-tags">
         <?php foreach ($tags as $t): ?><span class="ind-tag"><?= e($t) ?></span><?php endforeach; ?>
       </div>
@@ -256,12 +252,12 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <!-- ===== Section 7: Stats trust bar ===== -->
 <section class="pad">
   <div class="container">
-    <div class="stats-head reveal">
+    <div class="stats-head">
       <h2 style="font-size:clamp(1.8rem,3.6vw,2.6rem)"><?= e(c('stats_heading')) ?></h2>
     </div>
     <div class="stats-grid">
       <?php foreach (get_rows('stats') as $stt): ?>
-        <div class="stat-card reveal">
+        <div class="stat-card">
           <span class="plus">✳</span>
           <h4><?= e($stt['title']) ?></h4>
           <p><?= e($stt['description']) ?></p>
@@ -273,7 +269,7 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 
 <!-- ===== Section 8: Testimonial ===== -->
 <section class="pad-sm">
-  <div class="container testi reveal">
+  <div class="container testi">
     <span class="eyebrow center"><?= e(c('testi_eyebrow')) ?></span>
     <p class="testi-quote"><span class="qm">“</span><?= e(c('testi_quote')) ?><span class="qm">”</span></p>
     <p class="testi-attr"><?= e(c('testi_attribution')) ?></p>
@@ -283,7 +279,7 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <!-- ===== Section 9: CTA ===== -->
 <section class="cta-sec" id="contact">
   <div class="container">
-    <div class="cta-box reveal">
+    <div class="cta-box">
       <span class="eyebrow center"><?= e(c('cta_eyebrow')) ?></span>
       <h2><?= e(c('cta_heading')) ?></h2>
       <p><?= e(c('cta_body')) ?></p>
@@ -291,16 +287,6 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
         <a href="#" class="btn btn-primary" data-open-form><?= e(c('cta_btn_primary')) ?> <span class="ico">↗</span></a>
         <a href="#services" class="btn btn-outline"><?= e(c('cta_btn_secondary')) ?> <span class="ico">→</span></a>
       </div>
-
-      <form class="contact-form" id="contactForm" novalidate>
-        <div class="row">
-          <input type="text" name="name" placeholder="Your name" required>
-          <input type="email" name="email" placeholder="Email address" required>
-        </div>
-        <textarea name="message" rows="4" placeholder="Tell us about your project…" required></textarea>
-        <button type="submit" class="btn btn-primary">Send message <span class="ico">→</span></button>
-        <div class="form-msg" role="status"></div>
-      </form>
     </div>
   </div>
 </section>
@@ -311,9 +297,8 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
     <div class="foot-top">
       <a href="#top" class="foot-brand"><span class="dot">✳</span><?= e($logo) ?><span class="accent">.</span></a>
       <nav class="foot-nav">
-        <a href="#services">Services</a><a href="#why">Why Us</a>
-        <a href="#process">Process</a><a href="#industries">Industries</a>
-        <a href="#contact" data-open-form>Contact</a>
+        <a href="index.php">Home</a>
+        <a href="#" data-open-form>Contact</a>
       </nav>
     </div>
     <div class="foot-bottom">
@@ -322,6 +307,25 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
     </div>
   </div>
 </footer>
+
+<!-- Contact form (pop-up) -->
+<div class="modal-overlay" id="contactModal" aria-hidden="true">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button type="button" class="modal-close" data-close-form aria-label="Close">&times;</button>
+    <span class="eyebrow"><?= e(c('cta_eyebrow')) ?></span>
+    <h3 id="modalTitle">Start a project</h3>
+    <p class="modal-sub">Tell us a bit about what you need — we'll get back to you shortly.</p>
+    <form class="contact-form" id="contactForm" novalidate>
+      <div class="row">
+        <input type="text" name="name" placeholder="Your name" required>
+        <input type="email" name="email" placeholder="Email address" required>
+      </div>
+      <textarea name="message" rows="4" placeholder="Tell us about your project…" required></textarea>
+      <button type="submit" class="btn btn-primary">Send message <span class="ico">→</span></button>
+      <div class="form-msg" role="status"></div>
+    </form>
+  </div>
+</div>
 
 <script src="assets/js/main.js"></script>
 </body>
