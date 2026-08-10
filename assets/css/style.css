@@ -392,6 +392,7 @@ body.modal-open{overflow:hidden}
 .foot-nav{display:flex;flex-direction:column;gap:13px;font-size:14.5px}
 .foot-nav a{color:rgba(255,255,255,.62);transition:.25s}
 .foot-nav a:hover{color:#fff;padding-left:3px}
+.foot-list{display:flex;flex-direction:column;gap:13px;font-size:14.5px;color:rgba(255,255,255,.62)}
 .foot-contact{list-style:none;display:flex;flex-direction:column;gap:13px;font-size:14.5px;color:rgba(255,255,255,.62);line-height:1.5}
 .foot-contact a{color:rgba(255,255,255,.62);transition:.25s}
 .foot-contact a:hover{color:#fff}

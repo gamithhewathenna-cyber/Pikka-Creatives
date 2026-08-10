@@ -29,13 +29,13 @@ $services = $services ?? get_rows('services');
       </div>
       <div class="foot-col">
         <h4>Services</h4>
-        <nav class="foot-nav">
+        <div class="foot-list">
           <?php if ($services): foreach ($services as $svc): ?>
-            <a href="index.php#services"><?= e($svc['title']) ?></a>
+            <span><?= e($svc['title']) ?></span>
           <?php endforeach; else: ?>
-            <a href="index.php#services">Our services</a>
+            <span>Our services</span>
           <?php endif; ?>
-        </nav>
+        </div>
       </div>
       <div class="foot-col">
         <h4>Get in Touch</h4>
