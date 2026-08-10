@@ -4,12 +4,12 @@ require_once __DIR__ . '/auth.php';
 require_login();
 
 $tabs = [
-    'sections' => ['label' => 'Text & Sections', 'icon' => '✎'],
-    'services' => ['label' => 'Services',        'icon' => '▤'],
-    'why'      => ['label' => 'Why Choose Us',   'icon' => '★'],
-    'process'  => ['label' => 'Process Steps',   'icon' => '➜'],
-    'stats'    => ['label' => 'Stats Bar',       'icon' => '▦'],
-    'images'   => ['label' => 'Images',          'icon' => '◑'],
+    'sections' => ['label' => 'Text & Sections'],
+    'services' => ['label' => 'Services'],
+    'why'      => ['label' => 'Why Choose Us'],
+    'process'  => ['label' => 'Process Steps'],
+    'stats'    => ['label' => 'Stats Bar'],
+    'images'   => ['label' => 'Images'],
 ];
 $tab = $_GET['tab'] ?? 'sections';
 if (!array_key_exists($tab, $tabs)) $tab = 'sections';
@@ -176,7 +176,7 @@ require __DIR__ . '/header.php';
 ?>
 <div class="subnav">
   <?php foreach ($tabs as $key => $meta): ?>
-    <a href="?tab=<?= e($key) ?>" class="<?= $tab === $key ? 'active' : '' ?>"><?= $meta['icon'] ?> <?= e($meta['label']) ?></a>
+    <a href="?tab=<?= e($key) ?>" class="<?= $tab === $key ? 'active' : '' ?>"><?= e($meta['label']) ?></a>
   <?php endforeach; ?>
 </div>
 
