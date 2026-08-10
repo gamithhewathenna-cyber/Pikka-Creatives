@@ -6,10 +6,10 @@
    In cPanel: MySQL Databases > create a database + user, add user to DB.
    ===================================================================== */
 
-define('DB_HOST', 'localhost');            // usually 'localhost' on cPanel
-define('DB_NAME', 'pikka_db');             // your database name
-define('DB_USER', 'pikka_user');           // your database username
-define('DB_PASS', 'change_this_password'); // your database password
+define('DB_HOST', 'localhost');                        // usually 'localhost' on cPanel
+define('DB_NAME', 'creaeina_pikkacreatives');          // your database name
+define('DB_USER', 'creaeina_pikkacradmin');            // your database username
+define('DB_PASS', 'wfBs.R{A#lA~JZM9');                 // your database password
 
 /* --- Do not edit below this line ------------------------------------ */
 
