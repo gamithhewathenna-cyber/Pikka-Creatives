@@ -380,13 +380,22 @@ body.modal-open{overflow:hidden}
 .contact-closing a{color:var(--accent);font-weight:600}
 
 /* ---------- Footer --------------------------------------------------- */
-.site-footer{background:var(--ink);color:#fff;padding:56px 0 30px}
-.foot-top{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding-bottom:34px;border-bottom:1px solid rgba(255,255,255,.12)}
-.foot-brand{display:flex;align-items:center;gap:11px;font-family:'Sora';font-weight:700;font-size:22px}
+.site-footer{background:var(--ink);color:#fff;padding:64px 0 30px}
+.foot-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1.15fr;gap:40px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.12)}
+.foot-brand{display:flex;align-items:center;gap:11px;font-family:'Sora';font-weight:700;font-size:22px;margin-bottom:18px}
 .foot-brand .dot{width:34px;height:34px;border-radius:50%;background:var(--accent);display:grid;place-items:center;font-size:16px}
-.foot-nav{display:flex;gap:26px;font-size:15px;flex-wrap:wrap}
-.foot-nav a{color:rgba(255,255,255,.7);transition:.25s}.foot-nav a:hover{color:#fff}
-.foot-bottom{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;padding-top:24px;color:rgba(255,255,255,.55);font-size:14px}
+.foot-desc{color:rgba(255,255,255,.6);font-size:14.5px;line-height:1.65;max-width:280px;margin-bottom:24px}
+.foot-social{display:flex;gap:10px}
+.foot-social .soc{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18);color:#fff}
+.foot-social .soc:hover{background:var(--accent);border-color:var(--accent);transform:translateY(-3px)}
+.foot-col h4{font-family:'Sora';font-weight:600;font-size:15px;margin-bottom:20px;color:#fff}
+.foot-nav{display:flex;flex-direction:column;gap:13px;font-size:14.5px}
+.foot-nav a{color:rgba(255,255,255,.62);transition:.25s}
+.foot-nav a:hover{color:#fff;padding-left:3px}
+.foot-contact{list-style:none;display:flex;flex-direction:column;gap:13px;font-size:14.5px;color:rgba(255,255,255,.62);line-height:1.5}
+.foot-contact a{color:rgba(255,255,255,.62);transition:.25s}
+.foot-contact a:hover{color:#fff}
+.foot-bottom{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;padding-top:24px;color:rgba(255,255,255,.5);font-size:13.5px}
 
 /* ---------- Responsive ---------------------------------------------- */
 @media(max-width:980px){
@@ -398,6 +407,8 @@ body.modal-open{overflow:hidden}
   .fc-quote,.fc-tags{max-width:190px}
   .fc-quote{left:0;top:8%}.fc-tags{right:0}
   .benefit-grid,.team-grid{grid-template-columns:1fr 1fr}
+  .foot-grid{grid-template-columns:1fr 1fr;row-gap:36px}
+  .foot-about{grid-column:1 / -1}
 }
 @media(max-width:720px){
   .nav-links{position:fixed;inset:0 0 0 auto;width:min(80vw,320px);background:#fff;flex-direction:column;justify-content:center;padding:40px;transform:translateX(100%);transition:transform .4s ease;box-shadow:var(--shadow);z-index:950;gap:26px}
@@ -412,7 +423,10 @@ body.modal-open{overflow:hidden}
   .benefit-grid,.team-grid,.img-duo{grid-template-columns:1fr}
   .contact-form .row,.contact-card .row{grid-template-columns:1fr}
   .svc-body-inner{padding-left:28px}
-  .foot-top{flex-direction:column;align-items:flex-start}
+  .foot-grid{grid-template-columns:1fr;row-gap:32px}
+  .foot-about{grid-column:auto}
+  .foot-desc{max-width:none}
+  .foot-bottom{flex-direction:column;gap:8px}
 }
 
 /* ---------- Reduced motion ------------------------------------------ */

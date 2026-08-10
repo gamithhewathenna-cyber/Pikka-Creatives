@@ -247,23 +247,7 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
   </div>
 </section>
 
-<!-- Footer -->
-<footer class="site-footer">
-  <div class="container">
-    <div class="foot-top">
-      <a href="#top" class="foot-brand"><?= brand_mark($logo, true) ?></a>
-      <nav class="foot-nav">
-        <a href="index.php">Home</a>
-        <a href="about.php">About</a>
-        <a href="contact.php">Contact</a>
-      </nav>
-    </div>
-    <div class="foot-bottom">
-      <span><?= e(s('footer_text')) ?></span>
-      <span><?= e(s('email')) ?></span>
-    </div>
-  </div>
-</footer>
+<?php $footer_brand_href = '#top'; require __DIR__ . '/includes/site-footer.php'; ?>
 
 <!-- Contact form (pop-up) -->
 <div class="modal-overlay" id="contactModal" aria-hidden="true">

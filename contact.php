@@ -116,23 +116,7 @@ $phone  = s('phone', '0212 724 724');
   <p class="contact-closing"><?= e(c('contact_closing', "Prefer a chat? Flick us an email and we'll set up a time. No pressure, no jargon — just a friendly kōrero about your ideas:")) ?> <a href="mailto:<?= e($email) ?>"><?= e($email) ?></a></p>
 </section>
 
-<!-- Footer -->
-<footer class="site-footer">
-  <div class="container">
-    <div class="foot-top">
-      <a href="index.php" class="foot-brand"><?= brand_mark($logo, true) ?></a>
-      <nav class="foot-nav">
-        <a href="index.php">Home</a>
-        <a href="about.php">About</a>
-        <a href="contact.php">Contact</a>
-      </nav>
-    </div>
-    <div class="foot-bottom">
-      <span><?= e(s('footer_text')) ?></span>
-      <span><?= e($email) ?></span>
-    </div>
-  </div>
-</footer>
+<?php require __DIR__ . '/includes/site-footer.php'; ?>
 
 <script src="assets/js/main.js"></script>
 </body>

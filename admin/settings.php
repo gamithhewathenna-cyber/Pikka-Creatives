@@ -134,9 +134,9 @@ require __DIR__ . '/header.php';
   </div>
   <div class="card">
     <h2>Marquee & footer</h2>
-    <p class="sub">The scrolling strip under the hero, and the footer line.</p>
+    <p class="sub">The scrolling strip under the hero, and the footer description. Social links and other contact details are managed under <a href="page-content.php?tab=contact">Contact Us</a>.</p>
     <div class="field"><label>Marquee items (separate with | )</label><textarea name="marquee_items" rows="2"><?= e(s('marquee_items')) ?></textarea></div>
-    <div class="field"><label>Footer text</label><textarea name="footer_text" rows="2"><?= e(s('footer_text')) ?></textarea></div>
+    <div class="field"><label>Footer description (shown under the logo, in every page's footer)</label><textarea name="footer_text" rows="2"><?= e(s('footer_text')) ?></textarea></div>
   </div>
   <div class="card">
     <h2>Maintenance mode</h2>

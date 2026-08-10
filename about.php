@@ -226,23 +226,7 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
   </div>
 </section>
 
-<!-- Footer -->
-<footer class="site-footer">
-  <div class="container">
-    <div class="foot-top">
-      <a href="index.php" class="foot-brand"><?= brand_mark($logo, true) ?></a>
-      <nav class="foot-nav">
-        <a href="index.php">Home</a>
-        <a href="about.php">About</a>
-        <a href="contact.php">Contact</a>
-      </nav>
-    </div>
-    <div class="foot-bottom">
-      <span><?= e(s('footer_text')) ?></span>
-      <span><?= e($email) ?></span>
-    </div>
-  </div>
-</footer>
+<?php require __DIR__ . '/includes/site-footer.php'; ?>
 
 <!-- Contact form (pop-up) -->
 <div class="modal-overlay" id="contactModal" aria-hidden="true">

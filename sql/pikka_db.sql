@@ -43,7 +43,7 @@ INSERT INTO `site_settings` (`setting_key`, `setting_value`) VALUES
 ('phone', '+64 000 000 000'),
 ('email', 'hello@pikkacreatives.co.nz'),
 ('marquee_items', 'Brand & Identity | Web Design | SEO & Marketing | Social & Content | Packaging & Print | Creative Direction'),
-('footer_text', '© 2026 Pikka Creatives. Locally owned and operated across Aotearoa New Zealand.'),
+('footer_text', 'Creative & digital studio helping New Zealand businesses look sharp, sound clear, and stand out.'),
 ('maintenance_mode', '0'),
 ('maintenance_message', "We're currently making some improvements. Please check back soon.");
 
