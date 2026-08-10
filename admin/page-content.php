@@ -1,5 +1,4 @@
 <?php
-$current_page = 'page-content'; $page_title = 'About & Contact Pages';
 require_once __DIR__ . '/auth.php';
 require_login();
 
@@ -9,6 +8,9 @@ $tabs = [
 ];
 $tab = $_GET['tab'] ?? 'about';
 if (!array_key_exists($tab, $tabs)) $tab = 'about';
+
+$current_page = 'page-content';
+$page_title = $tabs[$tab]['label'];
 
 $who_body_default = "Pikka Creative is a New Zealand-based design and content studio on a mission to help local brands punch above their weight. We create branding, websites, social content, and packaging for businesses across Aotearoa — from small startups finding their feet to established names ready for a fresh look.\n\nGreat ideas can begin anywhere, and they should never be limited by a postcode or the size of a budget. Pikka Creatives exists to give every New Zealand business access to design that feels thoughtful, confident and unmistakably its own. That belief is at the heart of everything we create.";
 $story_body_default = "Every business has a story, but sometimes it takes a fresh perspective to see what makes it special. Priyal's understanding of New Zealand businesses, together with his long-standing passion for photography, brings a local eye for detail, people and the moments that make a brand feel real.\n\nThat perspective comes together with Gamith and Creativelements' experience in creativity, design, web development and digital delivery. What began as a conversation between two people with different strengths became Pikka Creatives: a shared vision to bring thoughtful, high-quality creative work within reach of businesses across New Zealand.";
@@ -197,12 +199,6 @@ function render_group_fields($fields) {
 
 require __DIR__ . '/header.php';
 ?>
-<div class="subnav">
-  <?php foreach ($tabs as $key => $meta): ?>
-    <a href="?tab=<?= e($key) ?>" class="<?= $tab === $key ? 'active' : '' ?>"><?= e($meta['label']) ?></a>
-  <?php endforeach; ?>
-</div>
-
 <div class="card">
   <p class="sub">Email and phone number are shared across the site and stay managed from <a href="settings.php">Settings</a>.</p>
 </div>

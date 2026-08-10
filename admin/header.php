@@ -17,7 +17,9 @@ $title = $page_title ?? 'Dashboard';
     <nav>
       <a href="index.php" class="<?= $page==='dashboard'?'active':'' ?>">◧ Dashboard</a>
       <a href="home-content.php" class="<?= $page==='home-content'?'active':'' ?>">🏠 Home Page Content</a>
-      <a href="page-content.php" class="<?= $page==='page-content'?'active':'' ?>">📄 About & Contact Pages</a>
+      <?php $pcTab = $_GET['tab'] ?? 'about'; ?>
+      <a href="page-content.php?tab=about" class="<?= $page==='page-content' && $pcTab==='about' ? 'active' : '' ?>">📄 About Us</a>
+      <a href="page-content.php?tab=contact" class="<?= $page==='page-content' && $pcTab==='contact' ? 'active' : '' ?>">✉ Contact Us</a>
       <div class="grp">Site</div>
       <a href="settings.php" class="<?= $page==='settings'?'active':'' ?>">⚙ Settings</a>
       <a href="messages.php" class="<?= $page==='messages'?'active':'' ?>">✉ Messages</a>
