@@ -50,13 +50,16 @@ a{color:inherit;text-decoration:none}
 
 label{display:block;font-size:13px;font-weight:600;margin:0 0 6px}
 .field{margin-bottom:18px}
-input[type=text],input[type=email],input[type=password],input[type=color],textarea,select{
+input[type=text],input[type=email],input[type=password],textarea,select{
   width:100%;border:1px solid var(--line);border-radius:11px;padding:11px 14px;font-family:inherit;font-size:14.5px;background:#fdfdfc;transition:.2s
 }
 input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(241,89,42,.12)}
 textarea{resize:vertical;min-height:88px;line-height:1.5}
-input[type=color]{height:46px;padding:5px;cursor:pointer}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+.colour-field{display:flex;align-items:center;gap:10px}
+.colour-field .swatch{width:44px;height:44px;border-radius:11px;border:1px solid var(--line);flex-shrink:0}
+.colour-field input{font-family:'Sora',monospace;letter-spacing:.02em;text-transform:lowercase}
 
 .btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;border:0;padding:12px 24px;border-radius:100px;font-weight:600;font-size:14px;cursor:pointer;transition:.2s}
 .btn:hover{transform:translateY(-2px);box-shadow:0 10px 20px -8px var(--accent)}

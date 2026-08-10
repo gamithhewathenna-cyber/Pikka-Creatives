@@ -58,6 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $_POST['maintenance_mode'] = isset($_POST['maintenance_mode']) ? '1' : '0';
+    if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', trim($_POST['accent_color'] ?? ''))) {
+        $_POST['accent_color'] = s('accent_color', '#F1592A');
+    }
     $st = mysqli_prepare(db(), "INSERT INTO site_settings (setting_key, setting_value) VALUES (?, ?)
                                  ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)");
     foreach ($fields as $key => $meta) {
@@ -117,7 +120,14 @@ require __DIR__ . '/header.php';
       <div class="field"><label>Logo text (used if no logo image is uploaded above)</label><input type="text" name="logo_text" value="<?= e(s('logo_text')) ?>"></div>
     </div>
     <div class="two">
-      <div class="field"><label>Accent colour</label><input type="color" name="accent_color" value="<?= e(s('accent_color','#F1592A')) ?>"></div>
+      <div class="field">
+        <label>Accent colour</label>
+        <div class="colour-field">
+          <span class="swatch" id="accentSwatch" style="background:<?= e(s('accent_color','#F1592A')) ?>"></span>
+          <input type="text" name="accent_color" id="accentInput" value="<?= e(s('accent_color','#F1592A')) ?>" placeholder="#00c4a1" pattern="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$" maxlength="7" autocomplete="off">
+        </div>
+        <p class="muted" style="margin-top:6px">Hex code, e.g. #00c4a1</p>
+      </div>
       <div class="field"><label>Contact email</label><input type="text" name="email" value="<?= e(s('email')) ?>"></div>
     </div>
     <div class="field"><label>Contact phone</label><input type="text" name="phone" value="<?= e(s('phone')) ?>"></div>
@@ -138,4 +148,16 @@ require __DIR__ . '/header.php';
   </div>
   <button class="btn" type="submit">Save settings</button>
 </form>
+<script>
+(function () {
+  var input = document.getElementById('accentInput');
+  var swatch = document.getElementById('accentSwatch');
+  if (!input || !swatch) return;
+  input.addEventListener('input', function () {
+    if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(input.value.trim())) {
+      swatch.style.background = input.value.trim();
+    }
+  });
+})();
+</script>
 <?php require __DIR__ . '/footer.php'; ?>
