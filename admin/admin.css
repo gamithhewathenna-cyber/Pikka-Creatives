@@ -14,6 +14,13 @@ a{color:inherit;text-decoration:none}
 .side .grp{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.4);padding:16px 14px 8px}
 .side .logout{margin-top:20px}
 
+.grp-toggle{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;background:none;border:0;cursor:pointer;font-family:inherit;text-transform:uppercase;letter-spacing:.08em;font-size:11px;color:rgba(255,255,255,.4);padding:16px 14px 8px;transition:.2s}
+.grp-toggle:hover,.grp-toggle.active{color:rgba(255,255,255,.85)}
+.grp-toggle .chev{font-size:10px;transition:transform .25s ease}
+.grp-toggle.open .chev{transform:rotate(180deg)}
+.grp-items{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.grp-items.open{max-height:400px}
+
 /* Main */
 .main{margin-left:250px;flex:1;padding:30px 38px 60px;max-width:1000px}
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}
