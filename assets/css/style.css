@@ -16,7 +16,7 @@
   --white:#ffffff;
   --radius:22px;
   --radius-sm:14px;
-  --maxw:1300px;
+  --maxw:min(94vw, 1600px);
   --shadow:0 20px 60px -24px rgba(20,20,20,.28);
   --shadow-sm:0 8px 26px -14px rgba(20,20,20,.35);
 }
