@@ -113,8 +113,7 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
       <h2 style="margin-top:16px"><?= e(c('intro_heading')) ?></h2>
     </div>
     <div class="intro-body">
-      <?php foreach (preg_split('/\n{2,}|(?<=\.)\s{2,}/', c('intro_body')) as $para):
-        $para = trim($para); if ($para === '') continue; ?>
+      <?php foreach (paragraphs(c('intro_body')) as $para): ?>
         <p><?= e($para) ?></p>
       <?php endforeach; ?>
     </div>

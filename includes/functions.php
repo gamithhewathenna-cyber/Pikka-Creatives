@@ -45,6 +45,16 @@ function s($key, $default = '') {
     return isset($data[$key]) && $data[$key] !== '' ? $data[$key] : $default;
 }
 
+/* Split a content field into paragraphs (blank line, or double-space after a full stop) */
+function paragraphs($text) {
+    $out = [];
+    foreach (preg_split('/\n{2,}|(?<=\.)\s{2,}/', (string)$text) as $p) {
+        $p = trim($p);
+        if ($p !== '') $out[] = $p;
+    }
+    return $out;
+}
+
 /* Fetch rows from a list table ordered by sort_order */
 function get_rows($table) {
     $allowed = ['services', 'why_reasons', 'process_steps', 'stats'];

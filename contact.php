@@ -12,7 +12,7 @@ $phone  = s('phone', '0212 724 724');
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contact Us — <?= e(s('site_name', 'Pikka Creatives')) ?></title>
-<meta name="description" content="Whether you've got a clear brief or just a spark of an idea, we'd love to hear from you. Tell us about your project and we'll get back to you within two business days.">
+<meta name="description" content="<?= e(c('contact_hero_lead', "Whether you've got a clear brief or just a spark of an idea, we'd love to hear from you. Tell us about your project and we'll get back to you within two business days.")) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:ital,wght@0,400;0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -47,9 +47,9 @@ $phone  = s('phone', '0212 724 724');
 <section class="hero no-stage">
   <div class="hero-grid-bg"></div>
   <div class="container">
-    <span class="eyebrow center">Contact Us</span>
-    <h1>Let's make something.</h1>
-    <p class="hero-sub">Whether you've got a clear brief or just a spark of an idea, we'd love to hear from you. Tell us about your project and we'll get back to you within two business days.</p>
+    <span class="eyebrow center"><?= e(c('contact_hero_eyebrow', 'Contact Us')) ?></span>
+    <h1><?= e(c('contact_hero_headline', "Let's make something.")) ?></h1>
+    <p class="hero-sub"><?= e(c('contact_hero_lead', "Whether you've got a clear brief or just a spark of an idea, we'd love to hear from you. Tell us about your project and we'll get back to you within two business days.")) ?></p>
   </div>
 </section>
 
@@ -101,19 +101,19 @@ $phone  = s('phone', '0212 724 724');
         <span class="ic">📍</span>
         <div>
           <div class="lbl">Location</div>
-          <span class="val">New Zealand — working with clients nationwide</span>
+          <span class="val"><?= e(c('contact_location', 'New Zealand — working with clients nationwide')) ?></span>
         </div>
       </div>
       <div class="social-row">
-        <a class="soc" href="#" aria-label="Instagram">◎</a>
-        <a class="soc" href="#" aria-label="Facebook">f</a>
-        <a class="soc" href="#" aria-label="LinkedIn">in</a>
+        <a class="soc" href="<?= e(c('contact_social_instagram', '#')) ?>" aria-label="Instagram">◎</a>
+        <a class="soc" href="<?= e(c('contact_social_facebook', '#')) ?>" aria-label="Facebook">f</a>
+        <a class="soc" href="<?= e(c('contact_social_linkedin', '#')) ?>" aria-label="LinkedIn">in</a>
       </div>
     </div>
 
   </div>
 
-  <p class="contact-closing">Prefer a chat? Flick us an email and we'll set up a time. No pressure, no jargon — just a friendly kōrero about your ideas: <a href="mailto:<?= e($email) ?>"><?= e($email) ?></a></p>
+  <p class="contact-closing"><?= e(c('contact_closing', "Prefer a chat? Flick us an email and we'll set up a time. No pressure, no jargon — just a friendly kōrero about your ideas:")) ?> <a href="mailto:<?= e($email) ?>"><?= e($email) ?></a></p>
 </section>
 
 <!-- Footer -->
