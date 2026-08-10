@@ -289,6 +289,46 @@ body.modal-open{overflow:hidden}
 .form-msg{margin-top:10px;font-size:14px}
 .form-msg.ok{color:#1f9d55}.form-msg.err{color:#d64545}
 
+/* ---------- About page ------------------------------------------------ */
+.hero.no-stage{padding-bottom:74px}
+
+.img-duo{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.img-placeholder{
+  aspect-ratio:4/3;border-radius:var(--radius);background:var(--mist);
+  border:1.5px dashed var(--line);display:flex;flex-direction:column;gap:12px;
+  align-items:center;justify-content:center;color:var(--ink-2);text-align:center;
+}
+.img-placeholder .ph-ico{
+  width:52px;height:52px;border-radius:50%;background:#fff;border:1px solid var(--line);
+  display:grid;place-items:center;font-size:20px;color:var(--accent);
+}
+.img-placeholder .ph-label{font-family:'Sora';font-weight:600;font-size:14px}
+
+.centered-copy{max-width:760px;margin:0 auto;text-align:center}
+.centered-copy p{color:var(--ink-2);font-size:1.08rem}
+.centered-copy p+p{margin-top:16px}
+
+.benefit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:48px}
+.benefit-card{background:var(--mist);border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px;transition:.3s}
+.benefit-card:hover{background:var(--accent);color:#fff;transform:translateY(-6px);box-shadow:var(--shadow)}
+.benefit-card h4{font-size:1.1rem;margin-bottom:10px}
+.benefit-card p{color:var(--ink-2);font-size:.95rem;transition:color .3s}
+.benefit-card:hover p{color:rgba(255,255,255,.85)}
+
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:48px}
+.team-photo{
+  aspect-ratio:1;border-radius:var(--radius);background:var(--mist);
+  border:1.5px dashed var(--line);display:flex;flex-direction:column;gap:8px;
+  align-items:center;justify-content:center;margin-bottom:18px;color:var(--ink-2);
+  font-family:'Sora';font-weight:600;font-size:13px;
+}
+.team-photo .ph-ico{font-size:22px;color:var(--accent)}
+.team-card h4{font-size:1.08rem;margin-bottom:3px}
+.team-card .role{color:var(--accent);font-size:.83rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;display:block}
+.team-card .bio{color:var(--ink-2);font-size:.94rem}
+.team-closing{text-align:center;margin-top:46px;color:var(--ink-2);font-size:1rem}
+.team-closing a{color:var(--accent);font-weight:600}
+
 /* ---------- Footer --------------------------------------------------- */
 .site-footer{background:var(--ink);color:#fff;padding:56px 0 30px}
 .foot-top{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding-bottom:34px;border-bottom:1px solid rgba(255,255,255,.12)}
@@ -307,6 +347,7 @@ body.modal-open{overflow:hidden}
   .stats-grid{grid-template-columns:1fr 1fr}
   .fc-quote,.fc-tags{max-width:190px}
   .fc-quote{left:0;top:8%}.fc-tags{right:0}
+  .benefit-grid,.team-grid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:720px){
   .nav-links{position:fixed;inset:0 0 0 auto;width:min(80vw,320px);background:#fff;flex-direction:column;justify-content:center;padding:40px;transform:translateX(100%);transition:transform .4s ease;box-shadow:var(--shadow);z-index:950;gap:26px}
@@ -318,6 +359,7 @@ body.modal-open{overflow:hidden}
   .fc-tags{display:none}
   .hero-stage{margin-top:24px}
   .proc-grid,.stats-grid{grid-template-columns:1fr}
+  .benefit-grid,.team-grid,.img-duo{grid-template-columns:1fr}
   .contact-form .row{grid-template-columns:1fr}
   .svc-body-inner{padding-left:28px}
   .foot-top{flex-direction:column;align-items:flex-start}

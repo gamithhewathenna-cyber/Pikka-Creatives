@@ -55,3 +55,49 @@ function get_rows($table) {
     if ($res) while ($row = mysqli_fetch_assoc($res)) $out[] = $row;
     return $out;
 }
+
+/* Shared front-end maintenance-mode gate. Shows the "under maintenance" page
+   and exits for everyone except a logged-in admin; returns whether the
+   current visitor is a logged-in admin otherwise. Call at the top of every
+   public-facing page. */
+function maintenance_gate() {
+    if (session_status() === PHP_SESSION_NONE) session_start();
+    $is_admin = !empty($_SESSION['admin_id']);
+    if ($is_admin || s('maintenance_mode') !== '1') return $is_admin;
+
+    http_response_code(503);
+    header('Retry-After: 3600');
+    $accent = s('accent_color', '#F1592A');
+    $logo   = s('logo_text', 'Pikka');
+    $msg    = s('maintenance_message', "We're currently making some improvements. Please check back soon.");
+    ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><?= e(s('site_name', 'Pikka Creatives')) ?> — Under Maintenance</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--accent:<?= e($accent) ?>}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0d0d0f;color:#f5f5f5;font-family:Inter,sans-serif;padding:24px;text-align:center}
+  .mark{font-family:Sora,sans-serif;font-size:2rem;font-weight:700;margin-bottom:1.2rem}
+  .mark span{color:var(--accent)}
+  .card{max-width:480px}
+  h1{font-family:Sora,sans-serif;font-size:1.6rem;margin:0 0 .8rem}
+  p{color:#b8b8bd;line-height:1.6;margin:0;white-space:pre-line}
+  .dot{color:var(--accent);margin-right:.4rem}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="mark"><span class="dot">✳</span><?= e($logo) ?><span>.</span></div>
+    <h1>We'll be right back</h1>
+    <p><?= e($msg) ?></p>
+  </div>
+</body>
+</html>
+<?php
+    exit;
+}
