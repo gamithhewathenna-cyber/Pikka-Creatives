@@ -115,6 +115,11 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
         <a class="soc" href="#" aria-label="Instagram">◎</a>
         <a class="soc" href="#" aria-label="LinkedIn">in</a>
       </div>
+
+      <?php if (count($slides) > 1): ?>
+      <button type="button" class="hero-arrow hero-arrow-prev" data-hero-prev aria-label="Previous slide">‹</button>
+      <button type="button" class="hero-arrow hero-arrow-next" data-hero-next aria-label="Next slide">›</button>
+      <?php endif; ?>
     </div>
 
     <?php if (count($slides) > 1): ?>

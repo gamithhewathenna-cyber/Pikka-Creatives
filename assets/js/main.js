@@ -58,6 +58,11 @@
         });
       });
 
+      var heroPrev = document.querySelector('[data-hero-prev]');
+      var heroNext = document.querySelector('[data-hero-next]');
+      if (heroPrev) heroPrev.addEventListener('click', function () { showHeroSlide(heroIndex - 1); startHeroAutoplay(); });
+      if (heroNext) heroNext.addEventListener('click', function () { showHeroSlide(heroIndex + 1); startHeroAutoplay(); });
+
       var heroSection = document.querySelector('.hero');
       if (heroSection) {
         heroSection.addEventListener('mouseenter', stopHeroAutoplay);
