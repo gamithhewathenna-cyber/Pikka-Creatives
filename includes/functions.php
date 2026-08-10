@@ -45,6 +45,17 @@ function s($key, $default = '') {
     return isset($data[$key]) && $data[$key] !== '' ? $data[$key] : $default;
 }
 
+/* Render the logo mark: an uploaded image if set (colour for header, white for
+   footer), otherwise the "✳ {text}." fallback. $logoText is the already
+   site_name-defaulted logo text the caller already fetched. */
+function brand_mark($logoText, $isFooter = false) {
+    $img = s($isFooter ? 'logo_image_white' : 'logo_image');
+    if ($img) {
+        return '<img src="' . e($img) . '" alt="' . e($logoText) . '" class="brand-logo-img">';
+    }
+    return '<span class="dot">✳</span>' . e($logoText) . '<span class="accent">.</span>';
+}
+
 /* Split a content field into paragraphs (blank line, or double-space after a full stop) */
 function paragraphs($text) {
     $out = [];

@@ -33,7 +33,7 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <!-- Header -->
 <header class="site-header">
   <div class="container nav">
-    <a href="#top" class="brand"><span class="dot">✳</span><?= e($logo) ?><span class="accent">.</span></a>
+    <a href="#top" class="brand"><?= brand_mark($logo) ?></a>
     <nav class="nav-links">
       <a href="index.php">Home</a>
       <a href="about.php">About</a>
@@ -251,7 +251,7 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <footer class="site-footer">
   <div class="container">
     <div class="foot-top">
-      <a href="#top" class="foot-brand"><span class="dot">✳</span><?= e($logo) ?><span class="accent">.</span></a>
+      <a href="#top" class="foot-brand"><?= brand_mark($logo, true) ?></a>
       <nav class="foot-nav">
         <a href="index.php">Home</a>
         <a href="about.php">About</a>
