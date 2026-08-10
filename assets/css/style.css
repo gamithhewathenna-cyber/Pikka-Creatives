@@ -68,7 +68,7 @@ img{max-width:100%;display:block}
   display:grid;place-items:center;font-size:17px;transform:rotate(0);transition:transform .5s ease;
 }
 .brand:hover .dot{transform:rotate(90deg)}
-.brand-logo-img{height:38px;width:auto;max-width:180px;object-fit:contain;display:block}
+.brand-logo-img{height:32px;width:auto;max-width:200px;object-fit:contain;display:block}
 .nav-links{display:flex;gap:30px;font-size:15px;font-weight:500}
 .nav-links a{position:relative;padding:4px 0;color:var(--ink-2);transition:color .25s}
 .nav-links a:after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--accent);transition:width .3s}
