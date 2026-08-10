@@ -15,16 +15,16 @@ $title = $page_title ?? 'Dashboard';
   <aside class="side">
     <div class="logo"><span class="dot">✳</span>Pikka<span style="color:var(--accent)">.</span></div>
     <nav>
-      <a href="index.php" class="<?= $page==='dashboard'?'active':'' ?>">◧ Dashboard</a>
-      <a href="home-content.php" class="<?= $page==='home-content'?'active':'' ?>">🏠 Home Page Content</a>
+      <a href="index.php" class="<?= $page==='dashboard'?'active':'' ?>"><span class="nav-ic">◧</span>Dashboard</a>
+      <a href="home-content.php" class="<?= $page==='home-content'?'active':'' ?>"><span class="nav-ic">⌂</span>Home Page Content</a>
       <?php $pcTab = $_GET['tab'] ?? 'about'; ?>
-      <a href="page-content.php?tab=about" class="<?= $page==='page-content' && $pcTab==='about' ? 'active' : '' ?>">📄 About Us</a>
-      <a href="page-content.php?tab=contact" class="<?= $page==='page-content' && $pcTab==='contact' ? 'active' : '' ?>">✉ Contact Us</a>
+      <a href="page-content.php?tab=about" class="<?= $page==='page-content' && $pcTab==='about' ? 'active' : '' ?>"><span class="nav-ic">◈</span>About Us</a>
+      <a href="page-content.php?tab=contact" class="<?= $page==='page-content' && $pcTab==='contact' ? 'active' : '' ?>"><span class="nav-ic">☎</span>Contact Us</a>
       <div class="grp">Site</div>
-      <a href="settings.php" class="<?= $page==='settings'?'active':'' ?>">⚙ Settings</a>
-      <a href="messages.php" class="<?= $page==='messages'?'active':'' ?>">✉ Messages</a>
-      <a href="account.php" class="<?= $page==='account'?'active':'' ?>">◔ My Account</a>
-      <a href="logout.php" class="logout">⏻ Log out</a>
+      <a href="settings.php" class="<?= $page==='settings'?'active':'' ?>"><span class="nav-ic">⚙</span>Settings</a>
+      <a href="messages.php" class="<?= $page==='messages'?'active':'' ?>"><span class="nav-ic">✉</span>Messages</a>
+      <a href="account.php" class="<?= $page==='account'?'active':'' ?>"><span class="nav-ic">◔</span>My Account</a>
+      <a href="logout.php" class="logout"><span class="nav-ic">⏻</span>Log out</a>
     </nav>
   </aside>
   <main class="main">
