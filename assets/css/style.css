@@ -409,6 +409,8 @@ body.modal-open{overflow:hidden}
 .team-closing a{color:var(--accent);font-weight:600}
 
 /* ---------- Our Work page ----------------------------------------------- */
+.work-hero.no-stage{padding-bottom:20px}
+#work{padding-top:0}
 #work .container{max-width:1300px}
 .work-filters{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:46px}
 .work-filter-btn{

@@ -43,7 +43,7 @@ $projects   = get_work_projects();
 <span id="top"></span>
 
 <!-- ===== Section 1: Hero ===== -->
-<section class="hero no-stage">
+<section class="hero no-stage work-hero">
   <div class="hero-grid-bg"></div>
   <div class="container">
     <span class="eyebrow center">Our Work</span>
