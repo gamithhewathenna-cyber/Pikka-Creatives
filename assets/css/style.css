@@ -363,7 +363,7 @@ body.modal-open{overflow:hidden}
 .benefit-card p{color:var(--ink-2);font-size:.95rem;transition:color .3s}
 .benefit-card:hover p{color:rgba(255,255,255,.85)}
 
-.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:48px}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,270px));justify-content:center;gap:26px;margin-top:48px}
 .team-photo{
   aspect-ratio:1;border-radius:var(--radius);background:var(--mist);
   border:1.5px dashed var(--line);display:flex;flex-direction:column;gap:8px;
