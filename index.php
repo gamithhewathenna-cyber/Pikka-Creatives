@@ -22,6 +22,7 @@ $intro_img = c('intro_image');
 $ind_img  = c('industries_image');
 $marquee  = array_filter(array_map('trim', explode('|', s('marquee_items', ''))));
 $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', ''))));
+$latest_projects = get_random_work_projects(7);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -163,6 +164,42 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
     </div>
   </div>
 </section>
+
+<?php if ($latest_projects): ?>
+<!-- ===== Section: Latest Work strip ===== -->
+<section class="pad-sm latest-work">
+  <div class="container">
+    <div class="svc-top">
+      <div class="sec-head">
+        <span class="eyebrow">Latest work</span>
+        <h2>Fresh off the studio floor.</h2>
+      </div>
+      <a href="work.php" class="btn btn-outline">See all work <span class="ico">→</span></a>
+    </div>
+  </div>
+  <div class="lw-strip">
+    <div class="lw-track">
+      <?php foreach (array_merge($latest_projects, $latest_projects) as $p): ?>
+        <a class="lw-card" href="work.php">
+          <div class="work-thumb">
+            <?php if (!empty($p['image'])): ?>
+              <img src="<?= e($p['image']) ?>" alt="<?= e($p['title']) ?>" loading="lazy" decoding="async">
+            <?php else: ?>
+              <div class="img-placeholder" style="border-radius:0;border:0;aspect-ratio:4/5;height:100%">
+                <span class="ph-ico">🖼</span>
+              </div>
+            <?php endif; ?>
+            <div class="work-thumb-overlay">
+              <?php if (!empty($p['category_name'])): ?><span class="work-tag"><?= e($p['category_name']) ?></span><?php endif; ?>
+              <h3><?= e($p['title']) ?></h3>
+            </div>
+          </div>
+        </a>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
 
 <!-- ===== Section 3: Services ===== -->
 <section class="pad" id="services">

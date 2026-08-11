@@ -108,6 +108,19 @@ function get_work_projects($categoryId = null) {
     return $out;
 }
 
+/* A shuffled sample of projects for the homepage "Latest Work" strip. */
+function get_random_work_projects($limit = 7) {
+    $limit = (int) $limit;
+    $sql = "SELECT p.*, c.name AS category_name, c.slug AS category_slug
+            FROM work_projects p
+            LEFT JOIN work_categories c ON c.id = p.category_id
+            ORDER BY RAND() LIMIT $limit";
+    $out = [];
+    $res = mysqli_query(db(), $sql);
+    if ($res) while ($row = mysqli_fetch_assoc($res)) $out[] = $row;
+    return $out;
+}
+
 /* Shared front-end maintenance-mode gate. Shows the "under maintenance" page
    and exits for everyone except a logged-in admin; returns whether the
    current visitor is a logged-in admin otherwise. Call at the top of every
