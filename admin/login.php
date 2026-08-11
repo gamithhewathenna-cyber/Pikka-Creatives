@@ -23,6 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Incorrect username or password.';
     }
 }
+
+$accent = s('accent_color', '#F1592A');
+$logo   = s('logo_text', 'Pikka');
 ?>
 <!DOCTYPE html>
 <html lang="en"><head>
@@ -30,10 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <title>Admin Login — Pikka Creatives</title>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="admin.css">
+<style>:root{--accent:<?= e($accent) ?>}</style>
 </head><body>
 <div class="login-page">
   <form class="login-box" method="post">
-    <div class="logo"><span class="dot">✳</span>Pikka<span style="color:var(--accent)">.</span></div>
+    <div class="logo"><?= brand_mark($logo) ?></div>
     <p class="sub">Home Page content manager</p>
     <?php if ($error): ?><div class="err"><?= e($error) ?></div><?php endif; ?>
     <div class="field"><label>Username</label><input type="text" name="username" autofocus required></div>
