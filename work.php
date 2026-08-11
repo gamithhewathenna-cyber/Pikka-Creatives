@@ -71,7 +71,11 @@ $projects   = get_work_projects();
     <?php if ($projects): ?>
     <div class="work-grid">
       <?php foreach ($projects as $p): ?>
-        <div class="work-card" data-work-item data-category="<?= e($p['category_slug'] ?? '') ?>">
+        <button type="button" class="work-card" data-work-item data-category="<?= e($p['category_slug'] ?? '') ?>"
+                data-work-title="<?= e($p['title']) ?>"
+                data-work-category="<?= e($p['category_name'] ?? '') ?>"
+                data-work-desc="<?= e($p['description']) ?>"
+                data-work-link="<?= e($p['link']) ?>">
           <div class="work-thumb">
             <?php if ($p['image']): ?>
               <img src="<?= e($p['image']) ?>" alt="<?= e($p['title']) ?>">
@@ -81,16 +85,12 @@ $projects   = get_work_projects();
                 <span class="ph-label">Add image — in admin</span>
               </div>
             <?php endif; ?>
-            <?php if ($p['category_name']): ?><span class="work-tag"><?= e($p['category_name']) ?></span><?php endif; ?>
+            <div class="work-thumb-overlay">
+              <?php if ($p['category_name']): ?><span class="work-tag"><?= e($p['category_name']) ?></span><?php endif; ?>
+              <h3><?= e($p['title']) ?></h3>
+            </div>
           </div>
-          <div class="work-body">
-            <h3><?= e($p['title']) ?></h3>
-            <?php if ($p['description']): ?><p><?= e($p['description']) ?></p><?php endif; ?>
-            <?php if ($p['link']): ?>
-              <a class="work-link" href="<?= e($p['link']) ?>" target="_blank" rel="noopener">View project <span class="ico">↗</span></a>
-            <?php endif; ?>
-          </div>
-        </div>
+        </button>
       <?php endforeach; ?>
     </div>
     <p class="work-empty" data-work-empty>No projects in this category yet — check back soon.</p>
@@ -117,6 +117,17 @@ $projects   = get_work_projects();
 </section>
 
 <?php require __DIR__ . '/includes/site-footer.php'; ?>
+
+<!-- Project details (pop-up) -->
+<div class="modal-overlay" id="workModal" aria-hidden="true">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="workModalTitle">
+    <button type="button" class="modal-close" data-close-work aria-label="Close">&times;</button>
+    <span class="eyebrow" id="workModalCategory"></span>
+    <h3 id="workModalTitle" style="margin:14px 0 12px"></h3>
+    <p class="modal-sub" id="workModalDesc"></p>
+    <a href="#" id="workModalLink" class="btn btn-primary" target="_blank" rel="noopener">View project <span class="ico">↗</span></a>
+  </div>
+</div>
 
 <!-- Contact form (pop-up) -->
 <div class="modal-overlay" id="contactModal" aria-hidden="true">

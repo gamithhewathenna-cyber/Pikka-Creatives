@@ -49,6 +49,52 @@
       });
     }
 
+    /* ---- Our Work: project detail pop-up ---- */
+    var workModal = document.getElementById('workModal');
+    if (workModal && workItems.length) {
+      var wmCategory = document.getElementById('workModalCategory');
+      var wmTitle = document.getElementById('workModalTitle');
+      var wmDesc = document.getElementById('workModalDesc');
+      var wmLink = document.getElementById('workModalLink');
+      var wmLastFocused = null;
+
+      var openWorkModal = function (card) {
+        wmLastFocused = document.activeElement;
+        var category = card.getAttribute('data-work-category') || '';
+        var desc = card.getAttribute('data-work-desc') || '';
+        var link = card.getAttribute('data-work-link') || '';
+        wmTitle.textContent = card.getAttribute('data-work-title') || '';
+        wmCategory.textContent = category;
+        wmCategory.style.display = category ? '' : 'none';
+        wmDesc.textContent = desc;
+        wmDesc.style.display = desc ? '' : 'none';
+        wmLink.style.display = link ? '' : 'none';
+        if (link) wmLink.setAttribute('href', link);
+        workModal.classList.add('open');
+        workModal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-open');
+      };
+      var closeWorkModal = function () {
+        workModal.classList.remove('open');
+        workModal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-open');
+        if (wmLastFocused) wmLastFocused.focus();
+      };
+
+      workItems.forEach(function (card) {
+        card.addEventListener('click', function () { openWorkModal(card); });
+      });
+      workModal.querySelectorAll('[data-close-work]').forEach(function (btn) {
+        btn.addEventListener('click', closeWorkModal);
+      });
+      workModal.addEventListener('click', function (e) {
+        if (e.target === workModal) closeWorkModal();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && workModal.classList.contains('open')) closeWorkModal();
+      });
+    }
+
     /* ---- Hero slider ---- */
     var heroTextSlides = document.querySelectorAll('.hero-text-slide');
     var heroPhotoSlides = document.querySelectorAll('.hero-photo-slide');

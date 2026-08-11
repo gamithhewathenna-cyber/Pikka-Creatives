@@ -400,24 +400,26 @@ body.modal-open{overflow:hidden}
 .work-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:26px}
 .work-card{
   border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff;
-  display:flex;flex-direction:column;transition:.3s ease;
+  display:block;width:100%;padding:0;margin:0;font-family:inherit;text-align:left;
+  appearance:none;cursor:pointer;transition:.3s ease;
 }
 .work-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.work-card:active{transform:translateY(-3px) scale(.98)}
 .work-card.is-hidden{display:none}
 .work-thumb{position:relative;aspect-ratio:4/5;background:var(--mist);overflow:hidden}
 .work-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
 .work-card:hover .work-thumb img{transform:scale(1.05)}
-.work-tag{
-  position:absolute;top:14px;left:14px;background:rgba(20,20,20,.75);color:#fff;
-  font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;
-  padding:6px 12px;border-radius:100px;backdrop-filter:blur(4px);
+.work-thumb-overlay{
+  position:absolute;top:0;left:0;right:0;padding:18px 20px 46px;
+  background:linear-gradient(180deg,rgba(10,10,10,.72) 0%,rgba(10,10,10,.4) 55%,transparent 100%);
+  display:flex;flex-direction:column;align-items:flex-start;gap:10px;
 }
-.work-body{padding:20px 22px 24px;display:flex;flex-direction:column;flex:1}
-.work-body h3{font-size:1.08rem;margin-bottom:8px}
-.work-body p{color:var(--ink-2);font-size:.92rem;flex:1;margin-bottom:16px}
-.work-link{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:.9rem;color:var(--accent)}
-.work-link .ico{transition:transform .25s ease}
-.work-link:hover .ico{transform:translate(2px,-2px)}
+.work-tag{
+  background:rgba(255,255,255,.2);backdrop-filter:blur(4px);color:#fff;
+  font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;
+  padding:6px 12px;border-radius:100px;
+}
+.work-thumb-overlay h3{color:#fff;font-size:1.05rem;line-height:1.3;margin:0}
 .work-empty{display:none;text-align:center;color:var(--ink-2);padding:60px 0;font-size:1.05rem}
 
 /* ---------- Contact page ----------------------------------------------- */
