@@ -84,7 +84,7 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
   <div class="container intro-wrap">
     <div>
       <?php if ($whoImg = c('about_banner_image_1')): ?>
-        <img src="<?= e($whoImg) ?>" alt="" style="border-radius:var(--radius);width:100%;aspect-ratio:4/3;object-fit:cover">
+        <img src="<?= e($whoImg) ?>" alt="" loading="lazy" decoding="async" style="border-radius:var(--radius);width:100%;aspect-ratio:4/3;object-fit:cover">
       <?php else: ?>
         <div class="img-placeholder" style="aspect-ratio:4/3">
           <span class="ph-ico">🖼</span>
@@ -147,7 +147,7 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
     </div>
     <div>
       <?php if ($approachImg = c('about_approach_image')): ?>
-        <img src="<?= e($approachImg) ?>" alt="" style="border-radius:var(--radius);width:100%;aspect-ratio:4/3;object-fit:cover">
+        <img src="<?= e($approachImg) ?>" alt="" loading="lazy" decoding="async" style="border-radius:var(--radius);width:100%;aspect-ratio:4/3;object-fit:cover">
       <?php else: ?>
         <div class="img-placeholder" style="aspect-ratio:4/3">
           <span class="ph-ico">🖼</span>
@@ -188,7 +188,7 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
       <?php foreach ($team as $t): ?>
         <div class="team-card">
           <?php if ($t['photo']): ?>
-            <div class="team-photo" style="border-style:solid;padding:0;overflow:hidden"><img src="<?= e($t['photo']) ?>" alt="" style="width:100%;height:100%;object-fit:cover"></div>
+            <div class="team-photo" style="border-style:solid;padding:0;overflow:hidden"><img src="<?= e($t['photo']) ?>" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover"></div>
           <?php else: ?>
             <div class="team-photo">
               <span class="ph-ico">🖼</span>

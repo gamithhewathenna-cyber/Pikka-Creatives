@@ -78,7 +78,7 @@ $projects   = get_work_projects();
                 data-work-link="<?= e($p['link']) ?>">
           <div class="work-thumb">
             <?php if ($p['image']): ?>
-              <img src="<?= e($p['image']) ?>" alt="<?= e($p['title']) ?>">
+              <img src="<?= e($p['image']) ?>" alt="<?= e($p['title']) ?>" loading="lazy" decoding="async">
             <?php else: ?>
               <div class="img-placeholder" style="border-radius:0;border:0;aspect-ratio:4/5;height:100%">
                 <span class="ph-ico">🖼</span>

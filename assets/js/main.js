@@ -10,6 +10,26 @@
 
   document.addEventListener('DOMContentLoaded', function () {
 
+    /* ---- Scroll reveal: sections (and their cards) fade/rise into view ---- */
+    var revealSections = document.querySelectorAll('section:not(.hero)');
+    if (revealSections.length) {
+      var revealReduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      revealSections.forEach(function (el) { el.classList.add('reveal'); });
+      if (revealReduceMotion || !('IntersectionObserver' in window)) {
+        revealSections.forEach(function (el) { el.classList.add('is-visible'); });
+      } else {
+        var revealObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+        revealSections.forEach(function (el) { revealObserver.observe(el); });
+      }
+    }
+
     /* ---- Header shrink on scroll ---- */
     var header = document.querySelector('.site-header');
     var onScroll = function () {

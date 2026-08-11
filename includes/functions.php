@@ -51,7 +51,9 @@ function s($key, $default = '') {
 function brand_mark($logoText, $isFooter = false) {
     $img = s($isFooter ? 'logo_image_white' : 'logo_image');
     if ($img) {
-        return '<img src="' . e($img) . '" alt="' . e($logoText) . '" class="brand-logo-img">';
+        // Header logo is above the fold and needed immediately; footer logo can lazy-load.
+        $loading = $isFooter ? 'lazy' : 'eager';
+        return '<img src="' . e($img) . '" alt="' . e($logoText) . '" class="brand-logo-img" loading="' . $loading . '" decoding="async">';
     }
     return '<span class="dot">✳</span>' . e($logoText) . '<span class="accent">.</span>';
 }

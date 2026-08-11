@@ -102,7 +102,7 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
       <?php foreach ($slides as $i => $sl): ?>
         <div class="hero-photo-ring hero-photo-slide<?= $i === 0 ? ' active' : '' ?><?= empty($sl['image']) ? ' no-image' : '' ?>" data-hero-photo="<?= $i ?>">
           <?php if (!empty($sl['image'])): ?>
-            <img src="<?= e($sl['image']) ?>" alt="Pikka Creatives">
+            <img src="<?= e($sl['image']) ?>" alt="Pikka Creatives" <?= $i === 0 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"' ?> decoding="async">
           <?php else: ?>
             <span class="ph">Add slide image<br>in admin</span>
           <?php endif; ?>
@@ -147,7 +147,7 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
   <div class="container intro-wrap">
     <div>
       <?php if ($intro_img): ?>
-        <img src="<?= e($intro_img) ?>" alt="" style="border-radius:var(--radius);width:100%;aspect-ratio:4/3;object-fit:cover">
+        <img src="<?= e($intro_img) ?>" alt="" loading="lazy" decoding="async" style="border-radius:var(--radius);width:100%;aspect-ratio:4/3;object-fit:cover">
       <?php else: ?>
         <div class="img-placeholder" style="aspect-ratio:4/3">
           <span class="ph-ico">🖼</span>
