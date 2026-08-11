@@ -29,6 +29,26 @@
       });
     }
 
+    /* ---- Our Work: category filter ---- */
+    var workFilterBtns = document.querySelectorAll('[data-work-filter]');
+    var workItems = document.querySelectorAll('[data-work-item]');
+    var workEmpty = document.querySelector('[data-work-empty]');
+    if (workFilterBtns.length && workItems.length) {
+      workFilterBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var filter = btn.getAttribute('data-work-filter');
+          workFilterBtns.forEach(function (b) { b.classList.toggle('active', b === btn); });
+          var visibleCount = 0;
+          workItems.forEach(function (item) {
+            var match = filter === 'all' || item.getAttribute('data-category') === filter;
+            item.classList.toggle('is-hidden', !match);
+            if (match) visibleCount++;
+          });
+          if (workEmpty) workEmpty.style.display = visibleCount === 0 ? 'block' : 'none';
+        });
+      });
+    }
+
     /* ---- Hero slider ---- */
     var heroTextSlides = document.querySelectorAll('.hero-text-slide');
     var heroPhotoSlides = document.querySelectorAll('.hero-photo-slide');

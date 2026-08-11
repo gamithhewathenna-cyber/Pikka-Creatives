@@ -51,6 +51,7 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
     <nav class="nav-links">
       <a href="index.php">Home</a>
       <a href="about.php">About</a>
+      <a href="work.php">Work</a>
       <a href="contact.php">Contact</a>
     </nav>
     <a href="#" class="nav-cta" data-open-form>Start a project</a>
@@ -287,7 +288,7 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
       <p><?= e(c('cta_body')) ?></p>
       <div class="cta-actions">
         <a href="#" class="btn btn-primary" data-open-form><?= e(c('cta_btn_primary')) ?> <span class="ico">↗</span></a>
-        <a href="#services" class="btn btn-outline"><?= e(c('cta_btn_secondary')) ?> <span class="ico">→</span></a>
+        <a href="work.php" class="btn btn-outline"><?= e(c('cta_btn_secondary')) ?> <span class="ico">→</span></a>
       </div>
     </div>
   </div>

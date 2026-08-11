@@ -144,6 +144,35 @@ INSERT INTO `team_members` (`name`, `role`, `bio`, `photo`, `sort_order`) VALUES
 ('[Add name]', 'Content & Social', 'Add a short 1–2 line bio — background, what they do, a personal touch.', '', 4);
 
 -- ---------------------------------------------------------------------
+-- Table: work_categories / work_projects  (Our Work portfolio page)
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `work_categories` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(120) NOT NULL,
+  `slug` VARCHAR(140) NOT NULL,
+  `sort_order` INT(11) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `slug` (`slug`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `work_projects` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `category_id` INT(11) DEFAULT NULL,
+  `title` VARCHAR(160) NOT NULL,
+  `description` TEXT DEFAULT NULL,
+  `image` VARCHAR(255) DEFAULT NULL,
+  `link` VARCHAR(255) DEFAULT NULL,
+  `sort_order` INT(11) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `category_id` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `work_categories` (`name`, `slug`, `sort_order`) VALUES
+('Web Development', 'web-development', 1),
+('Logo Designs', 'logo-designs', 2),
+('SEO Projects', 'seo-projects', 3);
+
+-- ---------------------------------------------------------------------
 -- Table: services  (Section 3 cards / accordion)
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `services` (

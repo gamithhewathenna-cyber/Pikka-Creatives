@@ -77,6 +77,35 @@ function get_rows($table) {
     return $out;
 }
 
+/* Turn a category name into a URL/JS-safe slug, e.g. "Web Development" -> "web-development" */
+function slugify($text) {
+    $text = strtolower(trim((string)$text));
+    $text = preg_replace('/[^a-z0-9]+/', '-', $text);
+    return trim($text, '-') ?: 'category';
+}
+
+/* Our Work — categories ordered for display */
+function get_work_categories() {
+    $out = [];
+    $res = mysqli_query(db(), "SELECT * FROM work_categories ORDER BY sort_order ASC, id ASC");
+    if ($res) while ($row = mysqli_fetch_assoc($res)) $out[] = $row;
+    return $out;
+}
+
+/* Our Work — projects joined with their category's slug/name, ordered for display.
+   Pass a category id to only fetch that category's projects (admin use). */
+function get_work_projects($categoryId = null) {
+    $sql = "SELECT p.*, c.name AS category_name, c.slug AS category_slug
+            FROM work_projects p
+            LEFT JOIN work_categories c ON c.id = p.category_id";
+    if ($categoryId !== null) $sql .= " WHERE p.category_id = " . (int) $categoryId;
+    $sql .= " ORDER BY p.sort_order ASC, p.id ASC";
+    $out = [];
+    $res = mysqli_query(db(), $sql);
+    if ($res) while ($row = mysqli_fetch_assoc($res)) $out[] = $row;
+    return $out;
+}
+
 /* Shared front-end maintenance-mode gate. Shows the "under maintenance" page
    and exits for everyone except a logged-in admin; returns whether the
    current visitor is a logged-in admin otherwise. Call at the top of every

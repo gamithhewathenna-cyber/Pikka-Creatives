@@ -20,6 +20,7 @@ $title = $page_title ?? 'Dashboard';
       <?php $pcTab = $_GET['tab'] ?? 'about'; ?>
       <a href="page-content.php?tab=about" class="<?= $page==='page-content' && $pcTab==='about' ? 'active' : '' ?>"><span class="nav-ic">◈</span>About Us</a>
       <a href="page-content.php?tab=contact" class="<?= $page==='page-content' && $pcTab==='contact' ? 'active' : '' ?>"><span class="nav-ic">☎</span>Contact Us</a>
+      <a href="work.php" class="<?= $page==='work'?'active':'' ?>"><span class="nav-ic">▤</span>Our Work</a>
       <div class="grp">Site</div>
       <a href="settings.php" class="<?= $page==='settings'?'active':'' ?>"><span class="nav-ic">⚙</span>Settings</a>
       <a href="messages.php" class="<?= $page==='messages'?'active':'' ?>"><span class="nav-ic">✉</span>Messages</a>

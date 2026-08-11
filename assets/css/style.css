@@ -378,6 +378,38 @@ body.modal-open{overflow:hidden}
 .team-closing{text-align:center;margin-top:46px;color:var(--ink-2);font-size:1rem}
 .team-closing a{color:var(--accent);font-weight:600}
 
+/* ---------- Our Work page ----------------------------------------------- */
+.work-filters{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:46px}
+.work-filter-btn{
+  padding:11px 22px;border-radius:100px;font-size:14px;font-weight:600;font-family:inherit;
+  background:#fff;border:1px solid var(--line);color:var(--ink-2);cursor:pointer;transition:.2s ease;
+}
+.work-filter-btn:hover{border-color:var(--ink);color:var(--ink)}
+.work-filter-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.work-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:26px}
+.work-card{
+  border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff;
+  display:flex;flex-direction:column;transition:.3s ease;
+}
+.work-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.work-card.is-hidden{display:none}
+.work-thumb{position:relative;aspect-ratio:4/5;background:var(--mist);overflow:hidden}
+.work-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.work-card:hover .work-thumb img{transform:scale(1.05)}
+.work-tag{
+  position:absolute;top:14px;left:14px;background:rgba(20,20,20,.75);color:#fff;
+  font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;
+  padding:6px 12px;border-radius:100px;backdrop-filter:blur(4px);
+}
+.work-body{padding:20px 22px 24px;display:flex;flex-direction:column;flex:1}
+.work-body h3{font-size:1.08rem;margin-bottom:8px}
+.work-body p{color:var(--ink-2);font-size:.92rem;flex:1;margin-bottom:16px}
+.work-link{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:.9rem;color:var(--accent)}
+.work-link .ico{transition:transform .25s ease}
+.work-link:hover .ico{transform:translate(2px,-2px)}
+.work-empty{display:none;text-align:center;color:var(--ink-2);padding:60px 0;font-size:1.05rem}
+
 /* ---------- Contact page ----------------------------------------------- */
 .contact-wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:start}
 

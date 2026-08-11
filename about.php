@@ -58,6 +58,7 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
     <nav class="nav-links">
       <a href="index.php">Home</a>
       <a href="about.php">About</a>
+      <a href="work.php">Work</a>
       <a href="contact.php">Contact</a>
     </nav>
     <a href="#" class="nav-cta" data-open-form>Start a project</a>
@@ -213,7 +214,7 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
       <p><?= e(c('about_cta_body', "Kia ora — thanks for getting to know us. If you're a New Zealand business looking for a creative partner who genuinely gets your market, we'd love to hear from you.")) ?></p>
       <div class="cta-actions">
         <a href="#" class="btn btn-primary" data-open-form>Start a project <span class="ico">↗</span></a>
-        <a href="index.php#services" class="btn btn-outline">View our work <span class="ico">→</span></a>
+        <a href="work.php" class="btn btn-outline">View our work <span class="ico">→</span></a>
       </div>
     </div>
   </div>

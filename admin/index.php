@@ -31,6 +31,7 @@ $unread = mysqli_fetch_assoc(mysqli_query(db(), "SELECT COUNT(*) c FROM contact_
   <div style="display:flex;gap:10px;flex-wrap:wrap">
     <a class="btn btn-ghost btn-sm" href="home-content.php?tab=sections">Edit section text & images</a>
     <a class="btn btn-ghost btn-sm" href="home-content.php?tab=services">Edit services</a>
+    <a class="btn btn-ghost btn-sm" href="work.php">Add a project</a>
     <a class="btn btn-ghost btn-sm" href="settings.php">Logo & colour</a>
   </div>
 </div>
