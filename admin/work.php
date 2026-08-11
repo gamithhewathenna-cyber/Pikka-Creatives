@@ -321,14 +321,26 @@ INSERT INTO `work_categories` (`name`, `slug`, `sort_order`) VALUES
   <?php endif; ?>
 
   <?php foreach ($projects as $idx => $p): ?>
-  <div class="card">
+  <details class="card proj-card">
+    <summary class="proj-summary">
+      <?php if ($p['image']): ?>
+        <img class="thumb" src="../<?= e($p['image']) ?>" alt="">
+      <?php else: ?>
+        <div class="thumb" style="display:grid;place-items:center;color:#aaa;font-size:11px">none</div>
+      <?php endif; ?>
+      <div class="proj-summary-info">
+        <strong><?= e($p['title'] ?: 'Untitled project') ?></strong>
+        <span class="pill"><?= e($p['category_name'] ?: 'Uncategorised') ?></span>
+      </div>
+      <span class="proj-edit-btn">Edit ✎</span>
+    </summary>
+    <div class="proj-body">
     <div class="rh" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-      <span class="pill"><?= e($p['category_name'] ?: 'Uncategorised') ?></span>
       <div style="display:flex;gap:6px">
         <form method="post" action="?tab=projects" style="display:inline"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="action" value="move"><input type="hidden" name="id" value="<?= $p['id'] ?>"><input type="hidden" name="dir" value="up"><button class="btn btn-ghost btn-sm" <?= $idx === 0 ? 'disabled' : '' ?>>↑</button></form>
         <form method="post" action="?tab=projects" style="display:inline"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="action" value="move"><input type="hidden" name="id" value="<?= $p['id'] ?>"><input type="hidden" name="dir" value="down"><button class="btn btn-ghost btn-sm" <?= $idx === count($projects) - 1 ? 'disabled' : '' ?>>↓</button></form>
-        <form method="post" action="?tab=projects" style="display:inline" onsubmit="return confirm('Delete this project?')"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?= $p['id'] ?>"><button class="btn btn-danger btn-sm">Delete</button></form>
       </div>
+      <form method="post" action="?tab=projects" style="display:inline" onsubmit="return confirm('Delete this project?')"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?= $p['id'] ?>"><button class="btn btn-danger btn-sm">Delete</button></form>
     </div>
     <form method="post" action="?tab=projects" enctype="multipart/form-data">
       <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
@@ -362,7 +374,8 @@ INSERT INTO `work_categories` (`name`, `slug`, `sort_order`) VALUES
       <div class="field"><label>Project link</label><input type="text" name="link" value="<?= e($p['link']) ?>" placeholder="https://…"></div>
       <button class="btn btn-sm" type="submit">Save changes</button>
     </form>
-  </div>
+    </div>
+  </details>
   <?php endforeach; ?>
 <?php endif; ?>
 
