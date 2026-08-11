@@ -190,8 +190,8 @@ $latest_projects = get_random_work_projects(7);
               </div>
             <?php endif; ?>
             <div class="work-thumb-overlay">
-              <?php if (!empty($p['category_name'])): ?><span class="work-tag"><?= e($p['category_name']) ?></span><?php endif; ?>
               <h3><?= e($p['title']) ?></h3>
+              <?php if (!empty($p['category_name'])): ?><span class="work-tag"><?= e($p['category_name']) ?></span><?php endif; ?>
             </div>
           </div>
         </a>
