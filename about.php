@@ -3,7 +3,6 @@ $is_admin = maintenance_gate();
 
 $accent  = s('accent_color', '#F1592A');
 $logo    = s('logo_text', 'Pikka');
-$marquee = array_filter(array_map('trim', explode('|', s('marquee_items', ''))));
 
 $values = [
     ['title' => c('about_value1_title', 'People and place matter'), 'desc' => c('about_value1_desc', 'We create with your business, your customers and the market in mind. The best work begins by understanding the people it needs to reach.')],
@@ -78,13 +77,6 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
   </div>
 </section>
 
-<!-- ===== Marquee ===== -->
-<div class="marquee" aria-hidden="true">
-  <div class="marquee-track">
-    <?php $loop = array_merge($marquee, $marquee);
-    foreach ($loop as $m): ?><span class="marquee-item"><?= e($m) ?></span><?php endforeach; ?>
-  </div>
-</div>
 
 <!-- ===== Image placeholders ===== -->
 <section class="pad-sm">
