@@ -134,12 +134,26 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
 
 <!-- ===== Section 5: How We Work ===== -->
 <section class="intro pad">
-  <div class="container centered-copy">
-    <span class="eyebrow center"><?= e(c('about_approach_eyebrow', 'Our approach')) ?></span>
-    <h2 style="margin:16px 0 20px"><?= e(c('about_approach_heading', 'Collaborative, clear and refreshingly straightforward.')) ?></h2>
-    <?php foreach (paragraphs(c('about_approach_body', "Good creative begins with a good conversation. From the first chat to final delivery, we keep communication open, updates clear and jargon out of the way. We listen first, create with purpose and refine the work together.\n\nYou will have a creative partner in your corner who understands your goals, values your ideas and genuinely cares about helping your business grow.")) as $p): ?>
-      <p><?= e($p) ?></p>
-    <?php endforeach; ?>
+  <div class="container intro-wrap">
+    <div>
+      <span class="eyebrow"><?= e(c('about_approach_eyebrow', 'Our approach')) ?></span>
+      <h2 style="margin-top:16px"><?= e(c('about_approach_heading', 'Collaborative, clear and refreshingly straightforward.')) ?></h2>
+      <div class="intro-body" style="margin-top:18px">
+        <?php foreach (paragraphs(c('about_approach_body', "Good creative begins with a good conversation. From the first chat to final delivery, we keep communication open, updates clear and jargon out of the way. We listen first, create with purpose and refine the work together.\n\nYou will have a creative partner in your corner who understands your goals, values your ideas and genuinely cares about helping your business grow.")) as $p): ?>
+          <p><?= e($p) ?></p>
+        <?php endforeach; ?>
+      </div>
+    </div>
+    <div>
+      <?php if ($approachImg = c('about_approach_image')): ?>
+        <img src="<?= e($approachImg) ?>" alt="" style="border-radius:var(--radius);width:100%;aspect-ratio:4/3;object-fit:cover">
+      <?php else: ?>
+        <div class="img-placeholder" style="aspect-ratio:4/3">
+          <span class="ph-ico">🖼</span>
+          <span class="ph-label">Add image — in admin</span>
+        </div>
+      <?php endif; ?>
+    </div>
   </div>
 </section>
 

@@ -76,6 +76,7 @@ $about_groups = [
 
 $about_images = [
     'about_banner_image_1' => 'Who We Are section — image',
+    'about_approach_image' => 'Our Approach section — image',
 ];
 
 // team_members is only on sites that have run the latest sql/pikka_db.sql.
@@ -118,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $sectionImageKey = $_POST['section_image_key'] ?? '';
-        if ($sectionImageKey === 'about_banner_image_1') {
+        if ($tab === 'about' && array_key_exists($sectionImageKey, $about_images)) {
             if (!empty($_POST['remove_image'])) {
                 $st = mysqli_prepare(db(), "UPDATE page_content SET content_value='' WHERE content_key=?");
                 mysqli_stmt_bind_param($st, 's', $sectionImageKey); mysqli_stmt_execute($st);
@@ -244,6 +245,21 @@ if ($tab === 'about') {
     }
 }
 
+function render_section_image_field($current, $label = 'Section image') {
+    echo '<div class="img-field" style="margin-bottom:20px">';
+    if ($current) {
+        echo '<img class="thumb" src="../' . e($current) . '" alt="">';
+    } else {
+        echo '<div class="thumb" style="display:grid;place-items:center;color:#aaa;font-size:11px">none</div>';
+    }
+    echo '<div style="flex:1"><label>' . e($label) . '</label><input type="file" name="image" accept="image/*">';
+    echo '<div class="muted" style="margin-top:6px">' . ($current ? e($current) : 'No image set');
+    if ($current) {
+        echo '&nbsp;&middot;&nbsp;<label style="display:inline;font-weight:400"><input type="checkbox" name="remove_image" value="1" style="width:auto;display:inline;vertical-align:middle"> Remove current image</label>';
+    }
+    echo '</div></div></div>';
+}
+
 function render_group_fields($fields) {
     foreach ($fields as $key => $meta) {
         [$label, $type, $default] = $meta;
@@ -292,7 +308,6 @@ require __DIR__ . '/header.php';
   <button class="btn" type="submit">Save changes</button>
 </form>
 
-<?php $whoImg = c('about_banner_image_1'); ?>
 <form method="post" action="?tab=about" enctype="multipart/form-data">
   <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
   <input type="hidden" name="form_type" value="text">
@@ -300,23 +315,7 @@ require __DIR__ . '/header.php';
   <div class="card">
     <h2>Who We Are</h2>
     <p class="sub">Edit the copy and image for this section together.</p>
-    <div class="img-field" style="margin-bottom:20px">
-      <?php if ($whoImg): ?>
-        <img class="thumb" src="../<?= e($whoImg) ?>" alt="">
-      <?php else: ?>
-        <div class="thumb" style="display:grid;place-items:center;color:#aaa;font-size:11px">none</div>
-      <?php endif; ?>
-      <div style="flex:1">
-        <label>Section image</label>
-        <input type="file" name="image" accept="image/*">
-        <div class="muted" style="margin-top:6px">
-          <?= $whoImg ? e($whoImg) : 'No image set' ?>
-          <?php if ($whoImg): ?>
-            &nbsp;·&nbsp;<label style="display:inline;font-weight:400"><input type="checkbox" name="remove_image" value="1" style="width:auto;display:inline;vertical-align:middle"> Remove current image</label>
-          <?php endif; ?>
-        </div>
-      </div>
-    </div>
+    <?php render_section_image_field(c('about_banner_image_1')); ?>
     <?php render_group_fields($groups['Who We Are']); ?>
     <button class="btn btn-sm" type="submit">Save changes</button>
   </div>
@@ -325,11 +324,35 @@ require __DIR__ . '/header.php';
 <form method="post" action="?tab=about">
   <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
   <input type="hidden" name="form_type" value="text">
-  <?php foreach ($groups as $groupLabel => $fields):
-    if (in_array($groupLabel, ['Hero', 'Who We Are', 'Team', 'Call To Action'], true)) continue; ?>
+  <?php foreach (['Our Story', 'Values'] as $groupLabel): ?>
     <div class="card">
       <h2><?= e($groupLabel) ?></h2>
-      <?php render_group_fields($fields); ?>
+      <?php render_group_fields($groups[$groupLabel]); ?>
+    </div>
+  <?php endforeach; ?>
+  <button class="btn" type="submit">Save all changes</button>
+</form>
+
+<form method="post" action="?tab=about" enctype="multipart/form-data">
+  <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+  <input type="hidden" name="form_type" value="text">
+  <input type="hidden" name="section_image_key" value="about_approach_image">
+  <div class="card">
+    <h2>Our Approach</h2>
+    <p class="sub">Edit the copy and image for this section together.</p>
+    <?php render_section_image_field(c('about_approach_image')); ?>
+    <?php render_group_fields($groups['Our Approach']); ?>
+    <button class="btn btn-sm" type="submit">Save changes</button>
+  </div>
+</form>
+
+<form method="post" action="?tab=about">
+  <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+  <input type="hidden" name="form_type" value="text">
+  <?php foreach (['Why Work With Us'] as $groupLabel): ?>
+    <div class="card">
+      <h2><?= e($groupLabel) ?></h2>
+      <?php render_group_fields($groups[$groupLabel]); ?>
     </div>
   <?php endforeach; ?>
   <button class="btn" type="submit">Save all changes</button>
