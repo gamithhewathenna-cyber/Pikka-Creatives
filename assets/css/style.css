@@ -432,9 +432,15 @@ body.modal-open{overflow:hidden}
 .work-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
 .work-card:hover .work-thumb img{transform:scale(1.05)}
 .work-thumb-overlay{
-  position:absolute;top:0;left:0;right:0;padding:18px 20px 46px;
-  background:linear-gradient(180deg,rgba(10,10,10,.72) 0%,rgba(10,10,10,.4) 55%,transparent 100%);
+  position:absolute;bottom:0;left:0;right:0;padding:46px 20px 18px;
+  background:linear-gradient(0deg,rgba(10,10,10,.85) 0%,rgba(10,10,10,.55) 55%,transparent 100%);
   display:flex;flex-direction:column;align-items:flex-start;gap:10px;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .3s ease,transform .3s ease;
+}
+.work-card:hover .work-thumb-overlay,.lw-card:hover .work-thumb-overlay,
+.work-card:focus-visible .work-thumb-overlay,.lw-card:focus-visible .work-thumb-overlay{
+  opacity:1;transform:translateY(0);
 }
 .work-tag{
   background:rgba(255,255,255,.2);backdrop-filter:blur(4px);color:#fff;
