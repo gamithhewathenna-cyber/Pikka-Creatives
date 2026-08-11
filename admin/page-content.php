@@ -116,36 +116,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_stmt_bind_param($stmt, 'ss', $val, $key);
             mysqli_stmt_execute($stmt);
         }
-        flash('Content updated successfully.');
-    }
-    elseif ($formType === 'image' && $tab === 'about') {
-        $key = $_POST['img_key'] ?? '';
-        if (!array_key_exists($key, $about_images)) {
-            flash('Unknown image slot.');
-        } elseif (($_POST['do'] ?? '') === 'remove') {
-            $st = mysqli_prepare(db(), "UPDATE page_content SET content_value='' WHERE content_key=?");
-            mysqli_stmt_bind_param($st, 's', $key); mysqli_stmt_execute($st);
-            flash('Image removed.');
-        } elseif (!empty($_FILES['image']['name'])) {
-            $uploadDir = __DIR__ . '/../uploads/';
-            if (!is_dir($uploadDir)) @mkdir($uploadDir, 0755, true);
-            $f = $_FILES['image'];
-            $allowed = ['jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'webp' => 'image/webp', 'gif' => 'image/gif'];
-            $ext = strtolower(pathinfo($f['name'], PATHINFO_EXTENSION));
-            $finfo = @getimagesize($f['tmp_name']);
-            if ($f['error'] !== 0) { flash('Upload error.'); }
-            elseif (!isset($allowed[$ext]) || !$finfo) { flash('Please upload a JPG, PNG, WEBP or GIF image.'); }
-            elseif ($f['size'] > 5 * 1024 * 1024) { flash('Image must be under 5 MB.'); }
-            else {
-                $name = $key . '_' . time() . '.' . $ext;
-                if (move_uploaded_file($f['tmp_name'], $uploadDir . $name)) {
-                    $path = 'uploads/' . $name;
-                    $st = mysqli_prepare(db(), "UPDATE page_content SET content_value=? WHERE content_key=?");
-                    mysqli_stmt_bind_param($st, 'ss', $path, $key); mysqli_stmt_execute($st);
-                    flash('Image uploaded.');
-                } else { flash('Could not save the uploaded file. Check the uploads/ folder permissions (755).'); }
+
+        $sectionImageKey = $_POST['section_image_key'] ?? '';
+        if ($sectionImageKey === 'about_banner_image_1') {
+            if (!empty($_POST['remove_image'])) {
+                $st = mysqli_prepare(db(), "UPDATE page_content SET content_value='' WHERE content_key=?");
+                mysqli_stmt_bind_param($st, 's', $sectionImageKey); mysqli_stmt_execute($st);
+            } elseif (!empty($_FILES['image']['name'])) {
+                $uploadDir = __DIR__ . '/../uploads/';
+                if (!is_dir($uploadDir)) @mkdir($uploadDir, 0755, true);
+                $f = $_FILES['image'];
+                $allowed = ['jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'webp' => 'image/webp', 'gif' => 'image/gif'];
+                $ext = strtolower(pathinfo($f['name'], PATHINFO_EXTENSION));
+                $finfo = @getimagesize($f['tmp_name']);
+                if ($f['error'] !== 0) { flash('Upload error.'); }
+                elseif (!isset($allowed[$ext]) || !$finfo) { flash('Please upload a JPG, PNG, WEBP or GIF image.'); }
+                elseif ($f['size'] > 5 * 1024 * 1024) { flash('Image must be under 5 MB.'); }
+                else {
+                    $name = $sectionImageKey . '_' . time() . '.' . $ext;
+                    if (move_uploaded_file($f['tmp_name'], $uploadDir . $name)) {
+                        $path = 'uploads/' . $name;
+                        $st = mysqli_prepare(db(), "UPDATE page_content SET content_value=? WHERE content_key=?");
+                        mysqli_stmt_bind_param($st, 'ss', $path, $sectionImageKey); mysqli_stmt_execute($st);
+                    } else { flash('Could not save the uploaded file. Check the uploads/ folder permissions (755).'); }
+                }
             }
         }
+        flash('Content updated successfully.');
     }
     elseif ($formType === 'team' && $tab === 'about' && !$teamTableReady) {
         flash('The Team members list needs a one-time database update before it can be used — see the note on this page for the SQL to run.');
@@ -288,8 +285,48 @@ require __DIR__ . '/header.php';
 <form method="post" action="?tab=about">
   <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
   <input type="hidden" name="form_type" value="text">
+  <div class="card">
+    <h2>Hero</h2>
+    <?php render_group_fields($groups['Hero']); ?>
+  </div>
+  <button class="btn" type="submit">Save changes</button>
+</form>
+
+<?php $whoImg = c('about_banner_image_1'); ?>
+<form method="post" action="?tab=about" enctype="multipart/form-data">
+  <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+  <input type="hidden" name="form_type" value="text">
+  <input type="hidden" name="section_image_key" value="about_banner_image_1">
+  <div class="card">
+    <h2>Who We Are</h2>
+    <p class="sub">Edit the copy and image for this section together.</p>
+    <div class="img-field" style="margin-bottom:20px">
+      <?php if ($whoImg): ?>
+        <img class="thumb" src="../<?= e($whoImg) ?>" alt="">
+      <?php else: ?>
+        <div class="thumb" style="display:grid;place-items:center;color:#aaa;font-size:11px">none</div>
+      <?php endif; ?>
+      <div style="flex:1">
+        <label>Section image</label>
+        <input type="file" name="image" accept="image/*">
+        <div class="muted" style="margin-top:6px">
+          <?= $whoImg ? e($whoImg) : 'No image set' ?>
+          <?php if ($whoImg): ?>
+            &nbsp;·&nbsp;<label style="display:inline;font-weight:400"><input type="checkbox" name="remove_image" value="1" style="width:auto;display:inline;vertical-align:middle"> Remove current image</label>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
+    <?php render_group_fields($groups['Who We Are']); ?>
+    <button class="btn btn-sm" type="submit">Save changes</button>
+  </div>
+</form>
+
+<form method="post" action="?tab=about">
+  <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+  <input type="hidden" name="form_type" value="text">
   <?php foreach ($groups as $groupLabel => $fields):
-    if ($groupLabel === 'Team' || $groupLabel === 'Call To Action') continue; ?>
+    if (in_array($groupLabel, ['Hero', 'Who We Are', 'Team', 'Call To Action'], true)) continue; ?>
     <div class="card">
       <h2><?= e($groupLabel) ?></h2>
       <?php render_group_fields($fields); ?>
@@ -397,43 +434,6 @@ INSERT INTO `team_members` (`name`, `role`, `bio`, `photo`, `sort_order`) VALUES
     <button class="btn btn-sm" type="submit">Save changes</button>
   </div>
 </form>
-
-<div class="card">
-  <h2>Section images</h2>
-  <p class="sub">The photo shown alongside the Who We Are section.</p>
-</div>
-<?php foreach ($about_images as $key => $label):
-    $current = c($key); ?>
-<div class="card">
-  <div class="img-field">
-    <?php if ($current): ?>
-      <img class="thumb" src="../<?= e($current) ?>" alt="">
-    <?php else: ?>
-      <div class="thumb" style="display:grid;place-items:center;color:#aaa;font-size:11px">none</div>
-    <?php endif; ?>
-    <div style="flex:1">
-      <label style="font-family:Sora;font-size:15px"><?= e($label) ?></label>
-      <div class="muted" style="margin-bottom:10px"><?= $current ? e($current) : 'No image set' ?></div>
-      <form method="post" action="?tab=about" enctype="multipart/form-data" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-        <input type="hidden" name="form_type" value="image">
-        <input type="hidden" name="img_key" value="<?= e($key) ?>">
-        <input type="file" name="image" accept="image/*" required style="max-width:280px">
-        <button class="btn btn-sm" type="submit">Upload</button>
-      </form>
-      <?php if ($current): ?>
-      <form method="post" action="?tab=about" style="margin-top:8px" onsubmit="return confirm('Remove this image?')">
-        <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-        <input type="hidden" name="form_type" value="image">
-        <input type="hidden" name="img_key" value="<?= e($key) ?>">
-        <input type="hidden" name="do" value="remove">
-        <button class="btn btn-ghost btn-sm">Remove</button>
-      </form>
-      <?php endif; ?>
-    </div>
-  </div>
-</div>
-<?php endforeach; ?>
 
 <?php endif; ?>
 
