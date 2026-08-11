@@ -18,7 +18,7 @@ $title = $page_title ?? 'Dashboard';
       <a href="index.php" class="<?= $page==='dashboard'?'active':'' ?>"><span class="nav-ic">◧</span>Dashboard</a>
       <a href="home-content.php" class="<?= $page==='home-content'?'active':'' ?>"><span class="nav-ic">⌂</span>Home Page Content</a>
       <?php $pcTab = $_GET['tab'] ?? 'about'; ?>
-      <a href="page-content.php?tab=about" class="<?= $page==='page-content' && $pcTab==='about' ? 'active' : '' ?>"><span class="nav-ic">◈</span>About Us</a>
+      <a href="page-content.php?tab=about" class="<?= $page==='page-content' && $pcTab==='about' ? 'active' : '' ?>"><span class="nav-ic">◈</span>Our Story</a>
       <a href="page-content.php?tab=contact" class="<?= $page==='page-content' && $pcTab==='contact' ? 'active' : '' ?>"><span class="nav-ic">☎</span>Contact Us</a>
       <a href="work.php" class="<?= $page==='work'?'active':'' ?>"><span class="nav-ic">▤</span>Our Work</a>
       <div class="grp">Site</div>

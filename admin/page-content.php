@@ -3,7 +3,7 @@ require_once __DIR__ . '/auth.php';
 require_login();
 
 $tabs = [
-    'about'   => ['label' => 'About Us'],
+    'about'   => ['label' => 'Our Story'],
     'contact' => ['label' => 'Contact Us'],
 ];
 $tab = $_GET['tab'] ?? 'about';

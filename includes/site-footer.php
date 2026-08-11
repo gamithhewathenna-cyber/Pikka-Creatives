@@ -23,7 +23,7 @@ $services = $services ?? get_rows('services');
         <h4>Quick Links</h4>
         <nav class="foot-nav">
           <a href="index.php">Home</a>
-          <a href="about.php">About</a>
+          <a href="about.php">Our Story</a>
           <a href="work.php">Our Work</a>
           <a href="contact.php">Contact</a>
         </nav>

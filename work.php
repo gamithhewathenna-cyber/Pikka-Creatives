@@ -34,7 +34,7 @@ $projects   = get_work_projects();
     <a href="index.php" class="brand"><?= brand_mark($logo) ?></a>
     <nav class="nav-links">
       <a href="index.php">Home</a>
-      <a href="about.php">About</a>
+      <a href="about.php">Our Story</a>
       <a href="work.php">Our Work</a>
       <a href="contact.php">Contact</a>
     </nav>
@@ -110,7 +110,7 @@ $projects   = get_work_projects();
       <p>Whether you're after a full brand refresh or a brand-new website, we'd love to hear about your project.</p>
       <div class="cta-actions">
         <a href="#" class="btn btn-primary" data-open-form>Start a project <span class="ico">↗</span></a>
-        <a href="about.php" class="btn btn-outline">About us <span class="ico">→</span></a>
+        <a href="about.php" class="btn btn-outline">Our Story <span class="ico">→</span></a>
       </div>
     </div>
   </div>
