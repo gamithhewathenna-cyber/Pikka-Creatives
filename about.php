@@ -82,7 +82,7 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
 <!-- ===== Section 2: Who We Are ===== -->
 <section class="intro pad" id="who-we-are">
   <div class="container intro-wrap">
-    <div>
+    <div class="reveal-left">
       <?php if ($whoImg = c('about_banner_image_1')): ?>
         <img src="<?= e($whoImg) ?>" alt="" loading="lazy" decoding="async" style="border-radius:var(--radius);width:100%;aspect-ratio:4/3;object-fit:cover">
       <?php else: ?>
@@ -92,7 +92,7 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
         </div>
       <?php endif; ?>
     </div>
-    <div>
+    <div class="reveal-right">
       <span class="eyebrow"><?= e(c('about_who_eyebrow', 'Kia ora')) ?></span>
       <h2 style="margin-top:16px"><?= e(c('about_who_heading', 'A creative studio built for Aotearoa.')) ?></h2>
       <div class="intro-body" style="margin-top:18px">
@@ -118,11 +118,11 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
 <!-- ===== Section 4: What We Believe ===== -->
 <section class="why pad">
   <div class="container why-wrap">
-    <div class="why-intro">
+    <div class="why-intro reveal-left">
       <span class="eyebrow"><?= e(c('about_values_eyebrow', 'Our values')) ?></span>
       <h2 style="margin-top:16px"><?= e(c('about_values_heading', 'What guides everything we create.')) ?></h2>
     </div>
-    <div class="why-grid">
+    <div class="why-grid reveal-right">
       <?php foreach ($values as $v): ?>
         <div class="why-cell">
           <h4><?= e($v['title']) ?></h4>
@@ -136,7 +136,7 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
 <!-- ===== Section 5: How We Work ===== -->
 <section class="intro pad">
   <div class="container intro-wrap">
-    <div>
+    <div class="reveal-left">
       <span class="eyebrow"><?= e(c('about_approach_eyebrow', 'Our approach')) ?></span>
       <h2 style="margin-top:16px"><?= e(c('about_approach_heading', 'Collaborative, clear and refreshingly straightforward.')) ?></h2>
       <div class="intro-body" style="margin-top:18px">
@@ -145,7 +145,7 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
         <?php endforeach; ?>
       </div>
     </div>
-    <div>
+    <div class="reveal-right">
       <?php if ($approachImg = c('about_approach_image')): ?>
         <img src="<?= e($approachImg) ?>" alt="" loading="lazy" decoding="async" style="border-radius:var(--radius);width:100%;aspect-ratio:4/3;object-fit:cover">
       <?php else: ?>

@@ -58,7 +58,7 @@ $phone  = s('phone', '0212 724 724');
 <section class="pad" id="contact-form">
   <div class="container contact-wrap">
 
-    <div class="contact-card">
+    <div class="contact-card reveal-left">
       <form id="contactForm" novalidate>
         <div class="field row">
           <div><label>Name</label><input type="text" name="name" placeholder="Your name" required></div>
@@ -82,7 +82,7 @@ $phone  = s('phone', '0212 724 724');
       </form>
     </div>
 
-    <div class="details-card">
+    <div class="details-card reveal-right">
       <h3>Get in touch</h3>
       <div class="detail-row">
         <span class="ic">✉</span>

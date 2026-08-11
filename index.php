@@ -145,7 +145,7 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <!-- ===== Section 2: Intro ===== -->
 <section class="intro pad" id="intro">
   <div class="container intro-wrap">
-    <div>
+    <div class="reveal-left">
       <?php if ($intro_img): ?>
         <img src="<?= e($intro_img) ?>" alt="" loading="lazy" decoding="async" style="border-radius:var(--radius);width:100%;aspect-ratio:4/3;object-fit:cover">
       <?php else: ?>
@@ -155,7 +155,7 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
         </div>
       <?php endif; ?>
     </div>
-    <div>
+    <div class="reveal-right">
       <span class="eyebrow"><?= e(c('intro_eyebrow')) ?></span>
       <h2 style="margin-top:16px"><?= e(c('intro_heading')) ?></h2>
       <div class="intro-body" style="margin-top:18px">
@@ -198,12 +198,12 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <!-- ===== Section 4: Why Choose Us ===== -->
 <section class="why pad" id="why">
   <div class="container why-wrap">
-    <div class="why-intro">
+    <div class="why-intro reveal-left">
       <span class="eyebrow"><?= e(c('why_eyebrow')) ?></span>
       <h2 style="margin-top:16px"><?= e(c('why_heading')) ?></h2>
       <p><?= e(c('why_body')) ?></p>
     </div>
-    <div class="why-grid">
+    <div class="why-grid reveal-right">
       <?php $n = 0; foreach (get_rows('why_reasons') as $r): $n++; ?>
         <div class="why-cell">
           <span class="n"><?= sprintf('0%d', $n) ?></span>
@@ -239,12 +239,12 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <!-- ===== Section 6: Industries ===== -->
 <section class="ind pad" id="industries">
   <div class="container ind-wrap">
-    <div class="ind-body">
+    <div class="ind-body reveal-left">
       <span class="eyebrow"><?= e(c('industries_eyebrow')) ?></span>
       <h2 style="margin:16px 0 16px"><?= e(c('industries_heading')) ?></h2>
       <p><?= e(c('industries_body')) ?></p>
     </div>
-    <div>
+    <div class="reveal-right">
       <div class="ind-tags">
         <?php foreach ($tags as $t): ?><span class="ind-tag"><?= e($t) ?></span><?php endforeach; ?>
       </div>

@@ -10,13 +10,18 @@
 
   document.addEventListener('DOMContentLoaded', function () {
 
-    /* ---- Scroll reveal: sections (and their cards) fade/rise into view ---- */
-    var revealSections = document.querySelectorAll('section:not(.hero)');
-    if (revealSections.length) {
+    /* ---- Scroll reveal: sections slide/fade into view as you scroll to them.
+       Two-column sections mark their own halves with .reveal-left / .reveal-right
+       in the markup (image slides in from its side, text from its side); every
+       other section is auto-wrapped with a plain fade-and-rise .reveal. ---- */
+    document.querySelectorAll('section:not(.hero)').forEach(function (el) {
+      if (!el.querySelector('.reveal-left, .reveal-right')) el.classList.add('reveal');
+    });
+    var revealTargets = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    if (revealTargets.length) {
       var revealReduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      revealSections.forEach(function (el) { el.classList.add('reveal'); });
       if (revealReduceMotion || !('IntersectionObserver' in window)) {
-        revealSections.forEach(function (el) { el.classList.add('is-visible'); });
+        revealTargets.forEach(function (el) { el.classList.add('is-visible'); });
       } else {
         var revealObserver = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
@@ -26,7 +31,7 @@
             }
           });
         }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-        revealSections.forEach(function (el) { revealObserver.observe(el); });
+        revealTargets.forEach(function (el) { revealObserver.observe(el); });
       }
     }
 
