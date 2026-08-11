@@ -45,19 +45,10 @@ img{max-width:100%;display:block}
      the browser navigates — giving a seamless wipe between pages. */
 #preloader{
   position:fixed;inset:0;z-index:9999;background:var(--white);
-  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:22px;
   transform:translateX(0);
   transition:transform .55s cubic-bezier(.76,0,.24,1),opacity .5s ease;
 }
 #preloader.loaded{opacity:0;transform:translateX(100%);pointer-events:none}
-.loader-mark{
-  width:64px;height:64px;border-radius:50%;
-  border:3px solid var(--mist-2);border-top-color:var(--accent);
-  animation:spin .9s linear infinite;
-}
-.loader-word{font-family:'Sora',sans-serif;font-weight:700;font-size:15px;letter-spacing:.32em;text-transform:uppercase;color:var(--ink)}
-.loader-word span{color:var(--accent)}
-@keyframes spin{to{transform:rotate(360deg)}}
 
 /* ---------- Header --------------------------------------------------- */
 .site-header{

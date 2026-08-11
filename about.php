@@ -45,11 +45,8 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
 </head>
 <body>
 
-<!-- Preloader -->
-<div id="preloader">
-  <div class="loader-mark"></div>
-  <div class="loader-word"><?= e($logo) ?><span>.</span></div>
-</div>
+<!-- Preloader / page-transition wipe -->
+<div id="preloader"></div>
 
 <!-- Header -->
 <header class="site-header">
