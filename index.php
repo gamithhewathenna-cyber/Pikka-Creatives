@@ -145,13 +145,23 @@ $tags     = array_filter(array_map('trim', explode('|', c('industries_tags', '')
 <section class="intro pad" id="intro">
   <div class="container intro-wrap">
     <div>
+      <?php if ($intro_img): ?>
+        <img src="<?= e($intro_img) ?>" alt="" style="border-radius:var(--radius);width:100%;aspect-ratio:4/3;object-fit:cover">
+      <?php else: ?>
+        <div class="img-placeholder" style="aspect-ratio:4/3">
+          <span class="ph-ico">🖼</span>
+          <span class="ph-label">Add image — in admin</span>
+        </div>
+      <?php endif; ?>
+    </div>
+    <div>
       <span class="eyebrow"><?= e(c('intro_eyebrow')) ?></span>
       <h2 style="margin-top:16px"><?= e(c('intro_heading')) ?></h2>
-    </div>
-    <div class="intro-body">
-      <?php foreach (paragraphs(c('intro_body')) as $para): ?>
-        <p><?= e($para) ?></p>
-      <?php endforeach; ?>
+      <div class="intro-body" style="margin-top:18px">
+        <?php foreach (paragraphs(c('intro_body')) as $para): ?>
+          <p><?= e($para) ?></p>
+        <?php endforeach; ?>
+      </div>
     </div>
   </div>
 </section>
