@@ -125,6 +125,25 @@ INSERT INTO `hero_slides` (`eyebrow`, `headline`, `subheadline`, `btn_primary_te
 ('Creative and Digital Solutions · New Zealand', 'Your vision, brought to life.', 'Pikka Creatives helps businesses from Kaitaia to Bluff grow through smart design, high-performing websites and digital marketing, backed by local support.', 'See our work', '#services', 'Start a project', '', 1);
 
 -- ---------------------------------------------------------------------
+-- Table: team_members  (About Us — Meet the Team section)
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `team_members` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(120) DEFAULT NULL,
+  `role` VARCHAR(120) DEFAULT NULL,
+  `bio` TEXT DEFAULT NULL,
+  `photo` VARCHAR(255) DEFAULT NULL,
+  `sort_order` INT(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `team_members` (`name`, `role`, `bio`, `photo`, `sort_order`) VALUES
+('[Add name]', 'Founder & Creative Director', 'Add a short 1–2 line bio — background, what they do, a personal touch.', '', 1),
+('[Add name]', 'Designer', 'Add a short 1–2 line bio — background, what they do, a personal touch.', '', 2),
+('[Add name]', 'Web Developer', 'Add a short 1–2 line bio — background, what they do, a personal touch.', '', 3),
+('[Add name]', 'Content & Social', 'Add a short 1–2 line bio — background, what they do, a personal touch.', '', 4);
+
+-- ---------------------------------------------------------------------
 -- Table: services  (Section 3 cards / accordion)
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `services` (

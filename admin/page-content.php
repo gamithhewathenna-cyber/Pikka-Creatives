@@ -65,18 +65,6 @@ $about_groups = [
         'about_team_eyebrow' => ['Eyebrow', 'text', 'Our team'],
         'about_team_heading' => ['Heading', 'text', 'The people behind Pikka Creative.'],
         'about_team_intro'   => ['Intro line', 'textarea', "A small, dedicated team of Kiwi creatives who care about doing things well. When you work with us, you work directly with the people making your ideas real."],
-        'about_team1_name'   => ['Member 1 — name', 'text', '[Add name]'],
-        'about_team1_role'   => ['Member 1 — role', 'text', 'Founder & Creative Director'],
-        'about_team1_bio'    => ['Member 1 — bio', 'textarea', 'Add a short 1–2 line bio — background, what they do, a personal touch.'],
-        'about_team2_name'   => ['Member 2 — name', 'text', '[Add name]'],
-        'about_team2_role'   => ['Member 2 — role', 'text', 'Designer'],
-        'about_team2_bio'    => ['Member 2 — bio', 'textarea', 'Add a short 1–2 line bio — background, what they do, a personal touch.'],
-        'about_team3_name'   => ['Member 3 — name', 'text', '[Add name]'],
-        'about_team3_role'   => ['Member 3 — role', 'text', 'Web Developer'],
-        'about_team3_bio'    => ['Member 3 — bio', 'textarea', 'Add a short 1–2 line bio — background, what they do, a personal touch.'],
-        'about_team4_name'   => ['Member 4 — name', 'text', '[Add name]'],
-        'about_team4_role'   => ['Member 4 — role', 'text', 'Content & Social'],
-        'about_team4_bio'    => ['Member 4 — bio', 'textarea', 'Add a short 1–2 line bio — background, what they do, a personal touch.'],
         'about_team_closing' => ['Closing line (the email address is added automatically, from Settings)', 'textarea', "Want to join the team? We're always keen to hear from talented Kiwi creatives — flick us an email at"],
     ],
     'Call To Action' => [
@@ -89,11 +77,11 @@ $about_groups = [
 $about_images = [
     'about_banner_image_1' => 'Top banner — image 1',
     'about_banner_image_2' => 'Top banner — image 2',
-    'about_team1_photo'    => 'Team photo — member 1',
-    'about_team2_photo'    => 'Team photo — member 2',
-    'about_team3_photo'    => 'Team photo — member 3',
-    'about_team4_photo'    => 'Team photo — member 4',
 ];
+
+// team_members is only on sites that have run the latest sql/pikka_db.sql.
+// Guard against it so a missing table shows a clear message instead of a fatal error.
+$teamTableReady = (bool) mysqli_query(db(), "SELECT 1 FROM team_members LIMIT 1");
 
 $contact_groups = [
     'Hero' => [
@@ -160,6 +148,83 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
+    elseif ($formType === 'team' && $tab === 'about' && !$teamTableReady) {
+        flash('The Team members list needs a one-time database update before it can be used — see the note on this page for the SQL to run.');
+    }
+    elseif ($formType === 'team' && $tab === 'about') {
+        $action = $_POST['action'] ?? '';
+
+        if ($action === 'add' || $action === 'edit') {
+            $name = trim($_POST['name'] ?? '');
+            $role = trim($_POST['role'] ?? '');
+            $bio  = trim($_POST['bio'] ?? '');
+
+            $photoPath = null; // null = leave existing photo untouched (edit only)
+            if (!empty($_FILES['photo']['name'])) {
+                $uploadDir = __DIR__ . '/../uploads/';
+                if (!is_dir($uploadDir)) @mkdir($uploadDir, 0755, true);
+                $f = $_FILES['photo'];
+                $allowed = ['jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'webp' => 'image/webp', 'gif' => 'image/gif'];
+                $ext = strtolower(pathinfo($f['name'], PATHINFO_EXTENSION));
+                $finfo = @getimagesize($f['tmp_name']);
+                if ($f['error'] !== 0) { flash('Upload error.'); }
+                elseif (!isset($allowed[$ext]) || !$finfo) { flash('Please upload a JPG, PNG, WEBP or GIF image.'); }
+                elseif ($f['size'] > 5 * 1024 * 1024) { flash('Image must be under 5 MB.'); }
+                else {
+                    $fname = 'team_' . time() . '_' . mt_rand(1000, 9999) . '.' . $ext;
+                    if (move_uploaded_file($f['tmp_name'], $uploadDir . $fname)) {
+                        $photoPath = 'uploads/' . $fname;
+                    } else { flash('Could not save the uploaded photo. Check the uploads/ folder permissions (755).'); }
+                }
+            }
+
+            if ($action === 'add') {
+                $ord = mysqli_fetch_assoc(mysqli_query(db(), "SELECT COALESCE(MAX(sort_order),0)+1 n FROM team_members"))['n'];
+                $photo = $photoPath ?? '';
+                $stmt = mysqli_prepare(db(), "INSERT INTO team_members (name, role, bio, photo, sort_order) VALUES (?,?,?,?,?)");
+                mysqli_stmt_bind_param($stmt, 'ssssi', $name, $role, $bio, $photo, $ord);
+                mysqli_stmt_execute($stmt);
+                flash('Team member added.');
+            } else {
+                $id = (int)($_POST['id'] ?? 0);
+                if ($photoPath !== null) {
+                    $stmt = mysqli_prepare(db(), "UPDATE team_members SET name=?, role=?, bio=?, photo=? WHERE id=?");
+                    mysqli_stmt_bind_param($stmt, 'ssssi', $name, $role, $bio, $photoPath, $id);
+                } else {
+                    $stmt = mysqli_prepare(db(), "UPDATE team_members SET name=?, role=?, bio=? WHERE id=?");
+                    mysqli_stmt_bind_param($stmt, 'sssi', $name, $role, $bio, $id);
+                }
+                mysqli_stmt_execute($stmt);
+                flash('Team member updated.');
+            }
+        }
+        elseif ($action === 'delete') {
+            $id = (int)($_POST['id'] ?? 0);
+            $stmt = mysqli_prepare(db(), "DELETE FROM team_members WHERE id=?");
+            mysqli_stmt_bind_param($stmt, 'i', $id);
+            mysqli_stmt_execute($stmt);
+            flash('Team member removed.');
+        }
+        elseif ($action === 'move') {
+            $id = (int)($_POST['id'] ?? 0);
+            $dir = $_POST['dir'] === 'up' ? 'up' : 'down';
+            $rows = [];
+            $r = mysqli_query(db(), "SELECT id, sort_order FROM team_members ORDER BY sort_order ASC, id ASC");
+            while ($x = mysqli_fetch_assoc($r)) $rows[] = $x;
+            for ($i = 0; $i < count($rows); $i++) {
+                if ((int)$rows[$i]['id'] === $id) {
+                    $j = $dir === 'up' ? $i - 1 : $i + 1;
+                    if ($j >= 0 && $j < count($rows)) {
+                        $a = $rows[$i]['id']; $b = $rows[$j]['id'];
+                        $oa = $rows[$i]['sort_order']; $ob = $rows[$j]['sort_order'];
+                        mysqli_query(db(), "UPDATE team_members SET sort_order=$ob WHERE id=$a");
+                        mysqli_query(db(), "UPDATE team_members SET sort_order=$oa WHERE id=$b");
+                    }
+                    break;
+                }
+            }
+        }
+    }
 
     header('Location: page-content.php?tab=' . $tab); exit;
 }
@@ -197,11 +262,15 @@ function render_group_fields($fields) {
     }
 }
 
+$teamRows = $tab === 'about' ? get_rows('team_members') : [];
+
 require __DIR__ . '/header.php';
 ?>
 <div class="card">
   <p class="sub">Email and phone number are shared across the site and stay managed from <a href="settings.php">Settings</a>.</p>
 </div>
+
+<?php if ($tab !== 'about'): ?>
 
 <form method="post" action="?tab=<?= e($tab) ?>">
   <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
@@ -215,43 +284,158 @@ require __DIR__ . '/header.php';
   <button class="btn" type="submit">Save all changes</button>
 </form>
 
-<?php if ($tab === 'about'): ?>
+<?php else: ?>
+
+<form method="post" action="?tab=about">
+  <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+  <input type="hidden" name="form_type" value="text">
+  <?php foreach ($groups as $groupLabel => $fields):
+    if ($groupLabel === 'Team' || $groupLabel === 'Call To Action') continue; ?>
+    <div class="card">
+      <h2><?= e($groupLabel) ?></h2>
+      <?php render_group_fields($fields); ?>
+    </div>
+  <?php endforeach; ?>
+  <button class="btn" type="submit">Save all changes</button>
+</form>
+
+<form method="post" action="?tab=about">
+  <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+  <input type="hidden" name="form_type" value="text">
   <div class="card">
-    <h2>Images</h2>
-    <p class="sub">The two banner photos at the top of the page, and each team member's photo.</p>
+    <h2>Team</h2>
+    <p class="sub">Heading and intro copy for the team section. Add, edit, remove and reorder the actual team members below.</p>
+    <?php render_group_fields($groups['Team']); ?>
+    <button class="btn btn-sm" type="submit">Save changes</button>
   </div>
-  <?php foreach ($about_images as $key => $label):
-      $current = c($key); ?>
-  <div class="card">
-    <div class="img-field">
-      <?php if ($current): ?>
-        <img class="thumb" src="../<?= e($current) ?>" alt="">
+</form>
+
+<?php if (!$teamTableReady): ?>
+<div class="card">
+  <h2>Team members — one-time setup needed</h2>
+  <p class="sub">The team member list stores its data in a database table that doesn't exist on this site yet. Open <strong>phpMyAdmin</strong> (in cPanel), select your database, go to the <strong>SQL</strong> tab, paste the code below, and click Go. This only needs to be done once — nothing else on the site is affected.</p>
+  <textarea readonly rows="12" style="font-family:monospace;font-size:12.5px;white-space:pre" onclick="this.select()">CREATE TABLE IF NOT EXISTS `team_members` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(120) DEFAULT NULL,
+  `role` VARCHAR(120) DEFAULT NULL,
+  `bio` TEXT DEFAULT NULL,
+  `photo` VARCHAR(255) DEFAULT NULL,
+  `sort_order` INT(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `team_members` (`name`, `role`, `bio`, `photo`, `sort_order`) VALUES
+('[Add name]', 'Founder & Creative Director', 'Add a short 1–2 line bio — background, what they do, a personal touch.', '', 1),
+('[Add name]', 'Designer', 'Add a short 1–2 line bio — background, what they do, a personal touch.', '', 2),
+('[Add name]', 'Web Developer', 'Add a short 1–2 line bio — background, what they do, a personal touch.', '', 3),
+('[Add name]', 'Content & Social', 'Add a short 1–2 line bio — background, what they do, a personal touch.', '', 4);</textarea>
+  <p class="muted" style="margin-top:10px">Once that's run, refresh this page and the team member editor will appear here.</p>
+</div>
+<?php else: ?>
+<div class="card">
+  <h2>Team members</h2>
+  <p class="sub">Each member's photo, name, role and bio are all managed together here. Use the arrows to reorder, or remove someone who's left.</p>
+</div>
+<?php foreach ($teamRows as $idx => $tm): ?>
+<div class="card">
+  <div class="rh" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <span class="pill">Member <?= $idx + 1 ?></span>
+    <div style="display:flex;gap:6px">
+      <form method="post" action="?tab=about" style="display:inline"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="form_type" value="team"><input type="hidden" name="action" value="move"><input type="hidden" name="id" value="<?= $tm['id'] ?>"><input type="hidden" name="dir" value="up"><button class="btn btn-ghost btn-sm" <?= $idx === 0 ? 'disabled' : '' ?>>↑</button></form>
+      <form method="post" action="?tab=about" style="display:inline"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="form_type" value="team"><input type="hidden" name="action" value="move"><input type="hidden" name="id" value="<?= $tm['id'] ?>"><input type="hidden" name="dir" value="down"><button class="btn btn-ghost btn-sm" <?= $idx === count($teamRows) - 1 ? 'disabled' : '' ?>>↓</button></form>
+      <form method="post" action="?tab=about" style="display:inline" onsubmit="return confirm('Remove this team member?')"><input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>"><input type="hidden" name="form_type" value="team"><input type="hidden" name="action" value="delete"><input type="hidden" name="id" value="<?= $tm['id'] ?>"><button class="btn btn-danger btn-sm">Remove</button></form>
+    </div>
+  </div>
+  <form method="post" action="?tab=about" enctype="multipart/form-data">
+    <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+    <input type="hidden" name="form_type" value="team">
+    <input type="hidden" name="action" value="edit">
+    <input type="hidden" name="id" value="<?= $tm['id'] ?>">
+    <div class="img-field" style="margin-bottom:18px">
+      <?php if ($tm['photo']): ?>
+        <img class="thumb" src="../<?= e($tm['photo']) ?>" alt="">
       <?php else: ?>
         <div class="thumb" style="display:grid;place-items:center;color:#aaa;font-size:11px">none</div>
       <?php endif; ?>
       <div style="flex:1">
-        <label style="font-family:Sora;font-size:15px"><?= e($label) ?></label>
-        <div class="muted" style="margin-bottom:10px"><?= $current ? e($current) : 'No image set' ?></div>
-        <form method="post" action="?tab=about" enctype="multipart/form-data" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-          <input type="hidden" name="form_type" value="image">
-          <input type="hidden" name="img_key" value="<?= e($key) ?>">
-          <input type="file" name="image" accept="image/*" required style="max-width:280px">
-          <button class="btn btn-sm" type="submit">Upload</button>
-        </form>
-        <?php if ($current): ?>
-        <form method="post" action="?tab=about" style="margin-top:8px" onsubmit="return confirm('Remove this image?')">
-          <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-          <input type="hidden" name="form_type" value="image">
-          <input type="hidden" name="img_key" value="<?= e($key) ?>">
-          <input type="hidden" name="do" value="remove">
-          <button class="btn btn-ghost btn-sm">Remove</button>
-        </form>
-        <?php endif; ?>
+        <label>Photo</label>
+        <input type="file" name="photo" accept="image/*">
+        <div class="muted" style="margin-top:6px">Leave empty to keep the current photo.</div>
       </div>
     </div>
+    <div class="two">
+      <div class="field"><label>Name</label><input type="text" name="name" value="<?= e($tm['name']) ?>"></div>
+      <div class="field"><label>Role</label><input type="text" name="role" value="<?= e($tm['role']) ?>"></div>
+    </div>
+    <div class="field"><label>Bio</label><textarea name="bio" rows="2"><?= e($tm['bio']) ?></textarea></div>
+    <button class="btn btn-sm" type="submit">Save changes</button>
+  </form>
+</div>
+<?php endforeach; ?>
+<div class="card" style="border-style:dashed">
+  <h2>Add team member</h2>
+  <form method="post" action="?tab=about" enctype="multipart/form-data">
+    <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+    <input type="hidden" name="form_type" value="team">
+    <input type="hidden" name="action" value="add">
+    <div class="field"><label>Photo</label><input type="file" name="photo" accept="image/*"></div>
+    <div class="two">
+      <div class="field"><label>Name</label><input type="text" name="name" placeholder="[Add name]"></div>
+      <div class="field"><label>Role</label><input type="text" name="role" placeholder="e.g. Designer"></div>
+    </div>
+    <div class="field"><label>Bio</label><textarea name="bio" rows="2" placeholder="Add a short 1–2 line bio…"></textarea></div>
+    <button class="btn" type="submit">+ Add team member</button>
+  </form>
+</div>
+<?php endif; ?>
+
+<form method="post" action="?tab=about">
+  <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+  <input type="hidden" name="form_type" value="text">
+  <div class="card">
+    <h2>Call To Action</h2>
+    <?php render_group_fields($groups['Call To Action']); ?>
+    <button class="btn btn-sm" type="submit">Save changes</button>
   </div>
-  <?php endforeach; ?>
+</form>
+
+<div class="card">
+  <h2>Top banner images</h2>
+  <p class="sub">The two banner photos near the top of the page.</p>
+</div>
+<?php foreach ($about_images as $key => $label):
+    $current = c($key); ?>
+<div class="card">
+  <div class="img-field">
+    <?php if ($current): ?>
+      <img class="thumb" src="../<?= e($current) ?>" alt="">
+    <?php else: ?>
+      <div class="thumb" style="display:grid;place-items:center;color:#aaa;font-size:11px">none</div>
+    <?php endif; ?>
+    <div style="flex:1">
+      <label style="font-family:Sora;font-size:15px"><?= e($label) ?></label>
+      <div class="muted" style="margin-bottom:10px"><?= $current ? e($current) : 'No image set' ?></div>
+      <form method="post" action="?tab=about" enctype="multipart/form-data" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+        <input type="hidden" name="form_type" value="image">
+        <input type="hidden" name="img_key" value="<?= e($key) ?>">
+        <input type="file" name="image" accept="image/*" required style="max-width:280px">
+        <button class="btn btn-sm" type="submit">Upload</button>
+      </form>
+      <?php if ($current): ?>
+      <form method="post" action="?tab=about" style="margin-top:8px" onsubmit="return confirm('Remove this image?')">
+        <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+        <input type="hidden" name="form_type" value="image">
+        <input type="hidden" name="img_key" value="<?= e($key) ?>">
+        <input type="hidden" name="do" value="remove">
+        <button class="btn btn-ghost btn-sm">Remove</button>
+      </form>
+      <?php endif; ?>
+    </div>
+  </div>
+</div>
+<?php endforeach; ?>
+
 <?php endif; ?>
 
 <?php require __DIR__ . '/footer.php'; ?>

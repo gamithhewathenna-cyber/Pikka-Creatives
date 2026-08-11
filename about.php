@@ -19,19 +19,13 @@ $benefits = [
     ['title' => c('about_benefit4_title', 'We think beyond today'), 'desc' => c('about_benefit4_desc', 'We create flexible solutions that can evolve as your business, audience and ambitions grow.')],
 ];
 
-$team_defaults = [
-    1 => ['name' => '[Add name]', 'role' => 'Founder & Creative Director'],
-    2 => ['name' => '[Add name]', 'role' => 'Designer'],
-    3 => ['name' => '[Add name]', 'role' => 'Web Developer'],
-    4 => ['name' => '[Add name]', 'role' => 'Content & Social'],
-];
 $team = [];
-foreach ($team_defaults as $i => $d) {
+foreach (get_rows('team_members') as $m) {
     $team[] = [
-        'name'  => c("about_team{$i}_name", $d['name']),
-        'role'  => c("about_team{$i}_role", $d['role']),
-        'bio'   => c("about_team{$i}_bio", 'Add a short 1–2 line bio — background, what they do, a personal touch.'),
-        'photo' => c("about_team{$i}_photo"),
+        'name'  => $m['name'] ?: '[Add name]',
+        'role'  => $m['role'],
+        'bio'   => $m['bio'] ?: 'Add a short 1–2 line bio — background, what they do, a personal touch.',
+        'photo' => $m['photo'],
     ];
 }
 

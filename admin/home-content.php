@@ -10,7 +10,6 @@ $tabs = [
     'why'      => ['label' => 'Why Choose Us'],
     'process'  => ['label' => 'Process Steps'],
     'stats'    => ['label' => 'Stats Bar'],
-    'images'   => ['label' => 'Images'],
 ];
 $tab = $_GET['tab'] ?? 'sections';
 if (!array_key_exists($tab, $tabs)) $tab = 'sections';
@@ -26,11 +25,15 @@ $crud = [
                     'columns' => ['title' => ['label' => 'Stat title', 'type' => 'text'], 'description' => ['label' => 'Description', 'type' => 'textarea']]],
 ];
 
+// Images that live inline with their matching text section, keyed by content_key.
+// Hero's image is managed on the Hero Slider tab now (not here) since the
+// slider owns what actually renders in that circle.
 $image_keys = [
-    'hero_image'       => 'Hero image (the person / brand photo in the circle)',
-    'intro_image'      => 'Intro section image (optional)',
-    'industries_image' => 'Industries section image (optional)',
+    'intro_image'      => ['section' => 'Intro', 'label' => 'Intro section image (optional)'],
+    'industries_image' => ['section' => 'Industries', 'label' => 'Industries section image (optional)'],
 ];
+$section_to_image_key = [];
+foreach ($image_keys as $key => $meta) $section_to_image_key[$meta['section']] = $key;
 
 // The hero_slides table is only on sites that have run the latest sql/pikka_db.sql.
 // Guard against it so a missing table shows a clear message instead of a fatal error.
@@ -48,7 +51,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_stmt_bind_param($stmt, 'ss', $val, $key);
             mysqli_stmt_execute($stmt);
         }
-        flash('Section text updated successfully.');
+
+        $sectionImageKey = $_POST['section_image_key'] ?? '';
+        if (array_key_exists($sectionImageKey, $image_keys)) {
+            if (!empty($_POST['remove_image'])) {
+                $st = mysqli_prepare(db(), "UPDATE page_content SET content_value='' WHERE content_key=?");
+                mysqli_stmt_bind_param($st, 's', $sectionImageKey); mysqli_stmt_execute($st);
+            } elseif (!empty($_FILES['image']['name'])) {
+                $uploadDir = __DIR__ . '/../uploads/';
+                if (!is_dir($uploadDir)) @mkdir($uploadDir, 0755, true);
+                $f = $_FILES['image'];
+                $allowed = ['jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'webp' => 'image/webp', 'gif' => 'image/gif'];
+                $ext = strtolower(pathinfo($f['name'], PATHINFO_EXTENSION));
+                $finfo = @getimagesize($f['tmp_name']);
+                if ($f['error'] !== 0) { flash('Upload error.'); }
+                elseif (!isset($allowed[$ext]) || !$finfo) { flash('Please upload a JPG, PNG, WEBP or GIF image.'); }
+                elseif ($f['size'] > 5 * 1024 * 1024) { flash('Image must be under 5 MB.'); }
+                else {
+                    $name = $sectionImageKey . '_' . time() . '.' . $ext;
+                    if (move_uploaded_file($f['tmp_name'], $uploadDir . $name)) {
+                        $path = 'uploads/' . $name;
+                        $st = mysqli_prepare(db(), "UPDATE page_content SET content_value=? WHERE content_key=?");
+                        mysqli_stmt_bind_param($st, 'ss', $path, $sectionImageKey); mysqli_stmt_execute($st);
+                    } else { flash('Could not save the uploaded file. Check the uploads/ folder permissions (755).'); }
+                }
+            }
+        }
+        flash('Section updated successfully.');
     }
     elseif ($tab === 'slider' && !$sliderTableReady) {
         flash('The Hero Slider needs a one-time database update before it can be used — see the note on this page for the SQL to run.');
@@ -188,38 +217,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
-    elseif ($tab === 'images') {
-        $key = $_POST['key'] ?? '';
-        if (array_key_exists($key, $image_keys)) {
-            if (($_POST['do'] ?? '') === 'remove') {
-                $st = mysqli_prepare(db(), "UPDATE page_content SET content_value='' WHERE content_key=?");
-                mysqli_stmt_bind_param($st, 's', $key); mysqli_stmt_execute($st);
-                flash('Image removed.');
-            } elseif (!empty($_FILES['image']['name'])) {
-                $uploadDir = __DIR__ . '/../uploads/';
-                if (!is_dir($uploadDir)) @mkdir($uploadDir, 0755, true);
-                $f = $_FILES['image'];
-                $allowed = ['jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'webp' => 'image/webp', 'gif' => 'image/gif'];
-                $ext = strtolower(pathinfo($f['name'], PATHINFO_EXTENSION));
-                $finfo = @getimagesize($f['tmp_name']);
-                if ($f['error'] !== 0) { flash('Upload error.'); }
-                elseif (!isset($allowed[$ext]) || !$finfo) { flash('Please upload a JPG, PNG, WEBP or GIF image.'); }
-                elseif ($f['size'] > 5 * 1024 * 1024) { flash('Image must be under 5 MB.'); }
-                else {
-                    $name = $key . '_' . time() . '.' . $ext;
-                    if (move_uploaded_file($f['tmp_name'], $uploadDir . $name)) {
-                        $path = 'uploads/' . $name;
-                        $st = mysqli_prepare(db(), "UPDATE page_content SET content_value=? WHERE content_key=?");
-                        mysqli_stmt_bind_param($st, 'ss', $path, $key); mysqli_stmt_execute($st);
-                        flash('Image uploaded.');
-                    } else { flash('Could not save the uploaded file. Check the uploads/ folder permissions (755).'); }
-                }
-            }
-        } else {
-            flash('Unknown image slot.');
-        }
-    }
-
     header('Location: home-content.php?tab=' . $tab); exit;
 }
 
@@ -228,22 +225,21 @@ if ($tab === 'slider') {
     $rows = get_rows('hero_slides');
 }
 elseif ($tab === 'sections') {
-    $res = mysqli_query(db(), "SELECT * FROM page_content WHERE content_key NOT LIKE '%_image' ORDER BY id ASC");
+    $res = mysqli_query(db(), "SELECT * FROM page_content WHERE content_key NOT LIKE '%_image' AND section NOT IN ('About','Contact') ORDER BY id ASC");
     $groups = [];
     while ($row = mysqli_fetch_assoc($res)) $groups[$row['section']][] = $row;
+    // Make sure the inline section-image rows exist so an upload always has a row to save into.
+    $seedImgStmt = mysqli_prepare(db(), "INSERT IGNORE INTO page_content (content_key, content_value, section, label, field_type) VALUES (?, '', ?, ?, 'image')");
+    foreach ($image_keys as $key => $meta) {
+        mysqli_stmt_bind_param($seedImgStmt, 'sss', $key, $meta['section'], $meta['label']);
+        mysqli_stmt_execute($seedImgStmt);
+    }
 }
 elseif (isset($crud[$tab])) {
     $table = $crud[$tab]['table'];
     $rows = [];
     $r = mysqli_query(db(), "SELECT * FROM `$table` ORDER BY sort_order ASC, id ASC");
     while ($x = mysqli_fetch_assoc($r)) $rows[] = $x;
-}
-elseif ($tab === 'images') {
-    foreach ($image_keys as $k => $label) {
-        $st = mysqli_prepare(db(), "INSERT IGNORE INTO page_content (content_key, content_value, section, label, field_type) VALUES (?, '', 'Images', ?, 'image')");
-        mysqli_stmt_bind_param($st, 'ss', $k, $label);
-        mysqli_stmt_execute($st);
-    }
 }
 
 function render_fields($columns, $data = []) {
@@ -354,13 +350,59 @@ INSERT INTO `hero_slides` (`eyebrow`, `headline`, `subheadline`, `btn_primary_te
     </form>
   </div>
 
-<?php elseif ($tab === 'sections'): ?>
+<?php elseif ($tab === 'sections'):
+  $imageSections = ['Intro', 'Industries'];
+  $otherGroups = array_diff_key($groups, array_flip($imageSections)); ?>
+
+  <?php foreach ($imageSections as $section): if (empty($groups[$section])) continue;
+    $srows = $groups[$section];
+    $imgKey = $section_to_image_key[$section];
+    $current = c($imgKey); ?>
+  <form method="post" action="?tab=sections" enctype="multipart/form-data">
+    <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+    <input type="hidden" name="section_image_key" value="<?= e($imgKey) ?>">
+    <div class="card">
+      <h2><?= e($section) ?> section</h2>
+      <p class="sub">Edit the copy and image for this part of the home page together.</p>
+      <div class="img-field" style="margin-bottom:20px">
+        <?php if ($current): ?>
+          <img class="thumb" src="../<?= e($current) ?>" alt="">
+        <?php else: ?>
+          <div class="thumb" style="display:grid;place-items:center;color:#aaa;font-size:11px">none</div>
+        <?php endif; ?>
+        <div style="flex:1">
+          <label><?= e($image_keys[$imgKey]['label']) ?></label>
+          <input type="file" name="image" accept="image/*">
+          <div class="muted" style="margin-top:6px">
+            <?= $current ? e($current) : 'No image set' ?>
+            <?php if ($current): ?>
+              &nbsp;·&nbsp;<label style="display:inline;font-weight:400"><input type="checkbox" name="remove_image" value="1" style="width:auto;display:inline;vertical-align:middle"> Remove current image</label>
+            <?php endif; ?>
+          </div>
+        </div>
+      </div>
+      <?php foreach ($srows as $r):
+        $isArea = ($r['field_type'] === 'textarea'); ?>
+        <div class="field">
+          <label><?= e($r['label']) ?></label>
+          <?php if ($isArea): ?>
+            <textarea name="field[<?= e($r['content_key']) ?>]" rows="3"><?= e($r['content_value']) ?></textarea>
+          <?php else: ?>
+            <input type="text" name="field[<?= e($r['content_key']) ?>]" value="<?= e($r['content_value']) ?>">
+          <?php endif; ?>
+        </div>
+      <?php endforeach; ?>
+      <button class="btn btn-sm" type="submit">Save changes</button>
+    </div>
+  </form>
+  <?php endforeach; ?>
+
   <form method="post" action="?tab=sections">
     <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-    <?php foreach ($groups as $section => $srows): ?>
+    <?php foreach ($otherGroups as $section => $srows): ?>
       <div class="card">
         <h2><?= e($section) ?> section</h2>
-        <p class="sub">Edit the copy for this part of the home page.</p>
+        <p class="sub">Edit the copy for this part of the home page.<?= $section === 'Hero' ? ' The hero photo is managed on the <a href="?tab=slider">Hero Slider</a> tab.' : '' ?></p>
         <?php foreach ($srows as $r):
           $isArea = ($r['field_type'] === 'textarea'); ?>
           <div class="field">
@@ -412,41 +454,6 @@ INSERT INTO `hero_slides` (`eyebrow`, `headline`, `subheadline`, `btn_primary_te
     </form>
   </div>
 
-<?php elseif ($tab === 'images'): ?>
-  <div class="card">
-    <h2>Home page images</h2>
-    <p class="sub">Upload photos for the home page. Square-ish images work best for the hero circle. Max 5 MB.</p>
-  </div>
-  <?php foreach ($image_keys as $key => $label):
-      $current = c($key); ?>
-  <div class="card">
-    <div class="img-field">
-      <?php if ($current): ?>
-        <img class="thumb" src="../<?= e($current) ?>" alt="">
-      <?php else: ?>
-        <div class="thumb" style="display:grid;place-items:center;color:#aaa;font-size:11px">none</div>
-      <?php endif; ?>
-      <div style="flex:1">
-        <label style="font-family:Sora;font-size:15px"><?= e($label) ?></label>
-        <div class="muted" style="margin-bottom:10px"><?= $current ? e($current) : 'No image set' ?></div>
-        <form method="post" action="?tab=images" enctype="multipart/form-data" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-          <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-          <input type="hidden" name="key" value="<?= e($key) ?>">
-          <input type="file" name="image" accept="image/*" required style="max-width:280px">
-          <button class="btn btn-sm" type="submit">Upload</button>
-        </form>
-        <?php if ($current): ?>
-        <form method="post" action="?tab=images" style="margin-top:8px" onsubmit="return confirm('Remove this image?')">
-          <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-          <input type="hidden" name="key" value="<?= e($key) ?>">
-          <input type="hidden" name="do" value="remove">
-          <button class="btn btn-ghost btn-sm">Remove</button>
-        </form>
-        <?php endif; ?>
-      </div>
-    </div>
-  </div>
-  <?php endforeach; ?>
 <?php endif; ?>
 
 <?php require __DIR__ . '/footer.php'; ?>
