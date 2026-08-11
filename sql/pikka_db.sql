@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
   `username` VARCHAR(60) NOT NULL,
   `password_hash` VARCHAR(255) NOT NULL,
   `display_name` VARCHAR(100) DEFAULT NULL,
+  `role` VARCHAR(20) NOT NULL DEFAULT 'admin',
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
@@ -22,8 +23,13 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
 
 -- Default login -> username: admin   password: pikka123
 -- (Change this from the admin panel after first login.)
-INSERT INTO `admin_users` (`username`, `password_hash`, `display_name`) VALUES
-('admin', '$2y$10$2If/XJP8gGvr70mfrywmVuXIpXmmUB18cMk1TdxUSLgjKPrqKsk9W', 'Site Admin');
+INSERT INTO `admin_users` (`username`, `password_hash`, `display_name`, `role`) VALUES
+('admin', '$2y$10$2If/XJP8gGvr70mfrywmVuXIpXmmUB18cMk1TdxUSLgjKPrqKsk9W', 'Site Admin', 'admin');
+
+-- If you're updating an existing site that already has an admin_users table
+-- (rather than importing this file fresh), run this instead:
+-- ALTER TABLE `admin_users` ADD COLUMN `role` VARCHAR(20) NOT NULL DEFAULT 'admin' AFTER `display_name`;
+-- UPDATE `admin_users` SET `role`='admin';
 
 -- ---------------------------------------------------------------------
 -- Table: site_settings  (single-value key/value pairs: logo, colours...)

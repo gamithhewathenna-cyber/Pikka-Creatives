@@ -6,7 +6,9 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $u = trim($_POST['username'] ?? '');
     $p = $_POST['password'] ?? '';
-    $stmt = mysqli_prepare(db(), "SELECT id, password_hash, display_name FROM admin_users WHERE username = ? LIMIT 1");
+    $hasRole = admin_role_column_ready();
+    $cols = $hasRole ? 'id, password_hash, display_name, role' : 'id, password_hash, display_name';
+    $stmt = mysqli_prepare(db(), "SELECT $cols FROM admin_users WHERE username = ? LIMIT 1");
     mysqli_stmt_bind_param($stmt, 's', $u);
     mysqli_stmt_execute($stmt);
     $res = mysqli_stmt_get_result($stmt);
@@ -15,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         session_regenerate_id(true);
         $_SESSION['admin_id'] = $row['id'];
         $_SESSION['admin_name'] = $row['display_name'] ?: $u;
+        $_SESSION['admin_role'] = $hasRole ? ($row['role'] ?: 'admin') : 'admin';
         header('Location: index.php'); exit;
     } else {
         $error = 'Incorrect username or password.';

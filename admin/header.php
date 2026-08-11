@@ -22,8 +22,11 @@ $title = $page_title ?? 'Dashboard';
       <a href="page-content.php?tab=contact" class="<?= $page==='page-content' && $pcTab==='contact' ? 'active' : '' ?>"><span class="nav-ic">☎</span>Contact Us</a>
       <a href="work.php" class="<?= $page==='work'?'active':'' ?>"><span class="nav-ic">▤</span>Our Work</a>
       <div class="grp">Site</div>
-      <a href="settings.php" class="<?= $page==='settings'?'active':'' ?>"><span class="nav-ic">⚙</span>Settings</a>
       <a href="messages.php" class="<?= $page==='messages'?'active':'' ?>"><span class="nav-ic">✉</span>Messages</a>
+      <?php if (is_admin_role()): ?>
+      <a href="settings.php" class="<?= $page==='settings'?'active':'' ?>"><span class="nav-ic">⚙</span>Settings</a>
+      <a href="users.php" class="<?= $page==='users'?'active':'' ?>"><span class="nav-ic">◉</span>Users</a>
+      <?php endif; ?>
       <a href="account.php" class="<?= $page==='account'?'active':'' ?>"><span class="nav-ic">◔</span>My Account</a>
       <a href="logout.php" class="logout"><span class="nav-ic">⏻</span>Log out</a>
     </nav>

@@ -2,6 +2,7 @@
 $current_page = 'settings'; $page_title = 'Site Settings';
 require_once __DIR__ . '/auth.php';
 require_login();
+require_admin_role();
 
 $fields = [
     'site_name'           => ['Site name', 'text'],
