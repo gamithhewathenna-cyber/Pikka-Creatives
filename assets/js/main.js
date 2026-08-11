@@ -2,10 +2,34 @@
 (function () {
   'use strict';
 
-  /* ---- Preloader ---- */
+  /* ---- Preloader: reveal on load ---- */
   window.addEventListener('load', function () {
     var pre = document.getElementById('preloader');
     if (pre) setTimeout(function () { pre.classList.add('loaded'); }, 450);
+  });
+
+  /* ---- Page transition: slide the preloader back in before following an
+     internal link, so the site "wipes" from page to page instead of
+     hard-cutting. Falls back to a normal, instant navigation if the click
+     doesn't qualify (external link, new tab, modifier key, in-page anchor,
+     the modal trigger, etc.) or if JS never gets this far. ---- */
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var link = e.target.closest('a');
+    if (!link || link.hasAttribute('data-open-form')) return;
+    if (link.target && link.target !== '_self') return;
+    var href = link.getAttribute('href') || '';
+    if (href === '' || href.charAt(0) === '#' || /^(mailto:|tel:|javascript:)/i.test(href)) return;
+    var dest;
+    try { dest = new URL(href, window.location.href); } catch (err) { return; }
+    if (dest.origin !== window.location.origin) return;
+    if (dest.href.split('#')[0] === window.location.href.split('#')[0]) return;
+
+    var pre = document.getElementById('preloader');
+    if (!pre) return;
+    e.preventDefault();
+    pre.classList.remove('loaded');
+    setTimeout(function () { window.location.href = dest.href; }, 480);
   });
 
   document.addEventListener('DOMContentLoaded', function () {
