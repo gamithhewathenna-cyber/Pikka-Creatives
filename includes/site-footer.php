@@ -1,9 +1,9 @@
 <?php
 /* Shared 4-column site footer. Expects $logo (site logo text) in scope, and
-   optionally $footer_brand_href (defaults to 'index.php') and $services
+   optionally $footer_brand_href (defaults to '/') and $services
    (defaults to a fresh get_rows('services') call). Included on every
    public-facing page so the footer stays identical everywhere. */
-$footer_brand_href = $footer_brand_href ?? 'index.php';
+$footer_brand_href = $footer_brand_href ?? '/';
 $services = $services ?? get_rows('services');
 ?>
 <!-- Footer -->
@@ -22,10 +22,10 @@ $services = $services ?? get_rows('services');
       <div class="foot-col">
         <h4>Quick Links</h4>
         <nav class="foot-nav">
-          <a href="index.php">Home</a>
-          <a href="about.php">Our Story</a>
-          <a href="work.php">Our Work</a>
-          <a href="contact.php">Contact</a>
+          <a href="/">Home</a>
+          <a href="/about">Our Story</a>
+          <a href="/work">Our Work</a>
+          <a href="/contact">Contact</a>
         </nav>
       </div>
       <div class="foot-col">

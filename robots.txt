@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /sql/
+Allow: /
+
+Sitemap: https://pikkacreatives.co.nz/sitemap.xml

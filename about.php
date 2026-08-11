@@ -37,6 +37,7 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About Us — <?= e(s('site_name', 'Pikka Creatives')) ?></title>
 <meta name="description" content="Pikka Creatives is a New Zealand-based design and content studio helping local brands look sharp, sound clear and stand out.">
+<link rel="canonical" href="<?= e(canonical_url('about')) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:ital,wght@0,400;0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -51,12 +52,12 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
 <!-- Header -->
 <header class="site-header">
   <div class="container nav">
-    <a href="index.php" class="brand"><?= brand_mark($logo) ?></a>
+    <a href="/" class="brand"><?= brand_mark($logo) ?></a>
     <nav class="nav-links">
-      <a href="index.php">Home</a>
-      <a href="about.php">Our Story</a>
-      <a href="work.php">Our Work</a>
-      <a href="contact.php">Contact</a>
+      <a href="/">Home</a>
+      <a href="/about">Our Story</a>
+      <a href="/work">Our Work</a>
+      <a href="/contact">Contact</a>
     </nav>
     <a href="#" class="nav-cta" data-open-form>Start a project</a>
     <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -211,7 +212,7 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
       <p><?= e(c('about_cta_body', "Kia ora — thanks for getting to know us. If you're a New Zealand business looking for a creative partner who genuinely gets your market, we'd love to hear from you.")) ?></p>
       <div class="cta-actions">
         <a href="#" class="btn btn-primary" data-open-form>Start a project <span class="ico">↗</span></a>
-        <a href="work.php" class="btn btn-outline">View our work <span class="ico">→</span></a>
+        <a href="/work" class="btn btn-outline">View our work <span class="ico">→</span></a>
       </div>
     </div>
   </div>

@@ -6,6 +6,15 @@ function e($str) {
     return htmlspecialchars($str ?? '', ENT_QUOTES, 'UTF-8');
 }
 
+/* Absolute canonical URL for a clean page path (e.g. '' for home, 'about',
+   'work', 'contact'), built from the current request so it's correct on
+   both the live domain and any local/staging host. */
+function canonical_url($path = '') {
+    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $host   = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    return $scheme . '://' . $host . '/' . ltrim($path, '/');
+}
+
 /* Load all page_content rows into an associative array [key => value] */
 function get_content() {
     static $cache = null;

@@ -31,6 +31,7 @@ $latest_projects = get_random_work_projects(7);
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= e(s('site_name','Pikka Creatives')) ?> — Creative & Digital Solutions, New Zealand</title>
 <meta name="description" content="<?= e(c('hero_subheadline')) ?>">
+<link rel="canonical" href="<?= e(canonical_url('')) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:ital,wght@0,400;0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -47,10 +48,10 @@ $latest_projects = get_random_work_projects(7);
   <div class="container nav">
     <a href="#top" class="brand"><?= brand_mark($logo) ?></a>
     <nav class="nav-links">
-      <a href="index.php">Home</a>
-      <a href="about.php">Our Story</a>
-      <a href="work.php">Our Work</a>
-      <a href="contact.php">Contact</a>
+      <a href="/">Home</a>
+      <a href="/about">Our Story</a>
+      <a href="/work">Our Work</a>
+      <a href="/contact">Contact</a>
     </nav>
     <a href="#" class="nav-cta" data-open-form>Start a project</a>
     <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -174,13 +175,13 @@ $latest_projects = get_random_work_projects(7);
         <span class="eyebrow">Latest work</span>
         <h2>Fresh off the studio floor.</h2>
       </div>
-      <a href="work.php" class="btn btn-outline">See all work <span class="ico">→</span></a>
+      <a href="/work" class="btn btn-outline">See all work <span class="ico">→</span></a>
     </div>
   </div>
   <div class="lw-strip">
     <div class="lw-track">
       <?php foreach (array_merge($latest_projects, $latest_projects) as $p): ?>
-        <a class="lw-card" href="work.php">
+        <a class="lw-card" href="/work">
           <div class="work-thumb">
             <?php if (!empty($p['image'])): ?>
               <img src="<?= e($p['image']) ?>" alt="<?= e($p['title']) ?>" loading="lazy" decoding="async">
@@ -322,7 +323,7 @@ $latest_projects = get_random_work_projects(7);
       <p><?= e(c('cta_body')) ?></p>
       <div class="cta-actions">
         <a href="#" class="btn btn-primary" data-open-form><?= e(c('cta_btn_primary')) ?> <span class="ico">↗</span></a>
-        <a href="work.php" class="btn btn-outline"><?= e(c('cta_btn_secondary')) ?> <span class="ico">→</span></a>
+        <a href="/work" class="btn btn-outline"><?= e(c('cta_btn_secondary')) ?> <span class="ico">→</span></a>
       </div>
     </div>
   </div>

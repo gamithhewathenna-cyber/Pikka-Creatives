@@ -14,6 +14,7 @@ $projects   = get_work_projects();
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Our Work — <?= e(s('site_name', 'Pikka Creatives')) ?></title>
 <meta name="description" content="A showcase of projects Pikka Creatives has delivered for New Zealand businesses — web development, logo design, SEO and more.">
+<link rel="canonical" href="<?= e(canonical_url('work')) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:ital,wght@0,400;0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -28,12 +29,12 @@ $projects   = get_work_projects();
 <!-- Header -->
 <header class="site-header">
   <div class="container nav">
-    <a href="index.php" class="brand"><?= brand_mark($logo) ?></a>
+    <a href="/" class="brand"><?= brand_mark($logo) ?></a>
     <nav class="nav-links">
-      <a href="index.php">Home</a>
-      <a href="about.php">Our Story</a>
-      <a href="work.php">Our Work</a>
-      <a href="contact.php">Contact</a>
+      <a href="/">Home</a>
+      <a href="/about">Our Story</a>
+      <a href="/work">Our Work</a>
+      <a href="/contact">Contact</a>
     </nav>
     <a href="#" class="nav-cta" data-open-form>Start a project</a>
     <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -107,7 +108,7 @@ $projects   = get_work_projects();
       <p>Whether you're after a full brand refresh or a brand-new website, we'd love to hear about your project.</p>
       <div class="cta-actions">
         <a href="#" class="btn btn-primary" data-open-form>Start a project <span class="ico">↗</span></a>
-        <a href="about.php" class="btn btn-outline">Our Story <span class="ico">→</span></a>
+        <a href="/about" class="btn btn-outline">Our Story <span class="ico">→</span></a>
       </div>
     </div>
   </div>

@@ -1,0 +1,26 @@
+# Pikka Creatives — clean, SEO-friendly URLs (e.g. /about instead of /about.php)
+# Scoped deliberately to only the public top-level pages below, so the admin
+# panel (/admin/*.php) and the AJAX endpoint (send-message.php) are never
+# touched by these rules.
+RewriteEngine On
+
+# 1) Canonicalise: a direct GET/HEAD request for index.php goes straight to
+#    the site root.
+RewriteCond %{THE_REQUEST} ^(GET|HEAD)\ /index\.php[?\s]
+RewriteRule ^ / [R=301,L]
+
+# 2) Canonicalise: a direct GET/HEAD request for about.php / work.php /
+#    contact.php permanently redirects to its clean URL, so search engines
+#    only ever index one version of each page.
+RewriteCond %{THE_REQUEST} ^(GET|HEAD)\ /(about|work|contact)\.php[?\s]
+RewriteRule ^ /%2 [R=301,L]
+
+# 2b) Canonicalise: /index -> the site root (covers the clean form too).
+RewriteRule ^index/?$ / [R=301,L]
+
+# 3) Canonicalise: drop a trailing slash from these clean page URLs.
+RewriteRule ^(about|work|contact)/$ /$1 [R=301,L]
+
+# 4) Internally serve the matching .php file for a clean URL — the browser's
+#    address bar keeps showing the clean URL throughout.
+RewriteRule ^(about|work|contact)$ $1.php [L]
