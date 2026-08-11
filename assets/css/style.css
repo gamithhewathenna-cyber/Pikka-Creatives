@@ -409,6 +409,7 @@ body.modal-open{overflow:hidden}
 .team-closing a{color:var(--accent);font-weight:600}
 
 /* ---------- Our Work page ----------------------------------------------- */
+#work .container{max-width:1300px}
 .work-filters{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:46px}
 .work-filter-btn{
   padding:11px 22px;border-radius:100px;font-size:14px;font-weight:600;font-family:inherit;letter-spacing:-.01em;
