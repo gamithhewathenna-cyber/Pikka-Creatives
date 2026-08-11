@@ -75,8 +75,7 @@ $about_groups = [
 ];
 
 $about_images = [
-    'about_banner_image_1' => 'Top banner — image 1',
-    'about_banner_image_2' => 'Top banner — image 2',
+    'about_banner_image_1' => 'Who We Are section — image',
 ];
 
 // team_members is only on sites that have run the latest sql/pikka_db.sql.
@@ -400,8 +399,8 @@ INSERT INTO `team_members` (`name`, `role`, `bio`, `photo`, `sort_order`) VALUES
 </form>
 
 <div class="card">
-  <h2>Top banner images</h2>
-  <p class="sub">The two banner photos near the top of the page.</p>
+  <h2>Section images</h2>
+  <p class="sub">The photo shown alongside the Who We Are section.</p>
 </div>
 <?php foreach ($about_images as $key => $label):
     $current = c($key); ?>

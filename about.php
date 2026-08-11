@@ -78,34 +78,27 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
 </section>
 
 
-<!-- ===== Image placeholders ===== -->
-<section class="pad-sm">
-  <div class="container img-duo">
-    <?php foreach (['about_banner_image_1', 'about_banner_image_2'] as $imgKey):
-      $img = c($imgKey); ?>
-      <?php if ($img): ?>
-        <img src="<?= e($img) ?>" alt="" style="border-radius:var(--radius);aspect-ratio:4/3;object-fit:cover">
-      <?php else: ?>
-        <div class="img-placeholder">
-          <span class="ph-ico">🖼</span>
-          <span class="ph-label">Add image — in admin</span>
-        </div>
-      <?php endif; ?>
-    <?php endforeach; ?>
-  </div>
-</section>
-
 <!-- ===== Section 2: Who We Are ===== -->
 <section class="intro pad" id="who-we-are">
   <div class="container intro-wrap">
     <div>
+      <?php if ($whoImg = c('about_banner_image_1')): ?>
+        <img src="<?= e($whoImg) ?>" alt="" style="border-radius:var(--radius);width:100%;aspect-ratio:4/3;object-fit:cover">
+      <?php else: ?>
+        <div class="img-placeholder" style="aspect-ratio:4/3">
+          <span class="ph-ico">🖼</span>
+          <span class="ph-label">Add image — in admin</span>
+        </div>
+      <?php endif; ?>
+    </div>
+    <div>
       <span class="eyebrow"><?= e(c('about_who_eyebrow', 'Kia ora')) ?></span>
       <h2 style="margin-top:16px"><?= e(c('about_who_heading', 'A creative studio built for Aotearoa.')) ?></h2>
-    </div>
-    <div class="intro-body">
-      <?php foreach (paragraphs(c('about_who_body', "Pikka Creative is a New Zealand-based design and content studio on a mission to help local brands punch above their weight. We create branding, websites, social content, and packaging for businesses across Aotearoa — from small startups finding their feet to established names ready for a fresh look.\n\nGreat ideas can begin anywhere, and they should never be limited by a postcode or the size of a budget. Pikka Creatives exists to give every New Zealand business access to design that feels thoughtful, confident and unmistakably its own. That belief is at the heart of everything we create.")) as $p): ?>
-        <p><?= e($p) ?></p>
-      <?php endforeach; ?>
+      <div class="intro-body" style="margin-top:18px">
+        <?php foreach (paragraphs(c('about_who_body', "Pikka Creative is a New Zealand-based design and content studio on a mission to help local brands punch above their weight. We create branding, websites, social content, and packaging for businesses across Aotearoa — from small startups finding their feet to established names ready for a fresh look.\n\nGreat ideas can begin anywhere, and they should never be limited by a postcode or the size of a budget. Pikka Creatives exists to give every New Zealand business access to design that feels thoughtful, confident and unmistakably its own. That belief is at the heart of everything we create.")) as $p): ?>
+          <p><?= e($p) ?></p>
+        <?php endforeach; ?>
+      </div>
     </div>
   </div>
 </section>
