@@ -178,7 +178,7 @@ img{max-width:100%;display:block}
 .marquee{background:var(--ink);color:#fff;padding:22px 0;overflow:hidden;white-space:nowrap;margin-top:-2px}
 .marquee-track{display:inline-flex;gap:0;animation:scroll-x 22s linear infinite;will-change:transform}
 .marquee:hover .marquee-track{animation-play-state:paused}
-.marquee-item{font-family:'Sora';font-weight:600;font-size:clamp(1.1rem,2.4vw,1.7rem);padding:0 30px;display:inline-flex;align-items:center;gap:30px}
+.marquee-item{font-family:'Sora';font-weight:400;font-size:clamp(.95rem,1.9vw,1.35rem);padding:0 30px;display:inline-flex;align-items:center;gap:30px}
 .marquee-item::after{content:"✳";color:var(--accent);font-size:.7em}
 @keyframes scroll-x{to{transform:translateX(-50%)}}
 
