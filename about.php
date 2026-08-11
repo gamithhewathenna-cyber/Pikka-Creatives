@@ -58,7 +58,7 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
     <nav class="nav-links">
       <a href="index.php">Home</a>
       <a href="about.php">About</a>
-      <a href="work.php">Work</a>
+      <a href="work.php">Our Work</a>
       <a href="contact.php">Contact</a>
     </nav>
     <a href="#" class="nav-cta" data-open-form>Start a project</a>
