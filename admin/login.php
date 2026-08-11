@@ -39,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="field"><label>Username</label><input type="text" name="username" autofocus required></div>
     <div class="field"><label>Password</label><input type="password" name="password" required></div>
     <button class="btn" type="submit">Sign in →</button>
-    <p class="hint">Default: <strong>admin</strong> / <strong>pikka123</strong> — change it after first login.</p>
   </form>
 </div>
 </body></html>
