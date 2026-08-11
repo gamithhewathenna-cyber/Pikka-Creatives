@@ -294,6 +294,30 @@ INSERT INTO `work_categories` (`name`, `slug`, `sort_order`) VALUES
   <div class="card">
     <p class="sub" style="margin:0">Add at least one category first, then you can add projects to it.</p>
   </div>
+  <?php else: ?>
+  <div class="card" style="border-style:dashed">
+    <h2>Add project</h2>
+    <form method="post" action="?tab=projects" enctype="multipart/form-data">
+      <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+      <input type="hidden" name="action" value="add">
+      <div class="field"><label>Project image (4:5 works best)</label><input type="file" name="image" accept="image/*"></div>
+      <div class="two">
+        <div class="field"><label>Project name</label><input type="text" name="title" placeholder="Project name"></div>
+        <div class="field">
+          <label>Category</label>
+          <select name="category_id" required>
+            <option value="">Select a category</option>
+            <?php foreach ($categories as $cat): ?>
+              <option value="<?= $cat['id'] ?>"><?= e($cat['name']) ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Short description</label><textarea name="description" rows="2" placeholder="A one or two line summary…"></textarea></div>
+      <div class="field"><label>Project link</label><input type="text" name="link" placeholder="https://…"></div>
+      <button class="btn" type="submit">+ Add project</button>
+    </form>
+  </div>
   <?php endif; ?>
 
   <?php foreach ($projects as $idx => $p): ?>
@@ -340,31 +364,6 @@ INSERT INTO `work_categories` (`name`, `slug`, `sort_order`) VALUES
     </form>
   </div>
   <?php endforeach; ?>
-  <?php if ($categories): ?>
-  <div class="card" style="border-style:dashed">
-    <h2>Add project</h2>
-    <form method="post" action="?tab=projects" enctype="multipart/form-data">
-      <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
-      <input type="hidden" name="action" value="add">
-      <div class="field"><label>Project image (4:5 works best)</label><input type="file" name="image" accept="image/*"></div>
-      <div class="two">
-        <div class="field"><label>Project name</label><input type="text" name="title" placeholder="Project name"></div>
-        <div class="field">
-          <label>Category</label>
-          <select name="category_id" required>
-            <option value="">Select a category</option>
-            <?php foreach ($categories as $cat): ?>
-              <option value="<?= $cat['id'] ?>"><?= e($cat['name']) ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-      </div>
-      <div class="field"><label>Short description</label><textarea name="description" rows="2" placeholder="A one or two line summary…"></textarea></div>
-      <div class="field"><label>Project link</label><input type="text" name="link" placeholder="https://…"></div>
-      <button class="btn" type="submit">+ Add project</button>
-    </form>
-  </div>
-  <?php endif; ?>
 <?php endif; ?>
 
 <?php require __DIR__ . '/footer.php'; ?>
