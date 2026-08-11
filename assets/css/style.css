@@ -397,7 +397,7 @@ body.modal-open{overflow:hidden}
 .work-filter-btn:active{transform:translateY(0) scale(.96)}
 .work-filter-btn.active{background:var(--ink);color:#fff;border-color:var(--ink);box-shadow:0 10px 22px -14px rgba(20,20,20,.5)}
 
-.work-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:26px}
+.work-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:30px}
 .work-card{
   border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff;
   display:block;width:100%;padding:0;margin:0;font-family:inherit;text-align:left;
