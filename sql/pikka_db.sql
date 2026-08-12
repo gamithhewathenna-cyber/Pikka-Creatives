@@ -109,7 +109,11 @@ INSERT INTO `page_content` (`content_key`, `content_value`, `section`, `label`, 
 ('cta_heading', 'Ready to bring your vision to life?', 'CTA', 'Heading', 'text'),
 ('cta_body', 'Whether you have got a clear brief or just a spark of an idea, we would love to hear from you. Let us create branding, websites, and content that help your New Zealand business stand out.', 'CTA', 'Body', 'textarea'),
 ('cta_btn_primary', 'Start your project', 'CTA', 'Primary button', 'text'),
-('cta_btn_secondary', 'View our portfolio', 'CTA', 'Secondary button', 'text');
+('cta_btn_secondary', 'View our portfolio', 'CTA', 'Secondary button', 'text'),
+-- Our Work page — hero text
+('work_hero_eyebrow', 'Our Work', 'Work', 'Eyebrow', 'text'),
+('work_hero_headline', 'Projects we''re proud of.', 'Work', 'Headline', 'text'),
+('work_hero_subheadline', 'A look at the branding, websites and campaigns we''ve built for New Zealand businesses — real work, for real Kiwi companies.', 'Work', 'Sub-headline', 'textarea');
 
 -- ---------------------------------------------------------------------
 -- Table: hero_slides  (rotating hero banner — text + button + image per slide)
