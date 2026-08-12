@@ -71,10 +71,33 @@
     /* ---- Mobile nav ---- */
     var burger = document.querySelector('.burger');
     var links = document.querySelector('.nav-links');
+    var navBackdrop = document.querySelector('.nav-backdrop');
+    var navClose = document.querySelector('.nav-close');
     if (burger && links) {
-      burger.addEventListener('click', function () { links.classList.toggle('open'); });
+      var openNav = function () {
+        links.classList.add('open');
+        burger.classList.add('open');
+        burger.setAttribute('aria-expanded', 'true');
+        if (navBackdrop) navBackdrop.classList.add('open');
+        document.body.classList.add('modal-open');
+      };
+      var closeNav = function () {
+        links.classList.remove('open');
+        burger.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+        if (navBackdrop) navBackdrop.classList.remove('open');
+        document.body.classList.remove('modal-open');
+      };
+      burger.addEventListener('click', function () {
+        if (links.classList.contains('open')) closeNav(); else openNav();
+      });
+      if (navClose) navClose.addEventListener('click', closeNav);
+      if (navBackdrop) navBackdrop.addEventListener('click', closeNav);
       links.querySelectorAll('a').forEach(function (a) {
-        a.addEventListener('click', function () { links.classList.remove('open'); });
+        a.addEventListener('click', closeNav);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && links.classList.contains('open')) closeNav();
       });
     }
 

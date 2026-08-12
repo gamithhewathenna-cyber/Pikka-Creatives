@@ -29,14 +29,17 @@ $phone  = s('phone', '0212 724 724');
 <header class="site-header">
   <div class="container nav">
     <a href="/" class="brand"><?= brand_mark($logo) ?></a>
-    <nav class="nav-links">
+    <nav class="nav-links" id="navLinks">
+      <button type="button" class="nav-close" aria-label="Close menu">&times;</button>
       <a href="/">Home</a>
       <a href="/about">Our Story</a>
       <a href="/work">Our Work</a>
       <a href="/contact">Contact</a>
+      <a href="#contact-form" class="nav-cta nav-cta-mobile">Start a project <span class="ico">→</span></a>
     </nav>
+    <div class="nav-backdrop"></div>
     <a href="#contact-form" class="nav-cta">Start a project</a>
-    <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
   </div>
 </header>
 

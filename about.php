@@ -53,14 +53,17 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
 <header class="site-header">
   <div class="container nav">
     <a href="/" class="brand"><?= brand_mark($logo) ?></a>
-    <nav class="nav-links">
+    <nav class="nav-links" id="navLinks">
+      <button type="button" class="nav-close" aria-label="Close menu">&times;</button>
       <a href="/">Home</a>
       <a href="/about">Our Story</a>
       <a href="/work">Our Work</a>
       <a href="/contact">Contact</a>
+      <a href="#" class="nav-cta nav-cta-mobile" data-open-form>Start a project <span class="ico">→</span></a>
     </nav>
+    <div class="nav-backdrop"></div>
     <a href="#" class="nav-cta" data-open-form>Start a project</a>
-    <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
   </div>
 </header>
 
