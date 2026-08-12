@@ -47,9 +47,9 @@ $projects   = get_work_projects();
 <section class="hero no-stage work-hero">
   <div class="hero-grid-bg"></div>
   <div class="container">
-    <span class="eyebrow center">Our Work</span>
-    <h1>Projects we're proud of.</h1>
-    <p class="hero-sub">A look at the branding, websites and campaigns we've built for New Zealand businesses — real work, for real Kiwi companies.</p>
+    <span class="eyebrow center"><?= e(c('work_hero_eyebrow', 'Our Work')) ?></span>
+    <h1><?= e(c('work_hero_headline', "Projects we're proud of.")) ?></h1>
+    <p class="hero-sub"><?= e(c('work_hero_subheadline', "A look at the branding, websites and campaigns we've built for New Zealand businesses — real work, for real Kiwi companies.")) ?></p>
   </div>
 </section>
 

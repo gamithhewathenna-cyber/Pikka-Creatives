@@ -5,12 +5,27 @@ require_login();
 $tabs = [
     'projects'   => ['label' => 'Projects'],
     'categories' => ['label' => 'Categories'],
+    'content'    => ['label' => 'Page Text'],
 ];
 $tab = $_GET['tab'] ?? 'projects';
 if (!array_key_exists($tab, $tabs)) $tab = 'projects';
 
 $current_page = 'work';
 $page_title = 'Our Work';
+
+$hero_fields = [
+    'work_hero_eyebrow'     => ['Eyebrow', 'text', 'Our Work'],
+    'work_hero_headline'    => ['Headline', 'text', "Projects we're proud of."],
+    'work_hero_subheadline' => ['Sub-headline', 'textarea', "A look at the branding, websites and campaigns we've built for New Zealand businesses — real work, for real Kiwi companies."],
+];
+
+// Make sure these rows exist so the fields below always show something.
+$seedStmt = mysqli_prepare(db(), "INSERT IGNORE INTO page_content (content_key, content_value, section, label, field_type) VALUES (?, ?, 'Work', ?, ?)");
+foreach ($hero_fields as $key => $meta) {
+    [$label, $type, $default] = $meta;
+    mysqli_stmt_bind_param($seedStmt, 'ssss', $key, $default, $label, $type);
+    mysqli_stmt_execute($seedStmt);
+}
 
 // work_categories / work_projects are only on sites that have run the latest
 // sql/pikka_db.sql. Guard against them so a missing table shows a clear
@@ -21,6 +36,19 @@ $workTablesReady = (bool) mysqli_query(db(), "SELECT 1 FROM work_categories LIMI
 /* ---------------- POST handling ---------------- */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     check_csrf();
+
+    if ($tab === 'content') {
+        $fields = $_POST['field'] ?? [];
+        $stmt = mysqli_prepare(db(), "UPDATE page_content SET content_value = ? WHERE content_key = ?");
+        foreach ($fields as $key => $val) {
+            if (!array_key_exists($key, $hero_fields)) continue;
+            $val = (string) $val;
+            mysqli_stmt_bind_param($stmt, 'ss', $val, $key);
+            mysqli_stmt_execute($stmt);
+        }
+        flash('Page text updated.');
+        header('Location: work.php?tab=content'); exit;
+    }
 
     if (!$workTablesReady) {
         flash('Our Work needs a one-time database update before it can be used — see the note on this page for the SQL to run.');
@@ -201,7 +229,26 @@ require __DIR__ . '/header.php';
   <?php endforeach; ?>
 </div>
 
-<?php if (!$workTablesReady): ?>
+<?php if ($tab === 'content'): ?>
+  <div class="card">
+    <h2>Page Text</h2>
+    <p class="sub">Edit the heading text shown at the top of the public Our Work page.</p>
+    <form method="post" action="?tab=content">
+      <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
+      <?php foreach ($hero_fields as $key => $meta): [$label, $type, $default] = $meta; $val = c($key, $default); ?>
+        <div class="field">
+          <label><?= e($label) ?></label>
+          <?php if ($type === 'textarea'): ?>
+            <textarea name="field[<?= e($key) ?>]" rows="3"><?= e($val) ?></textarea>
+          <?php else: ?>
+            <input type="text" name="field[<?= e($key) ?>]" value="<?= e($val) ?>">
+          <?php endif; ?>
+        </div>
+      <?php endforeach; ?>
+      <button class="btn" type="submit">Save changes</button>
+    </form>
+  </div>
+<?php elseif (!$workTablesReady): ?>
   <div class="card">
     <h2>One-time setup needed</h2>
     <p class="sub">Our Work stores its categories and projects in database tables that don't exist on this site yet. Open <strong>phpMyAdmin</strong> (in cPanel), select your database, go to the <strong>SQL</strong> tab, paste the code below, and click Go. This only needs to be done once — nothing else on the site is affected.</p>
