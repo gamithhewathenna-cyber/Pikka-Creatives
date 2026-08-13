@@ -19,6 +19,7 @@ $fields = [
 $logo_slots = [
     'logo_image'       => 'Colour logo (used in the header)',
     'logo_image_white' => 'White logo (used in the dark footer)',
+    'favicon'          => 'Favicon (shown in the browser tab)',
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -37,12 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $uploadDir = __DIR__ . '/../uploads/';
             if (!is_dir($uploadDir)) @mkdir($uploadDir, 0755, true);
             $f = $_FILES['image'];
-            $allowed = ['jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'webp' => 'image/webp', 'gif' => 'image/gif', 'svg' => 'image/svg+xml'];
+            $allowed = ['jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'png' => 'image/png', 'webp' => 'image/webp', 'gif' => 'image/gif', 'svg' => 'image/svg+xml', 'ico' => 'image/x-icon'];
             $ext = strtolower(pathinfo($f['name'], PATHINFO_EXTENSION));
-            $isSvg = $ext === 'svg';
-            $finfo = $isSvg ? true : @getimagesize($f['tmp_name']);
+            // getimagesize() can't reliably read SVG or ICO, so skip that check for those two.
+            $skipImageCheck = $ext === 'svg' || $ext === 'ico';
+            $finfo = $skipImageCheck ? true : @getimagesize($f['tmp_name']);
             if ($f['error'] !== 0) { flash('Upload error.'); }
-            elseif (!isset($allowed[$ext]) || !$finfo) { flash('Please upload a JPG, PNG, WEBP, GIF or SVG image.'); }
+            elseif (!isset($allowed[$ext]) || !$finfo) { flash('Please upload a JPG, PNG, WEBP, GIF, SVG or ICO image.'); }
             elseif ($f['size'] > 5 * 1024 * 1024) { flash('Image must be under 5 MB.'); }
             else {
                 $name = $key . '_' . time() . '.' . $ext;
@@ -76,12 +78,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require __DIR__ . '/header.php';
 ?>
 <div class="card">
-  <h2>Logo</h2>
-  <p class="sub">Upload real logo images if you have them. The header sits on a light background (use your colour logo) and the footer sits on a dark background (use a white / light version). If a slot is left empty, the site falls back to the text logo below.</p>
+  <h2>Logo &amp; favicon</h2>
+  <p class="sub">Upload real logo images if you have them. The header sits on a light background (use your colour logo) and the footer sits on a dark background (use a white / light version). If a slot is left empty, the site falls back to the text logo below (or, for the favicon, a default mark).</p>
   <?php foreach ($logo_slots as $key => $label):
       $current = s($key);
+      $isFavicon = $key === 'favicon';
       $preview = $key === 'logo_image_white' ? 'background:var(--ink)' : 'background:#fff'; ?>
-  <div class="img-field" style="margin-bottom:<?= $key === array_key_first($logo_slots) ? '18px' : '0' ?>">
+  <div class="img-field" style="margin-bottom:<?= $key === array_key_last($logo_slots) ? '0' : '18px' ?>">
     <?php if ($current): ?>
       <img class="thumb" style="<?= $preview ?>;object-fit:contain;padding:6px" src="../<?= e($current) ?>" alt="">
     <?php else: ?>
@@ -89,14 +92,15 @@ require __DIR__ . '/header.php';
     <?php endif; ?>
     <div style="flex:1">
       <label style="font-family:Sora;font-size:15px"><?= e($label) ?></label>
-      <div class="muted" style="margin-bottom:10px"><?= $current ? e($current) : 'No logo set — using the text logo' ?></div>
+      <div class="muted" style="margin-bottom:10px"><?= $current ? e($current) : ($isFavicon ? 'No favicon set — using the default mark' : 'No logo set — using the text logo') ?></div>
       <form method="post" enctype="multipart/form-data" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
         <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">
         <input type="hidden" name="form_type" value="logo">
         <input type="hidden" name="logo_key" value="<?= e($key) ?>">
-        <input type="file" name="image" accept="image/*" required style="max-width:280px">
+        <input type="file" name="image" accept="<?= $isFavicon ? 'image/*,.ico' : 'image/*' ?>" required style="max-width:280px">
         <button class="btn btn-sm" type="submit">Upload</button>
       </form>
+      <?php if ($isFavicon): ?><div class="muted" style="margin-top:6px">A square image works best — PNG, SVG or ICO.</div><?php endif; ?>
       <?php if ($current): ?>
       <form method="post" style="margin-top:8px" onsubmit="return confirm('Remove this logo?')">
         <input type="hidden" name="csrf" value="<?= e(csrf_token()) ?>">

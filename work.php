@@ -15,7 +15,7 @@ $projects   = get_work_projects();
 <title>Our Work — <?= e(s('site_name', 'Pikka Creatives')) ?></title>
 <meta name="description" content="A showcase of projects Pikka Creatives has delivered for New Zealand businesses — web development, logo design, SEO and more.">
 <link rel="canonical" href="<?= e(canonical_url('work')) ?>">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<?= favicon_tag() ?>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="<?= e(s('site_name','Pikka Creatives')) ?>">
 <meta property="og:title" content="Our Work — <?= e(s('site_name', 'Pikka Creatives')) ?>">

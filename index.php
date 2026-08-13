@@ -32,7 +32,7 @@ $latest_projects = get_random_work_projects(7);
 <title><?= e(s('site_name','Pikka Creatives')) ?> — Creative & Digital Solutions, New Zealand</title>
 <meta name="description" content="<?= e(c('hero_subheadline')) ?>">
 <link rel="canonical" href="<?= e(canonical_url('')) ?>">
-<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<?= favicon_tag() ?>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="<?= e(s('site_name','Pikka Creatives')) ?>">
 <meta property="og:title" content="<?= e(s('site_name','Pikka Creatives')) ?> — Creative & Digital Solutions, New Zealand">

@@ -67,6 +67,19 @@ function brand_mark($logoText, $isFooter = false) {
     return '<span class="dot">✳</span>' . e($logoText) . '<span class="accent">.</span>';
 }
 
+/* <link rel="icon"> tag: the uploaded favicon if set, otherwise the default
+   mark shipped with the site. */
+function favicon_tag() {
+    $fav = s('favicon');
+    if ($fav) {
+        $ext = strtolower(pathinfo($fav, PATHINFO_EXTENSION));
+        $mimes = ['svg' => 'image/svg+xml', 'png' => 'image/png', 'ico' => 'image/x-icon', 'jpg' => 'image/jpeg', 'jpeg' => 'image/jpeg', 'gif' => 'image/gif', 'webp' => 'image/webp'];
+        $mime = $mimes[$ext] ?? 'image/png';
+        return '<link rel="icon" type="' . e($mime) . '" href="' . e($fav) . '">';
+    }
+    return '<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">';
+}
+
 /* Split a content field into paragraphs (blank line, or double-space after a full stop) */
 function paragraphs($text) {
     $out = [];
