@@ -1,0 +1,4 @@
+# Block all direct web access to these PHP includes — they're only ever
+# loaded via require/include from the front-end pages, never requested
+# directly. Defense in depth in case of a server misconfiguration.
+Require all denied

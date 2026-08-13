@@ -32,6 +32,12 @@ $latest_projects = get_random_work_projects(7);
 <title><?= e(s('site_name','Pikka Creatives')) ?> — Creative & Digital Solutions, New Zealand</title>
 <meta name="description" content="<?= e(c('hero_subheadline')) ?>">
 <link rel="canonical" href="<?= e(canonical_url('')) ?>">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="<?= e(s('site_name','Pikka Creatives')) ?>">
+<meta property="og:title" content="<?= e(s('site_name','Pikka Creatives')) ?> — Creative & Digital Solutions, New Zealand">
+<meta property="og:description" content="<?= e(c('hero_subheadline')) ?>">
+<meta property="og:url" content="<?= e(canonical_url('')) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:ital,wght@0,400;0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">

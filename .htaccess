@@ -24,3 +24,10 @@ RewriteRule ^(about|work|contact)/$ /$1 [R=301,L]
 # 4) Internally serve the matching .php file for a clean URL — the browser's
 #    address bar keeps showing the clean URL throughout.
 RewriteRule ^(about|work|contact)$ $1.php [L]
+
+# 5) Block direct web access to dotfiles and dot-directories (.git, .env,
+#    etc. — anywhere in the path) — critically, this stops the .git folder's
+#    history (which contains real database credentials in old commits of
+#    includes/config.php) from being downloadable if it's ever accidentally
+#    uploaded to the live server.
+RewriteRule "(^|/)\." - [F]
