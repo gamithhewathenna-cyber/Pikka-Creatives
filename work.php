@@ -12,6 +12,7 @@ $projects   = get_work_projects();
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<?= ga_tag() ?>
 <title>Our Work — <?= e(s('site_name', 'Pikka Creatives')) ?></title>
 <meta name="description" content="A showcase of projects Pikka Creatives has delivered for New Zealand businesses — web development, logo design, SEO and more.">
 <link rel="canonical" href="<?= e(canonical_url('work')) ?>">

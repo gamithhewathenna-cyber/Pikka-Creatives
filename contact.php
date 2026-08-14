@@ -11,6 +11,7 @@ $phone  = s('phone', '0212 724 724');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<?= ga_tag() ?>
 <title>Contact Us — <?= e(s('site_name', 'Pikka Creatives')) ?></title>
 <meta name="description" content="<?= e(c('contact_hero_lead', "Whether you've got a clear brief or just a spark of an idea, we'd love to hear from you. Tell us about your project and we'll get back to you within two business days.")) ?>">
 <link rel="canonical" href="<?= e(canonical_url('contact')) ?>">

@@ -80,6 +80,16 @@ function favicon_tag() {
     return '<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">';
 }
 
+/* Google Analytics (GA4) tag — reads the Measurement ID from Settings.
+   Outputs nothing if it's not set, so the site stays clean until one is added. */
+function ga_tag() {
+    $id = trim(s('ga_id'));
+    if (!$id) return '';
+    $idJs = json_encode($id);
+    return '<script async src="https://www.googletagmanager.com/gtag/js?id=' . e($id) . '"></script>'
+         . '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag(\'js\',new Date());gtag(\'config\',' . $idJs . ');</script>';
+}
+
 /* Split a content field into paragraphs (blank line, or double-space after a full stop) */
 function paragraphs($text) {
     $out = [];

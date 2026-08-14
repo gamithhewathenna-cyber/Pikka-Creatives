@@ -29,6 +29,7 @@ $latest_projects = get_random_work_projects(7);
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<?= ga_tag() ?>
 <title><?= e(s('site_name','Pikka Creatives')) ?> — Creative & Digital Solutions, New Zealand</title>
 <meta name="description" content="<?= e(c('hero_subheadline')) ?>">
 <link rel="canonical" href="<?= e(canonical_url('')) ?>">

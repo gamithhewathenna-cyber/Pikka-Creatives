@@ -35,6 +35,7 @@ $email = s('email', 'hello@pikkacreatives.co.nz');
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<?= ga_tag() ?>
 <title>Our Story — <?= e(s('site_name', 'Pikka Creatives')) ?></title>
 <meta name="description" content="Pikka Creatives is a New Zealand-based design and content studio helping local brands look sharp, sound clear and stand out.">
 <link rel="canonical" href="<?= e(canonical_url('about')) ?>">
